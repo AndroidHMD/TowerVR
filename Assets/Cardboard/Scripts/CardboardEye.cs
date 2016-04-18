@@ -165,6 +165,8 @@ public class CardboardEye : MonoBehaviour {
       // Note: do this after all calls to FixProjection() which needs the unfixed rect.
       cam.rect = FixViewport(cam.rect);
     }
+
+    Vuforia.VuforiaBehaviour.Instance.ApplyCorrectedProjectionMatrix(proj, eye == Cardboard.Eye.Left);
   }
 
   private void SetupStereo() {

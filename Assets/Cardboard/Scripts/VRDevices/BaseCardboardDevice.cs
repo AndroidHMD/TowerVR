@@ -45,6 +45,7 @@ BaseVRDevice
 
   protected bool debugDisableNativeProjections = false;
   protected bool debugDisableNativeUILayer = false;
+  protected bool debugDisableNativeDistortion = true;
 
   public override void SetDistortionCorrectionEnabled(bool enabled) {
     EnableDistortionCorrection(enabled);
