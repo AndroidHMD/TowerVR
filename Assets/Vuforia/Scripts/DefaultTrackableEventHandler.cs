@@ -14,6 +14,8 @@ namespace Vuforia
     public class DefaultTrackableEventHandler : MonoBehaviour,
                                                 ITrackableEventHandler
     {
+        public Cardboard myCardboard;
+
         #region PRIVATE_MEMBER_VARIABLES
  
         private TrackableBehaviour mTrackableBehaviour;
@@ -51,10 +53,12 @@ namespace Vuforia
                 newStatus == TrackableBehaviour.Status.TRACKED ||
                 newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
             {
+                myCardboard.TrackingFound = true;
                 OnTrackingFound();
             }
             else
             {
+                myCardboard.TrackingFound = false;
                 OnTrackingLost();
             }
         }
@@ -95,13 +99,13 @@ namespace Vuforia
             // Disable rendering:
             foreach (Renderer component in rendererComponents)
             {
-                component.enabled = false;
+                //component.enabled = false;
             }
 
             // Disable colliders:
             foreach (Collider component in colliderComponents)
             {
-                component.enabled = false;
+                //component.enabled = false;
             }
 
             Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");

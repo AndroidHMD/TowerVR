@@ -544,6 +544,18 @@ public class Cardboard : MonoBehaviour {
   /// in your app.
   public bool BackButtonPressed { get; private set; }
 
+  //True if tracking is found
+  public bool TrackingFound {
+    get {
+      return trackingFound;
+    }
+    set {
+      trackingFound = value;
+    }
+  }
+  [SerializeField]
+  private bool trackingFound = true;
+
   // Only call device.UpdateState() once per frame.
   private int updatedToFrame = 0;
 
