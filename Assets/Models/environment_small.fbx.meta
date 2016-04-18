@@ -1,0 +1,143 @@
+fileFormatVersion: 2
+guid: aedf6df528cc42f43952767b3731c946
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: Camera
+    100002: Cone.000
+    100004: Cone.001
+    100006: Cone.002
+    100008: Cone.003
+    100010: Cone.004
+    100012: Cone.005
+    100014: Cone.006
+    100016: Cone.023
+    100018: Cone.027
+    100020: Cone.033
+    100022: Cone.034
+    100024: Cone.039
+    100026: Cone.040
+    100028: //RootNode
+    100030: Plane
+    100032: Plane.001
+    100034: Sun
+    100036: Sun.001
+    400000: Camera
+    400002: Cone.000
+    400004: Cone.001
+    400006: Cone.002
+    400008: Cone.003
+    400010: Cone.004
+    400012: Cone.005
+    400014: Cone.006
+    400016: Cone.023
+    400018: Cone.027
+    400020: Cone.033
+    400022: Cone.034
+    400024: Cone.039
+    400026: Cone.040
+    400028: //RootNode
+    400030: Plane
+    400032: Plane.001
+    400034: Sun
+    400036: Sun.001
+    2300000: Cone.000
+    2300002: Cone.001
+    2300004: Cone.002
+    2300006: Cone.003
+    2300008: Cone.004
+    2300010: Cone.005
+    2300012: Cone.006
+    2300014: Cone.023
+    2300016: Cone.027
+    2300018: Cone.033
+    2300020: Cone.034
+    2300022: Cone.039
+    2300024: Cone.040
+    2300026: Plane
+    2300028: Plane.001
+    3300000: Cone.000
+    3300002: Cone.001
+    3300004: Cone.002
+    3300006: Cone.003
+    3300008: Cone.004
+    3300010: Cone.005
+    3300012: Cone.006
+    3300014: Cone.023
+    3300016: Cone.027
+    3300018: Cone.033
+    3300020: Cone.034
+    3300022: Cone.039
+    3300024: Cone.040
+    3300026: Plane
+    3300028: Plane.001
+    4300000: Cone.006
+    4300002: Plane.001
+    4300004: Cone.005
+    4300006: Cone.004
+    4300008: Cone.003
+    4300010: Cone.001
+    4300012: Cone.000
+    4300014: Plane
+    4300016: Cone.040
+    4300018: Cone.039
+    4300020: Cone.034
+    4300022: Cone.033
+    4300024: Cone.027
+    4300026: Cone.023
+    4300028: Cone.002
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
