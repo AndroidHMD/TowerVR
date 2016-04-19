@@ -1,6 +1,6 @@
 # TowerVR
 
-## Specification
+## Specifikation
 
 Features
-* Tower stacking
+* Bygga torn
