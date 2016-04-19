@@ -3,4 +3,4 @@
 ## Specification
 
 Features
-* Awesome tower stacking
+* Tower stacking
