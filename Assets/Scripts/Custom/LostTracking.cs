@@ -14,24 +14,25 @@ namespace Vuforia
 
 		#endregion // PRIVATE_MEMBER_VARIABLES
 
-		void update ()
+		void Update ()
 		{
 			var rot = Cardboard.SDK.HeadPose.Orientation;
 			if (myCardboard.TrackingFound) 
 			{
-				lastTransform = myCamera.transform;
+				//lastTransform = myCamera.transform;
 
-				Debug.Log("FoundTracking");
+				//Debug.Log("FoundTracking");
 			}
 			else //!myCardboard.TrackingFound
 			{
-				myCamera.transform.position = lastTransform.position;
-				myCamera.transform.rotation = rot;
+				//myCamera.transform.position = lastTransform.position;
+				//myCamera.transform.rotation = rot;
 
-				Debug.Log("LostTracking");
+				//Debug.Log("LostTracking");
 			}
 
 		}
+
 	}
 }
 
