@@ -10,7 +10,7 @@ public struct Score
 	/**
 	 * The actual score, can only be get not set
 	 * */
-	public uint score { get; }
+	public uint score { get { return score; } private set { score = value; } }
 
 	/**
 	 * Constructs a score object
@@ -43,6 +43,6 @@ public struct Score
 	 * */
 	public static Score GetScore(TowerPieceDifficulty towerPieceDifficulty)
 	{
-		return difficultyScores[towerPieceDifficulty];
+		return (Score) difficultyScores[towerPieceDifficulty];
 	}
 }
