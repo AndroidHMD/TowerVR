@@ -14,7 +14,11 @@ namespace Vuforia
     public class DefaultTrackableEventHandler : MonoBehaviour,
                                                 ITrackableEventHandler
     {
+		#region PUBLICPUBLIC_MEMBER_VARIABLES
+
         public Cardboard myCardboard;
+
+		#endregion // PRIVATE_MEMBER_VARIABLES
 
         #region PRIVATE_MEMBER_VARIABLES
  

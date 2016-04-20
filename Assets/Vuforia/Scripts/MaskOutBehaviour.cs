@@ -17,6 +17,8 @@ namespace Vuforia
 
         void Start ()
         {
+			gameObject.tag = "targetSide";
+
             if (VuforiaRuntimeUtilities.IsVuforiaEnabled())
             {
                 Renderer rendererComp = GetComponent<Renderer>();
