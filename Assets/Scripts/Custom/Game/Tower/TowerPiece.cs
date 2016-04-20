@@ -6,7 +6,7 @@ using System.Collections;
  * 
  * This component should be attached to a GameObject that has a mesh, a mesh collider and a material.
  * */
-public class TowerPiece : Component
+public class TowerPiece : MonoBehaviour
 {
 	public TowerPieceDifficulty difficulty 
 	{ 
@@ -51,8 +51,11 @@ public class TowerPiece : Component
 
 		// Attached visual components
 		newTowerPiece.AddComponent<MeshFilter>().sharedMesh = info.mesh;
-		newTowerPiece.AddComponent<MeshCollider>().sharedMesh = info.mesh;
 		newTowerPiece.AddComponent<MeshRenderer>().sharedMaterial = material;
+		newTowerPiece.AddComponent<Rigidbody>().useGravity = true;
+		var mc = newTowerPiece.AddComponent<MeshCollider>();
+		mc.sharedMesh = info.mesh;
+		mc.convex = true;
 
 		// Attach the difficulty
 		var tp = newTowerPiece.AddComponent<TowerPiece>();
