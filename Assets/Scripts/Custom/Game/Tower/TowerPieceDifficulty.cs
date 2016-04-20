@@ -1,9 +1,6 @@
 ﻿using System;
 
-namespace AssemblyCSharp
+public enum TowerPieceDifficulty
 {
-	public enum TowerPieceDifficulty
-	{
-	}
+	Easy, Medium, Hard
 }
-
