@@ -1,0 +1,22 @@
+﻿using System;
+
+namespace TowerVR
+{
+	public enum GameState
+	{
+		GAME_AWAITING_PLAYERS, 
+		GAME_NOT_STARTED, 
+		GAME_RUNNING, 
+		GAME_ENDED, 
+		GAME_STOPPED
+	}
+
+	public enum TurnState
+	{
+		TURN_NOT_STARTED, 
+		TURN_CHOOSING_DIFFICULTY, 
+		TURN_CHOOSING_PIECE, 
+		TURN_PLACING_PIECE, 
+		TURN_TOWER_REACTING
+	}
+}
