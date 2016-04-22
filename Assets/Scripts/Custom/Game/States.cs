@@ -5,7 +5,7 @@ namespace TowerVR
 	public enum GameState
 	{
 		GAME_AWAITING_PLAYERS, 
-		GAME_NOT_STARTED, 
+		GAME_PREPARING_START, 
 		GAME_RUNNING, 
 		GAME_ENDED, 
 		GAME_STOPPED
