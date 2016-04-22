@@ -1,6 +1,9 @@
 ﻿using System;
 
-public enum TowerPieceDifficulty
+namespace TowerVR
 {
-	Easy, Medium, Hard
+	public enum TowerPieceDifficulty
+	{
+		Easy, Medium, Hard
+	}
 }

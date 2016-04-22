@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 
-public class NetworkEventCodes
+namespace TowerVR
 {
-	public const byte SPAWN_TOWER_PIECE = 0;
+	public class NetworkEventCodes
+	{
+		public const byte SPAWN_TOWER_PIECE = 0;
+	}
 }
