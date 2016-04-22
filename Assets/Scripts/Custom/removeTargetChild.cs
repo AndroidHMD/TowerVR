@@ -22,6 +22,6 @@ public class removeTargetChild : MonoBehaviour {
 			}
 			Debug.Log ("Removed " + count + " sides.");
 		}
-	}
+	} 
 
 }

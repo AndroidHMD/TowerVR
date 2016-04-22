@@ -25,7 +25,7 @@ namespace Vuforia
 			}
 			else //!myCardboard.TrackingFound
 			{
-				myCamera.transform.position = Vector3.Lerp (myCamera.transform.position, lastTransform.position, 0.1);
+				myCamera.transform.position = Vector3.Lerp (myCamera.transform.position, lastTransform.position, 1.0f);
 				//myCamera.transform.position = lastTransform.position;
 				//myCamera.transform.rotation = rot;
 
