@@ -19,12 +19,13 @@ namespace Vuforia
 			var rot = Cardboard.SDK.HeadPose.Orientation;
 			if (myCardboard.TrackingFound) 
 			{
-				//lastTransform = myCamera.transform;
+				lastTransform = myCamera.transform;
 
 				//Debug.Log("FoundTracking");
 			}
 			else //!myCardboard.TrackingFound
 			{
+				myCamera.transform.position = Vector3.Lerp (myCamera.transform.position, lastTransform.position, 1.0f);
 				//myCamera.transform.position = lastTransform.position;
 				//myCamera.transform.rotation = rot;
 
