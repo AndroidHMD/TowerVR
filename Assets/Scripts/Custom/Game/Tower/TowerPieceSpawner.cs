@@ -9,6 +9,20 @@ public class TowerPieceSpawner : MonoBehaviour
 
 	private IList<TowerPiece> towerPieces = new List<TowerPiece> ();
 
+	public void Network_SpawnTowerPiece (Vector3 position, Vector3 eulerAngles, TowerPieceDifficulty difficulty)
+	{
+		List<int> infoIndices = new List<int>();
+		for (int index = 0; index < towerPieceInfos.Count; ++index)
+		{
+			if (towerPieceInfos[index].difficulty.Equals(difficulty))
+			{
+				infoIndices.Add(index);
+			}
+		}
+
+		var infoIndex = infoIndices[Random.Range(0, infoIndices.Count)];
+	}
+
 	public void Network_SpawnTowerPiece (Vector3 position, Vector3 eulerAngles)
 	{
 		var materialIndex = Random.Range (0, materials.Capacity);
@@ -111,9 +125,18 @@ public class TowerPieceSpawner : MonoBehaviour
 	public void OnJoinedRoom()
 	{
 		Debug.Log("OnJoinedRoom()");
-		if (PhotonNetwork.isMasterClient)
+		if (!PhotonNetwork.isMasterClient)
 		{
 			InvokeRepeating("Spawn", 1.0f, 1.0f);	
+		}
+	}
+
+	void OnGUI()
+	{
+		GUILayout.Label(PhotonNetwork.connected ? "Connected" : "Disconnected");
+		if (PhotonNetwork.connected)
+		{
+			GUILayout.Label("Other players in room: " + PhotonNetwork.otherPlayers.Length);	
 		}
 	}
 }
