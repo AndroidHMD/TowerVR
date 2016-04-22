@@ -27,13 +27,13 @@ public class TowerPieceSpawner : MonoBehaviour
 		towerPieceOptions [6] = position.y.ToString ();
 		towerPieceOptions [7] = position.z.ToString ();
 
-		var options = new RaiseEventOptions ();
+		var options = RaiseEventOptions.Default;
 
 		// Send to all users (including self)
-		options.InterestGroup = 0;
+		options.Receivers = ExitGames.Client.Photon.ReceiverGroup.All;
 
 		PhotonNetwork.RaiseEvent (NetworkEventCodes.SPAWN_TOWER_PIECE,
-			towerPieces, true, options);
+			towerPieceOptions, true, options);
 	}
 
 	private void OnEventHandler (byte eventCode, object content, int senderId)
@@ -72,8 +72,11 @@ public class TowerPieceSpawner : MonoBehaviour
 				position,
 				eulerAngles);
 		}
-			
-		Debug.LogError ("Received wrongly formatted SPAWN_TOWER_PIECE event.");
+
+		else 
+		{
+			Debug.LogError ("Received wrongly formatted SPAWN_TOWER_PIECE event.");
+		}
 	}
 
 	private void Local_SpawnTowerPiece (int materialIndex, int towerPieceInfoIndex, Vector3 position, Vector3 eulerAngles)
@@ -85,19 +88,32 @@ public class TowerPieceSpawner : MonoBehaviour
 		towerPieces.Add (tp);
 	}
 
-	void Awake ()
-	{
-		PhotonNetwork.JoinOrCreateRoom("Hello", new RoomOptions(), new TypedLobby());
-		PhotonNetwork.OnEventCall += OnEventHandler;
-	}
-
 	private void Spawn()
 	{
+		Debug.Log("Spawn()");
 		Network_SpawnTowerPiece(Vector3.zero, Vector3.zero);
 	}
-
-	void Update ()
+		
+	void Awake ()
 	{
-		InvokeRepeating("Spawn", 1, 1);
+		Debug.Log("Awake()");
+		PhotonNetwork.OnEventCall += OnEventHandler;
+
+		PhotonNetwork.ConnectUsingSettings("1.0");
+	}
+
+	public void OnConnectedToMaster()
+	{
+		Debug.Log("OnConnectedToMaster()");
+		PhotonNetwork.JoinOrCreateRoom("TowerVR", new RoomOptions(), new TypedLobby());
+	}
+
+	public void OnJoinedRoom()
+	{
+		Debug.Log("OnJoinedRoom()");
+		if (PhotonNetwork.isMasterClient)
+		{
+			InvokeRepeating("Spawn", 1.0f, 1.0f);	
+		}
 	}
 }

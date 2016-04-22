@@ -6,7 +6,7 @@ using System.Collections;
  * 
  * This component should be attached to a GameObject that has a mesh, a mesh collider and a material.
  * */
-public class TowerPiece : MonoBehaviour
+public class TowerPiece : NetworkedBehaviour
 {
 	public TowerPieceDifficulty difficulty 
 	{ 
