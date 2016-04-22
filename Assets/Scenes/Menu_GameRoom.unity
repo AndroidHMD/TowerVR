@@ -211,9 +211,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 420185940}
-  - {fileID: 212020638}
-  - {fileID: 831969771}
   - {fileID: 1003997902}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -271,8 +268,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2041905340}
-  m_Father: {fileID: 82711256}
-  m_RootOrder: 1
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -430,7 +427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &258745351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -790,8 +787,8 @@ Transform:
   - {fileID: 215059602}
   - {fileID: 1527127503}
   - {fileID: 1566088552}
-  m_Father: {fileID: 82711256}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
 --- !u!1 &451574796
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,7 +832,7 @@ Light:
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_Strength: 1
     m_Bias: 0.05
@@ -1384,8 +1381,8 @@ Transform:
   - {fileID: 992594258}
   - {fileID: 1541097295}
   - {fileID: 451574797}
-  m_Father: {fileID: 82711256}
-  m_RootOrder: 2
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
 --- !u!21 &846737601
 Material:
   serializedVersion: 6
@@ -1596,7 +1593,7 @@ Transform:
   - {fileID: 1636997063}
   - {fileID: 790254728}
   m_Father: {fileID: 82711256}
-  m_RootOrder: 3
+  m_RootOrder: 0
 --- !u!21 &1008818090
 Material:
   serializedVersion: 6
@@ -2188,8 +2185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07a53e23300ce745946b494bd8c11e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mKeepARCameraAlive: 1
-  mKeepTrackableBehavioursAlive: 1
+  mKeepARCameraAlive: 0
+  mKeepTrackableBehavioursAlive: 0
   mKeepTextRecoBehaviourAlive: 0
   mKeepUDTBuildingBehaviourAlive: 0
   mKeepCloudRecoBehaviourAlive: 0
@@ -2712,7 +2709,7 @@ Light:
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_Strength: 1
     m_Bias: 0.05
