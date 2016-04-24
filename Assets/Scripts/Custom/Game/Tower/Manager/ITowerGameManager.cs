@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace TowerVR
 {
@@ -14,16 +16,18 @@ namespace TowerVR
      * The implementing class is either a local instance (if the current client is the
      * master client), or a remote instance (if the current client is NOT the master client).
      * */
-    public interface TowerGameManager
+    public interface ITowerGameManager
     {
-        void getGameState(Action<GameState> callback);
-        
-        void getTurnState(Action<TurnState> callback);
-        
         void notifyIsReady(int playerID);
         
-        void tryStartGame(Action<bool> callback);
+        void tryStartGame();
         
-        void tryGetScore(int playerID, Action<Score> callback);
+        ////////////////////////////////////////////////////////////////
+        /// Listener pattern to be notified of changes in game state ///
+        ////////////////////////////////////////////////////////////////
+        
+        void addListener(ITowerGameManagerListener listener);
+        
+        void removeListener(ITowerGameManagerListener listener);
     }
 }

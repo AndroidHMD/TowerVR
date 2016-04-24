@@ -6,54 +6,72 @@ using System.Collections.Generic;
 
 namespace TowerVR
 {
-    public class RemoteTowerGameManager : MonoBehaviour, TowerGameManager
+    public sealed class LocalTowerGameManagerImpl : TowerGameManagerImpl
     {       
-        #region PUBLIC_MEMBER_FUNCTIONS
-         
-        public void getGameState(Action<GameState> callback)
+        #region PROTECTED_MEMBER_FUNCTIONS
+        
+        protected override void _onEventHandler(byte eventCode, object content, int senderId)
         {
-            Log("getGameState()");
             
-            // todo
         }
         
-        public void getTurnState(Action<TurnState> callback)
-        {
-            Log("getTurnState");
-            
-            // todo
-        }
-        
-        public void notifyIsReady(int playerID)
+        protected override void _notifyIsReady(int playerID)
         {
             Log("notifyIsReady [playerID=" + playerID + "]");
             
-            // todo
+            //todo
         }
         
-        public void tryStartGame(Action<bool> callback)
+        protected override void _tryStartGame()
         {
             Log("tryStartGame");
             
-            // todo
+            //todo
         }
         
-        /**
-		 * (Tries to) get the score of the given player.
-		 * */
-        public void tryGetScore(int playerID, Action<Score> callback)
-        {
-            Log("tryGetScore [playerID=" + playerID + "]");
-            
-            // todo
+        void Awake()
+        {	
+			gameState = GameState.GAME_AWAITING_PLAYERS;
+			turnState = TurnState.TURN_NOT_STARTED;
+			
+			players = new HashSet<PhotonPlayer>();
+			playersReadyMap = new Dictionary<PhotonPlayer, bool>();
+			
+			foreach (var photonPlayer in PhotonNetwork.playerList)
+			{
+				players.Add(photonPlayer);
+				playersReadyMap[photonPlayer] = false;
+			}
         }
         
-        #endregion PUBLIC_MEMBER_FUNCTIONS
+        #endregion PROTECTED_MEMBER_FUNCTIONS
         
         
         
         #region PRIVATE_MEMBER_FUNCTIONS
         
+        /**
+		 * Checks if all players are ready to start the game.
+		 * 
+		 * Returns true if #reportIsReady has been called with each PhotonPlayer as argument.
+		 * */ 
+		private bool allPlayersReady()
+		{
+			foreach (var entry in playersReadyMap)
+			{
+				if (entry.Value == false)
+				{
+					return false;
+				}
+			}
+			
+			return true;
+		}
+        
+        private void notifyAllPlayersReady()
+        {
+            
+        }
         
         private static void Log(object obj)
         {
@@ -61,8 +79,6 @@ namespace TowerVR
         }
         
         #endregion PRIVATE_MEMBER_FUNCTIONS
-        
-        
         
         
         #region PRIVATE_MEMBER_VARIABLES
