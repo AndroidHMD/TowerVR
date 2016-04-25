@@ -32,7 +32,7 @@ GameObject:
   - 114: {fileID: 11475250}
   - 114: {fileID: 11402528}
   m_Layer: 0
-  m_Name: New Prefab
+  m_Name: JoinCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
