@@ -10,25 +10,6 @@ namespace TowerVR
     {       
         #region PROTECTED_MEMBER_FUNCTIONS
         
-        protected override void _onEventHandler(byte eventCode, object content, int senderId)
-        {
-            
-        }
-        
-        protected override void _notifyIsReady(int playerID)
-        {
-            Log("notifyIsReady [playerID=" + playerID + "]");
-            
-            //todo
-        }
-        
-        protected override void _tryStartGame()
-        {
-            Log("tryStartGame");
-            
-            //todo
-        }
-        
         void Awake()
         {	
 			gameState = GameState.AwaitingPlayers;
@@ -44,11 +25,72 @@ namespace TowerVR
 			}
         }
         
+        //////////////////////////////////
+		/// PhotonNetworkEvent handles ///
+		//////////////////////////////////
+        
+        protected sealed override void _handlePlayerReadyEvent(int playerID)
+        {
+            Log("_handlePlayerReadyEvent");
+            
+            foreach (var player in playersReadyMap)
+            {
+                if (player.Key.ID == playerID)
+                {
+                    // Mark that player as ready
+                    playersReadyMap[player.Key] = true;
+                }
+            }
+            
+            if (allPlayersReady())
+            {
+                gameState = GameState.AllPlayersReady;
+                syncGameState();
+            }
+        }
+        
+		protected sealed override void _handleTryStartGameEvent(int playerID)
+        {
+            Log("_handleTryStartGameEvent");
+            
+            if (allPlayersReady())
+            {
+                gameState = GameState.Running;
+                syncGameState();
+            }
+        }
+        
+		protected sealed override void _handleSpawnTowerPieceEvent()
+        {
+            Log("_handleSpawnTowerPieceEvent");
+            
+            Log("Not implemented...");
+        }
+        
+        
         #endregion PROTECTED_MEMBER_FUNCTIONS
         
         
         
         #region PRIVATE_MEMBER_FUNCTIONS
+        
+        private void syncGameState()
+        {
+            var ev = new GameStateChangedEvent(gameState);
+            if (!ev.trySend())
+            {
+                Error(ev.trySendError);
+            }
+        }
+        
+        private void syncTurnState()
+        {
+            var ev = new TurnStateChangedEvent(turnState);
+            if (!ev.trySend())
+            {
+                Error(ev.trySendError);
+            }
+        }
         
         /**
 		 * Checks if all players are ready to start the game.
@@ -76,6 +118,11 @@ namespace TowerVR
         private static void Log(object obj)
         {
             Debug.Log(obj.ToString());
+        }
+        
+        private static void Error(object obj)
+        {
+            Debug.LogError(obj.ToString());
         }
         
         #endregion PRIVATE_MEMBER_FUNCTIONS

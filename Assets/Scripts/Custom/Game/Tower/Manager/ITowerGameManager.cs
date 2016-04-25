@@ -18,16 +18,8 @@ namespace TowerVR
      * */
     public interface ITowerGameManager
     {
-        void notifyIsReady(int playerID);
+        void notifyIsReady();
         
         void tryStartGame();
-        
-        ////////////////////////////////////////////////////////////////
-        /// Listener pattern to be notified of changes in game state ///
-        ////////////////////////////////////////////////////////////////
-        
-        void addListener(ITowerGameManagerListener listener);
-        
-        void removeListener(ITowerGameManagerListener listener);
     }
 }

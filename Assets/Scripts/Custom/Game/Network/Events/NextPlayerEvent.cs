@@ -10,20 +10,20 @@ namespace TowerVR
      **/
     public sealed class NextPlayerEvent : PhotonNetworkEvent
     {
-        public NextPlayerEvent(int playerID)
+        public NextPlayerEvent(int nextPlayerID)
         {
             eventCode = NetworkEventCodes.NextPlayer;
             setReceivers(ReceiverGroup.All);
             
-            content = playerID;
+            content = nextPlayerID;
         }
         
         /**
          * Tries to parse the contents of the event.
          **/
-        public static bool TryParse(object obj, out int playerID)
+        public static bool TryParse(object obj, out int nextPlayerID)
         {
-            return Int32.TryParse(obj as string, out playerID);
+            return Int32.TryParse(obj as string, out nextPlayerID);
         }
     }
 }
