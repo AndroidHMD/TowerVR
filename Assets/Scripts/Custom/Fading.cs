@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/// <HOW TO USE THIS SCRIPT>
-/// Place the script on the scene manager and it will "fade" the screen automatically when changing scene.
-/// Public variable fadeSpeed determines the duration of the fading effect.
-/// Public variable fadeOutTexture needs to have an images assigned, for example a black Image.  
-/// </summary>
-
+/* Automatically fades into a scene. Called by GazeOver-script to fade out when switching scenes. 
+* Public variable fadeSpeed determines the duration of the fading effect.
+* Public variable fadeOutTexture needs to have an images assigned, for example a black Image.  
+*/
 
 public class Fading : MonoBehaviour {
 
@@ -25,7 +23,7 @@ public class Fading : MonoBehaviour {
         //force (clamp) the number between 0 and 1 (GUI colors: between 0 and 1)
         alpha = Mathf.Clamp01(alpha);
 
-		Debug.Log ("Alpha: " + alpha);
+		//Debug.Log ("Alpha: " + alpha);
 
         //set color of GUI
         GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, alpha);

@@ -16,6 +16,8 @@ public class GazeOver : MonoBehaviour {
 
 	//Function for switching scene. 	
 	public void SwitchScene(){
+		//TODO: This makes FadeOut work, but tracking doesn't because you have to use Keep ARcamera alive
+		//No solution found yet
 		//DontDestroyOnLoad (GameObject.Find ("CardboardMain"));
 
 		//fade out and load new level

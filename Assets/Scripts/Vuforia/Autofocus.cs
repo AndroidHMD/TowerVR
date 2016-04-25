@@ -19,7 +19,7 @@ public class Autofocus : MonoBehaviour
 
     void Update()
     {
-		/*
+		/* Deactivate that a tap triggers focus!
         // Trigger an autofocus event on tap
         if (Input.GetMouseButtonUp(0))
         {
