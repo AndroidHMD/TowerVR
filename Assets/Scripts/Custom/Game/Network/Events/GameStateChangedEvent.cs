@@ -10,7 +10,7 @@ namespace TowerVR
      **/
     public sealed class GameStateChangedEvent : PhotonNetworkEvent
     {
-        GameStateChangedEvent(int validGameState)
+        public GameStateChangedEvent(int validGameState)
         {
             eventCode = NetworkEventCodes.GameStateChanged;
             setReceivers(ReceiverGroup.All);

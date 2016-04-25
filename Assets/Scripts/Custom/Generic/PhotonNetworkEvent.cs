@@ -12,7 +12,7 @@ public abstract class PhotonNetworkEvent
     protected RaiseEventOptions eventOptions { get; set; }
     public string trySendError 
     { 
-        get; 
+        get { return trySendError; }
         protected set
         {
             // Prepend the actual instantiated event-type

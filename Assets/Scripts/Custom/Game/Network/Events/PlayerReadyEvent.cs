@@ -9,7 +9,7 @@ namespace TowerVR
      **/
     public sealed class PlayerReadyEvent : PhotonNetworkEvent
     {
-        PlayerReadyEvent()
+        public PlayerReadyEvent()
         {
             eventCode = NetworkEventCodes.PlayerReady;            
             setReceivers(ReceiverGroup.MasterClient);

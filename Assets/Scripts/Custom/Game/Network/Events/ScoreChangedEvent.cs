@@ -10,7 +10,7 @@ namespace TowerVR
      **/
     public sealed class ScoreChangedEvent : PhotonNetworkEvent
     {
-        ScoreChangedEvent(int playerID, Score newScore)
+        public ScoreChangedEvent(int playerID, Score newScore)
         {
             eventCode = NetworkEventCodes.ScoreChanged;
             setReceivers(ReceiverGroup.All);

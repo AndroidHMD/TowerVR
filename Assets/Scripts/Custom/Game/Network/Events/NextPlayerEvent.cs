@@ -6,13 +6,13 @@ using ExitGames.Client.Photon;
 namespace TowerVR
 {
     /**
-     * An event raised when a player lost the game.
+     * An event raised when a new player's turn is about to start.
      **/
-    public sealed class PlayerLostEvent : PhotonNetworkEvent
+    public sealed class NextPlayerEvent : PhotonNetworkEvent
     {
-        public PlayerLostEvent(int playerID)
+        public NextPlayerEvent(int playerID)
         {
-            eventCode = NetworkEventCodes.PlayerLost;
+            eventCode = NetworkEventCodes.NextPlayer;
             setReceivers(ReceiverGroup.All);
             
             content = playerID;

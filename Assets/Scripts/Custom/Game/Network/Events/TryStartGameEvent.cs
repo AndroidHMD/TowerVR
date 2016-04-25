@@ -9,7 +9,7 @@ namespace TowerVR
      **/
     public sealed class TryStartGameEvent : PhotonNetworkEvent
     {
-        TryStartGameEvent()
+        public TryStartGameEvent()
         {
             eventCode = NetworkEventCodes.TryStartGame;
             setReceivers(ReceiverGroup.MasterClient);   

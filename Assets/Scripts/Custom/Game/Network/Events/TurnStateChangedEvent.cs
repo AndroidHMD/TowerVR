@@ -10,7 +10,7 @@ namespace TowerVR
      **/
     public sealed class TurnStateChangedEvent : PhotonNetworkEvent
     {
-        TurnStateChangedEvent(int validTurnState)
+        public TurnStateChangedEvent(int validTurnState)
         {
             eventCode = NetworkEventCodes.TurnStateChanged;
             setReceivers(ReceiverGroup.All);

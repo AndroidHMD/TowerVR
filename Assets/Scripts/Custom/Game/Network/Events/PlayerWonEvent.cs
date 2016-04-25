@@ -10,7 +10,7 @@ namespace TowerVR
      **/
     public sealed class PlayerWonEvent : PhotonNetworkEvent
     {
-        PlayerWonEvent(int playerID)
+        public PlayerWonEvent(int playerID)
         {
             eventCode = NetworkEventCodes.PlayerWon;
             setReceivers(ReceiverGroup.All);
