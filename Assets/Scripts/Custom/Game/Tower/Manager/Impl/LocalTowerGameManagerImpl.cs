@@ -31,8 +31,8 @@ namespace TowerVR
         
         void Awake()
         {	
-			gameState = GameState.GAME_AWAITING_PLAYERS;
-			turnState = TurnState.TURN_NOT_STARTED;
+			gameState = GameState.AwaitingPlayers;
+			turnState = TurnState.NotStarted;
 			
 			players = new HashSet<PhotonPlayer>();
 			playersReadyMap = new Dictionary<PhotonPlayer, bool>();
@@ -83,9 +83,17 @@ namespace TowerVR
         
         #region PRIVATE_MEMBER_VARIABLES
         
-        private GameState gameState;
+        private int gameState 
+        { 
+            get { return gameState; }
+            set { if (GameState.IsValid(value)) gameState = value; }
+        }
         
-        private TurnState turnState;
+        private int turnState 
+        { 
+            get { return turnState; }
+            set { if (TurnState.IsValid(value)) turnState = value; } 
+        }
         
         private HashSet<PhotonPlayer> players;
         

@@ -10,6 +10,15 @@ public abstract class PhotonNetworkEvent
     protected byte eventCode { get; set; }
     protected object content { get; set; }
     protected RaiseEventOptions eventOptions { get; set; }
+    public string trySendError 
+    { 
+        get; 
+        protected set
+        {
+            // Prepend the actual instantiated event-type
+            trySendError = GetType() + " " + value;
+        } 
+    }
     
     private bool alreadySuccessfullySent = false;
     
@@ -35,13 +44,13 @@ public abstract class PhotonNetworkEvent
     {
         if (eventCode < 0 || eventCode > 199)
         {
-            Debug.Log("Trying to send a PhotonNetworkEvent with an event code outside of [0, 199], aborting.");
+            trySendError = "Trying to send a PhotonNetworkEvent with an event code outside of [0, 199], aborting.";
             return false;
         }
         
         if (alreadySuccessfullySent)
         {
-            Debug.Log("Trying to send an already successfully sent PhotonNetworkEvent again...");
+            trySendError = "Trying to send an already successfully sent PhotonNetworkEvent again..."; 
             return false;
         }
 

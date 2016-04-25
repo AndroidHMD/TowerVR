@@ -9,12 +9,12 @@ namespace TowerVR
 		/**
 		 * The actual score, can only be get not set
 		 * */
-		public uint score { get { return score; } private set { score = value; } }
+		public int score { get { return score; } private set { score = value; } }
 
 		/**
 		 * Constructs a score object
 		 * */
-		public Score(uint score)
+		public Score(int score)
 		{
 			this.score = score;
 		}

@@ -2,9 +2,12 @@
 
 namespace TowerVR
 {
+	/**
+	 * Constant class containing event codes. The Photon API specifies the
+	 * event codes as bytes within the [0, 199] range.
+	 **/
 	public class NetworkEventCodes
 	{
-		
 		public const byte PlayerReady 		= 1;
 		public const byte TryStartGame 		= 2; 
 		
@@ -15,5 +18,10 @@ namespace TowerVR
 		public const byte PlayerWon 		= 7;
 		
 		public const byte SpawnTowerPiece 	= 0;
+		
+		public static bool IsValid(byte potentialEventCode)
+		{
+			return potentialEventCode >= 0 && potentialEventCode <= 7;
+		}
 	}
 }
