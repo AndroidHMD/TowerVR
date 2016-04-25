@@ -1,17 +1,32 @@
 using UnityEngine;
 using System.Collections;
+using ExitGames.Client.Photon;
 
+/**
+ * Abstract base class for events sent using the Photon API.
+ **/
 public abstract class PhotonNetworkEvent
 {
-    protected int eventCode { get; set; }
+    protected byte eventCode { get; set; }
     protected object content { get; set; }
     protected RaiseEventOptions eventOptions { get; set; }
     
     public PhotonNetworkEvent()
     {
-        eventCode = -1;
+        eventCode = 200;
         content = null;
         eventOptions = RaiseEventOptions.Default;
+    }
+    
+    protected void setReceivers(ReceiverGroup receiverGroup)
+    {
+        eventOptions.TargetActors = new int[0];
+        eventOptions.Receivers = receiverGroup;
+    }
+    
+    protected void setReceivers(params int[] playerIDs)
+    {
+        eventOptions.TargetActors = playerIDs;
     }
     
     public bool trySend()
