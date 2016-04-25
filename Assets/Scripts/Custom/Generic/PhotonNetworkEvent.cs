@@ -11,6 +11,8 @@ public abstract class PhotonNetworkEvent
     protected object content { get; set; }
     protected RaiseEventOptions eventOptions { get; set; }
     
+    private bool alreadySuccessfullySent = false;
+    
     public PhotonNetworkEvent()
     {
         eventCode = 200;
@@ -33,10 +35,17 @@ public abstract class PhotonNetworkEvent
     {
         if (eventCode < 0 || eventCode > 199)
         {
+            Debug.Log("Trying to send a PhotonNetworkEvent with an event code outside of [0, 199], aborting.");
+            return false;
+        }
+        
+        if (alreadySuccessfullySent)
+        {
+            Debug.Log("Trying to send an already successfully sent PhotonNetworkEvent again...");
             return false;
         }
 
-        return PhotonNetwork.RaiseEvent(
+        return alreadySuccessfullySent = PhotonNetwork.RaiseEvent(
             eventCode,
             content,
             true,
