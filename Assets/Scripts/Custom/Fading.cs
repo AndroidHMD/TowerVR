@@ -25,6 +25,8 @@ public class Fading : MonoBehaviour {
         //force (clamp) the number between 0 and 1 (GUI colors: between 0 and 1)
         alpha = Mathf.Clamp01(alpha);
 
+		Debug.Log ("Alpha: " + alpha);
+
         //set color of GUI
         GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, alpha);
         GUI.depth = drawDepth;
@@ -35,6 +37,7 @@ public class Fading : MonoBehaviour {
     //sets fadeDir to the direciton parameter (making the scene fade in/out)
     public float BeginFade(int direction)
     {
+		Debug.Log ("Begin fade to: " + direction);
         fadeDir = direction;
         return (fadeSpeed);
     }

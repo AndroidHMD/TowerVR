@@ -1635,7 +1635,7 @@ GameObject:
   - 114: {fileID: 1017791938}
   - 114: {fileID: 1017791939}
   m_Layer: 0
-  m_Name: GameLogic
+  m_Name: SceneLogic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1700,7 +1700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeOutTexture: {fileID: 2800000, guid: 97cd42aad35a0466e9d8834e32cd2fcc, type: 3}
-  fadeSpeed: 1
+  fadeSpeed: 0.2
 --- !u!1 &1026986521
 GameObject:
   m_ObjectHideFlags: 0
@@ -2150,6 +2150,7 @@ GameObject:
   - 114: {fileID: 1381085001}
   - 114: {fileID: 1381085002}
   - 114: {fileID: 1381084994}
+  - 114: {fileID: 1381084995}
   m_Layer: 0
   m_Name: ARCamera
   m_TagString: Untagged
@@ -2239,6 +2240,17 @@ MonoBehaviour:
   mClippingMode: 0
   mMatteShader: {fileID: 0}
   mVideoBackgroundEnabled: 1
+--- !u!114 &1381084995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1381084989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef0e860cccf810e4c8027b1dc8994711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1381084996
 MonoBehaviour:
   m_ObjectHideFlags: 0
