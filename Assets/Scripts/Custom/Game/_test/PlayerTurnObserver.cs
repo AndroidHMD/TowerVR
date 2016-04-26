@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace TowerVR
 {
-	public class PlayerTurnObserver : MonoBehaviour 
+	public class PlayerTurnObserver : TowerVR.TowerGameBehaviour 
 	{
 		private int gameState;
 		private int currentPlayerID;
@@ -22,9 +22,9 @@ namespace TowerVR
 		{
 			gameState = GameState.AwaitingPlayers;
 			
-			TowerGameManager.Instance.gameStateChangedHandlers.Add(onGameStateChanged);
-			TowerGameManager.Instance.nextPlayerTurnHandlers.Add(onNextPlayerTurn);
-			TowerGameManager.Instance.notifyIsReady();
+			manager.gameStateChangedHandlers.Add(onGameStateChanged);
+			manager.nextPlayerTurnHandlers.Add(onNextPlayerTurn);
+			manager.notifyIsReady();
 		}
 		
 		void Update()
@@ -33,20 +33,20 @@ namespace TowerVR
 			{
 				if (gameState == GameState.AwaitingPlayers)
 				{
-					TowerGameManager.Instance.notifyIsReady();
+					manager.notifyIsReady();
 				}
 				
 				else
 				{
-					TowerGameManager.Instance.tryStartGame();
+					manager.tryStartGame();
 				}
 			}
 		}
 		
 		void OnDestroy()
 		{
-			TowerGameManager.Instance.gameStateChangedHandlers.Remove(onGameStateChanged);
-			TowerGameManager.Instance.nextPlayerTurnHandlers.Remove(onNextPlayerTurn);
+			manager.gameStateChangedHandlers.Remove(onGameStateChanged);
+			manager.nextPlayerTurnHandlers.Remove(onNextPlayerTurn);
 		}
 		
 		void OnGUI()
