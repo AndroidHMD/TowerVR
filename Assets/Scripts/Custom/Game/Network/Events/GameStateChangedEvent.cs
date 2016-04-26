@@ -23,7 +23,14 @@ namespace TowerVR
          **/
         public static bool TryParse(object obj, out int newGameState)
         {
-            return Int32.TryParse(obj as string, out newGameState);
+            if (obj is int)
+            {
+                newGameState = (int) obj;
+                return true;
+            }
+            
+            newGameState = -1;
+            return false;
         }
     }
 }

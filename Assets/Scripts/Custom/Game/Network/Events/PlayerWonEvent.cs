@@ -14,6 +14,8 @@ namespace TowerVR
         {
             eventCode = NetworkEventCodes.PlayerWon;
             setReceivers(ReceiverGroup.All);
+            
+            content = playerID;
         }
         
         /**
@@ -21,7 +23,14 @@ namespace TowerVR
          **/
         public static bool TryParse(object obj, out int playerID)
         {
-            return Int32.TryParse(obj as string, out playerID);
+            if (obj is int)
+            {
+                playerID = (int) obj;
+                return true;
+            }
+            
+            playerID = -1;
+            return false;
         }
     }
 }

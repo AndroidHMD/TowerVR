@@ -23,7 +23,14 @@ namespace TowerVR
          **/
         public static bool TryParse(object obj, out int nextPlayerID)
         {
-            return Int32.TryParse(obj as string, out nextPlayerID);
+            if (obj is int)
+            {
+                nextPlayerID = (int) obj;
+                return true;
+            }
+            
+            nextPlayerID = -1;
+            return false;
         }
     }
 }
