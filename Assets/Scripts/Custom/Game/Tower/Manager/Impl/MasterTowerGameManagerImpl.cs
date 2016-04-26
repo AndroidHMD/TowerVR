@@ -72,7 +72,7 @@ namespace TowerVR
 					float posX, posZ, rotDegreesY;
                     if (PlaceTowerPieceEvent.TryParse(content, out posX, out posZ, out rotDegreesY))
                     {
-                        handlePlaceTowerPieceEvent(posX, posZ, rotDegreesY);
+                        handlePlaceTowerPieceEvent(senderID, posX, posZ, rotDegreesY);
                     }
                     else
                     {
@@ -117,6 +117,12 @@ namespace TowerVR
             if (allPlayersReady())
             {
                 gameState = GameState.Running;
+                initPlayerTurnQueue();
+                proceedPlayerTurn();
+                
+                // todo remove this once testing is finished
+                InvokeRepeating("proceedPlayerTurn", 5, 5);
+                
                 syncGameState();
             }
         }
@@ -151,6 +157,43 @@ namespace TowerVR
             }
         }
         
+        private void initPlayerTurnQueue()
+        {
+            playerQueue = new Queue<PhotonPlayer>();
+            
+            foreach (var photonPlayer in players)
+            {
+                playerQueue.Enqueue(photonPlayer);
+            }
+        }
+        
+        private void proceedPlayerTurn()
+        {
+            PhotonPlayer lastPhotonPlayer = currentPlayer;
+            currentPlayer = null;
+            
+            if (lastPhotonPlayer != null)
+            {
+                playerQueue.Enqueue(lastPhotonPlayer);
+            }
+            
+            var nextPlayer = playerQueue.Dequeue();
+            
+            var ev = new NextPlayerEvent(nextPlayer.ID);
+            if (!ev.trySend())
+            {
+                Error(ev.trySendError);
+                gameState = GameState.Stopped;
+                syncGameState();
+                return;
+            }
+            
+            currentPlayer = nextPlayer;
+            
+            turnState = TurnState.SelectingTowerPiece;
+            syncTurnState();
+        }
+        
         /**
 		 * Checks if all players are ready to start the game.
 		 * 
@@ -168,16 +211,6 @@ namespace TowerVR
 			
 			return true;
 		}
-        
-        private static void Log(object obj)
-        {
-            Debug.Log(obj.ToString());
-        }
-        
-        private static void Error(object obj)
-        {
-            Debug.LogError(obj.ToString());
-        }
         
         #endregion PRIVATE_MEMBER_FUNCTIONS
         
@@ -211,6 +244,33 @@ namespace TowerVR
 		 * */
         private Queue<PhotonPlayer> playerQueue;
         
+        private PhotonPlayer currentPlayer;
+        
         #endregion PRIVATE_MEMBER_VARIABLES
+        
+        private bool TryGetPhotonPlayer(int playerID, out PhotonPlayer photonPlayer)
+        {
+            foreach (var _photonPlayer in players)
+            {
+                if (_photonPlayer.ID == playerID)
+                {
+                    photonPlayer = _photonPlayer;
+                    return true;
+                }
+            }
+            
+            photonPlayer = null;
+            return false;
+        }
+        
+        private static void Log(object obj)
+        {
+            Debug.Log(obj.ToString());
+        }
+        
+        private static void Error(object obj)
+        {
+            Debug.LogError(obj.ToString());
+        }
     }
 }
