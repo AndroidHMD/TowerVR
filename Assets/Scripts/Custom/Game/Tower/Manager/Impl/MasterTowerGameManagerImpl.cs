@@ -45,7 +45,7 @@ namespace TowerVR
 			foreach (var photonPlayer in PhotonNetwork.playerList)
 			{
 				players.Add(photonPlayer);
-				playersReadyMap[photonPlayer] = false;
+				playersReadyMap.Add(photonPlayer, false);
 			}
         }
         
@@ -94,13 +94,10 @@ namespace TowerVR
         {
             Log("handlePlayerReadyEvent");
             
-            foreach (var player in playersReadyMap)
+            PhotonPlayer photonPlayer;
+            if (tryGetPhotonPlayer(playerID, out photonPlayer))
             {
-                if (player.Key.ID == playerID)
-                {
-                    // Mark that player as ready
-                    playersReadyMap[player.Key] = true;
-                }
+                playersReadyMap[photonPlayer] = true;
             }
             
             if (allPlayersReady())
@@ -217,17 +214,9 @@ namespace TowerVR
         
         #region PRIVATE_MEMBER_VARIABLES
         
-        private int gameState 
-        { 
-            get { return gameState; }
-            set { if (GameState.IsValid(value)) gameState = value; }
-        }
+		private int gameState;
         
-        private int turnState 
-        { 
-            get { return turnState; }
-            set { if (TurnState.IsValid(value)) turnState = value; } 
-        }
+		private int turnState;
         
         private HashSet<PhotonPlayer> players;
         
@@ -248,7 +237,7 @@ namespace TowerVR
         
         #endregion PRIVATE_MEMBER_VARIABLES
         
-        private bool TryGetPhotonPlayer(int playerID, out PhotonPlayer photonPlayer)
+        private bool tryGetPhotonPlayer(int playerID, out PhotonPlayer photonPlayer)
         {
             foreach (var _photonPlayer in players)
             {
