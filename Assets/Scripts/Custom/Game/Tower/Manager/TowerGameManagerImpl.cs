@@ -132,7 +132,7 @@ namespace TowerVR
 					} 
 					break;	
 				}
-				case NetworkEventCodes.SpawnTowerPiece:
+				case NetworkEventCodes.PlaceTowerPiece:
 				{
 					// todo
 					_handleSpawnTowerPieceEvent(); 

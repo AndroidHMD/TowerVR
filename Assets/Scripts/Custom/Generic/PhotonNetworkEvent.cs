@@ -40,6 +40,14 @@ public abstract class PhotonNetworkEvent
         eventOptions.TargetActors = playerIDs;
     }
     
+    /**
+     * Override this to provide extra content validation.
+     **/
+    protected virtual bool contentIsValid()
+    {
+        return true;
+    }
+    
     public bool trySend()
     {
         if (eventCode < 0 || eventCode > 199)
@@ -51,6 +59,11 @@ public abstract class PhotonNetworkEvent
         if (alreadySuccessfullySent)
         {
             trySendError = "Trying to send an already successfully sent PhotonNetworkEvent again..."; 
+            return false;
+        }
+        
+        if (!contentIsValid())
+        {
             return false;
         }
 

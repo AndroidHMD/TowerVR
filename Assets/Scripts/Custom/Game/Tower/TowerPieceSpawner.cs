@@ -48,7 +48,7 @@ namespace TowerVR
 			// Send to all users (including self)
 			options.Receivers = ExitGames.Client.Photon.ReceiverGroup.All;
 
-			PhotonNetwork.RaiseEvent (NetworkEventCodes.SpawnTowerPiece,
+			PhotonNetwork.RaiseEvent (NetworkEventCodes.PlaceTowerPiece,
 				towerPieceOptions, true, options);
 		}
 
@@ -58,7 +58,7 @@ namespace TowerVR
 
 			switch (eventCode)
 			{
-				case NetworkEventCodes.SpawnTowerPiece:
+				case NetworkEventCodes.PlaceTowerPiece:
 					HandleSpawnTowerPieceEvent (content);
 					break;
 			}

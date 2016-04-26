@@ -18,7 +18,7 @@ namespace TowerVR
 		public const byte PlayerLost 		= 7;
 		public const byte PlayerWon 		= 8;
 		
-		public const byte SpawnTowerPiece 	= 0;
+		public const byte PlaceTowerPiece 	= 0;
 		
 		public static bool IsValid(byte potentialEventCode)
 		{
