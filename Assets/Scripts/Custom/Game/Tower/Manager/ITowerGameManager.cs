@@ -18,10 +18,20 @@ namespace TowerVR
      * */
     public interface ITowerGameManager
     {
+        /**
+         * Call this to notify that this client is ready to start the game.
+         **/
         void notifyIsReady();
         
+        /**
+         * Tries to start the game. Will fail silently. If it succeeds the client will be alerted
+         * through its GameStateChangedHandler.
+         **/
         void tryStartGame();
         
+        /**
+         * Call this to place a tower piece. Will fail silently if it is not the client's turn.
+         **/
         void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY);
     }
 }

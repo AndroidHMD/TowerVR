@@ -6,20 +6,33 @@ using System.Collections.Generic;
 
 namespace TowerVR
 {
+    /**
+     * An ITowerGameManager that represents the master client's instance. This keeps track of the
+     * state as well.
+     **/ 
     public sealed class MasterTowerGameManagerImpl : TowerGameManagerImpl
     {      
         #region PUBLIC_MEMBER_FUNCTIONS
 		
+        /**
+         * Overrides the event-sending to directly alert this implementation.
+         **/
 		public sealed override void notifyIsReady()
 		{
 			handlePlayerReadyEvent(PhotonNetwork.player.ID);
 		}
         
+        /**
+         * Overrides the event-sending to directly alert this implementation.
+         **/
         public sealed override void tryStartGame()
 		{
 			handleTryStartGameEvent(PhotonNetwork.player.ID);
 		}
 		
+        /**
+         * Overrides the event-sending to directly alert this implementation.
+         **/
 		public sealed override void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
 		{
 			handlePlaceTowerPieceEvent(PhotonNetwork.player.ID, positionX, positionZ, rotationDegreesY);
@@ -136,6 +149,9 @@ namespace TowerVR
         
         #region PRIVATE_MEMBER_FUNCTIONS
         
+        /**
+         * Sync the game state with all clients.
+         **/
         private void syncGameState()
         {
             var ev = new GameStateChangedEvent(gameState);
@@ -145,6 +161,9 @@ namespace TowerVR
             }
         }
         
+        /**
+         * Sync the turn state with all clients.
+         **/
         private void syncTurnState()
         {
             var ev = new TurnStateChangedEvent(turnState);
@@ -154,6 +173,9 @@ namespace TowerVR
             }
         }
         
+        /**
+         * Initializes the player turn queue with the players that were online on scene startup.
+         **/
         private void initPlayerTurnQueue()
         {
             playerQueue = new Queue<PhotonPlayer>();
@@ -164,6 +186,9 @@ namespace TowerVR
             }
         }
         
+        /**
+         * Ends the current player's turn and continues to the next player.
+         **/
         private void proceedPlayerTurn()
         {
             PhotonPlayer lastPhotonPlayer = currentPlayer;
@@ -214,12 +239,16 @@ namespace TowerVR
         
         #region PRIVATE_MEMBER_VARIABLES
         
+        // The game state.
 		private int gameState;
         
+        // The turn state.
 		private int turnState;
         
+        // The players that we're in the room when the manager was instantiated.
         private HashSet<PhotonPlayer> players;
         
+        // Flags to see if each player is online and ready.
         private IDictionary<PhotonPlayer, bool> playersReadyMap;
         
         /**
@@ -233,10 +262,14 @@ namespace TowerVR
 		 * */
         private Queue<PhotonPlayer> playerQueue;
         
+        // Reference to the current player.
         private PhotonPlayer currentPlayer;
         
         #endregion PRIVATE_MEMBER_VARIABLES
         
+        /**
+         * Helper to retrieve a PhotonPlayer instance based on an ID.
+         **/
         private bool tryGetPhotonPlayer(int playerID, out PhotonPlayer photonPlayer)
         {
             foreach (var _photonPlayer in players)

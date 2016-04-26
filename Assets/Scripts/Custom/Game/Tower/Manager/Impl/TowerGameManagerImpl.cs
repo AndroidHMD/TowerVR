@@ -6,10 +6,18 @@ using System.Collections.Generic;
 
 namespace TowerVR
 {
+	/**
+	 * An ITowerGameManager that represents a remote instance.
+	 * 
+	 * Do not use this class directly in the game logic. 
+	 **/
 	public class TowerGameManagerImpl : Singleton<TowerGameManagerImpl>, ITowerGameManager
 	{
 		#region PUBLIC_MEMBER_FUNCTIONS
 		
+		/**
+		 * Sends an event to the master client implementation.
+		 **/
 		public virtual void notifyIsReady()
 		{
 			var ev = new PlayerReadyEvent();
@@ -19,6 +27,9 @@ namespace TowerVR
 			}
 		}
         
+		/**
+		 * Sends an event to the master client implementation.
+		 **/
         public virtual void tryStartGame()
 		{
 			var ev = new TryStartGameEvent();
@@ -28,6 +39,9 @@ namespace TowerVR
 			}
 		}
 		
+		/**
+		 * Sends an event to the master client implementation.
+		 **/
 		public virtual void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
 		{
 			var ev = new PlaceTowerPieceEvent(positionX, positionZ, rotationDegreesY);
@@ -54,6 +68,9 @@ namespace TowerVR
 			parent = null;
 		}
 		
+		/**
+		 * Receives events from the master client and alerts the observer delegates (i.e. TowerGameBehaviours).
+		 **/
 		protected virtual void onEvent(byte eventCode, object content, int senderID)
 		{
 			switch (eventCode)
@@ -153,10 +170,6 @@ namespace TowerVR
 		
 		
 		#region ABSTRACT_MEMBER_FUNCTIONS
-		
-		//////////////////////////////////
-		/// PhotonNetworkEvent handles ///
-		//////////////////////////////////
 		
 		protected virtual void handleGameStateChangedEvent(int gameState) 
 		{

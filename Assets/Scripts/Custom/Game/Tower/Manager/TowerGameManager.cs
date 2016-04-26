@@ -6,20 +6,28 @@ using System.Collections.Generic;
 
 namespace TowerVR
 {
-	public class TowerGameManager : Singleton<TowerGameManager>, ITowerGameManager
+	/**
+	 * Implementation of the ITowerGameManager interface.
+	 * 
+	 * Attach this component to EXACTLY ONE gameobject in the tower game scene.
+	 **/
+	public sealed class TowerGameManager : Singleton<TowerGameManager>, ITowerGameManager
 	{		
 		#region PUBLIC_MEMBER_FUNCTIONS
 		
+		/// See ITowerGameManager
 		public void notifyIsReady()
 		{
 			impl.notifyIsReady();
 		}
         
+		/// See ITowerGameManager
         public void tryStartGame()
 		{
 			impl.tryStartGame();
 		}
 		
+		/// See ITowerGameManager
 		public void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
 		{
 			impl.placeTowerPiece(positionX, positionZ, rotationDegreesY);
@@ -30,6 +38,14 @@ namespace TowerVR
 		
 		
 		#region DELEGATES
+		
+		////////////////////////////////////////////////////////////////////////////////
+		/// Subscribe to these delegates to receive game logic updates:
+		/// 1. Create a method with the corresponding '*Handler*' signature.
+		/// 2. Call '*Handlers'.Add([your method here])
+		/// 3. Win
+		/// End. Call '*Handlers'.Remove([your method here]) in the script's OnDestroy
+		////////////////////////////////////////////////////////////////////////////////
 		
 		public delegate void GameStateChangedHandler(int gameState);
 		public HashSet<GameStateChangedHandler> gameStateChangedHandlers = new HashSet<GameStateChangedHandler>();
@@ -56,6 +72,7 @@ namespace TowerVR
 		
 		void Awake()
 		{	
+			// Instantiate an implementation of the correct type
 			if (PhotonNetwork.isMasterClient)
 			{
 				Debug.Log("Player is master client, instantiating MasterTowerGameManagerImpl");
@@ -71,6 +88,9 @@ namespace TowerVR
 			impl.parent = this;
 		}
 		
+		/**
+		 * The underlying implementation
+		 **/
 		private TowerGameManagerImpl impl;	
 		
 		#endregion PRIVATE_MEMBERS
