@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace TowerVR
 {
-	public abstract class TowerGameManagerImpl : Singleton<TowerGameManagerImpl>, ITowerGameManager
+	public class TowerGameManagerImpl : Singleton<TowerGameManagerImpl>, ITowerGameManager
 	{
 		#region PUBLIC_MEMBER_FUNCTIONS
 		
-		public void notifyIsReady()
+		public virtual void notifyIsReady()
 		{
 			var ev = new PlayerReadyEvent();
 			if (!ev.trySend())
@@ -19,7 +19,7 @@ namespace TowerVR
 			}
 		}
         
-        public void tryStartGame()
+        public virtual void tryStartGame()
 		{
 			var ev = new TryStartGameEvent();
 			if (!ev.trySend())
@@ -28,37 +28,42 @@ namespace TowerVR
 			}
 		}
 		
-		void Awake()
+		public virtual void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
 		{
-			PhotonNetwork.OnEventCall += _onEventHandler;
+			var ev = new PlaceTowerPieceEvent(positionX, positionZ, rotationDegreesY);
+			if (!ev.trySend())
+			{
+				Debug.LogError(ev.trySendError);
+			}
 		}
 		
-		void OnDestroy()
+		#endregion PUBLIC_MEMBER_FUNCTIONS
+		
+		
+		
+		#region PROTECTED_MEMBER_FUNCTIONS
+		
+		protected virtual void Awake()
 		{
-			PhotonNetwork.OnEventCall -= _onEventHandler;
+			PhotonNetwork.OnEventCall += onEvent;
+		}
+		
+		protected virtual void OnDestroy()
+		{
+			PhotonNetwork.OnEventCall -= onEvent;
 			parent = null;
 		}
 		
-		public void _onEventHandler(byte eventCode, object content, int senderID)
+		protected virtual void onEvent(byte eventCode, object content, int senderID)
 		{
 			switch (eventCode)
 			{
-				case NetworkEventCodes.PlayerReady:
-				{
-					_handlePlayerReadyEvent(senderID); 
-					break;	
-				}
-				case NetworkEventCodes.TryStartGame:
-				{
-					_handleTryStartGameEvent(senderID); 
-					break;	
-				}
 				case NetworkEventCodes.GameStateChanged:
 				{
 					int gameState;
 					if (GameStateChangedEvent.TryParse(content, out gameState))
 					{
-						_handleGameStateChangedEvent(gameState);
+						handleGameStateChangedEvent(gameState);
 					}
 					else
 					{
@@ -66,12 +71,13 @@ namespace TowerVR
 					}
 					break;	
 				}
+				
 				case NetworkEventCodes.TurnStateChanged:
 				{
 					int turnState;
 					if (TurnStateChangedEvent.TryParse(content, out turnState))
 					{
-						_handleTurnStateChangedEvent(turnState);
+						handleTurnStateChangedEvent(turnState);
 					}
 					else
 					{
@@ -79,12 +85,13 @@ namespace TowerVR
 					} 
 					break;	
 				}
+				
 				case NetworkEventCodes.NextPlayer:
 				{
 					int nextPlayerID;
 					if (NextPlayerEvent.TryParse(content, out nextPlayerID))
 					{
-						_handleNextPlayerEvent(nextPlayerID);
+						handleNextPlayerEvent(nextPlayerID);
 					}
 					else
 					{
@@ -92,13 +99,14 @@ namespace TowerVR
 					} 
 					break;	
 				}
+				
 				case NetworkEventCodes.ScoreChanged:
 				{
 					int playerID;
 					Score score;
 					if (ScoreChangedEvent.TryParse(content, out playerID, out score))
 					{
-						_handleScoreChangedEvent(playerID, score);
+						handleScoreChangedEvent(playerID, score);
 					} 
 					else
 					{
@@ -106,12 +114,13 @@ namespace TowerVR
 					}
 					break;	
 				}
+				
 				case NetworkEventCodes.PlayerLost:
 				{
 					int losingPlayerID;
 					if (PlayerLostEvent.TryParse(content, out losingPlayerID))
 					{
-						_handlePlayerLostEvent(losingPlayerID);
+						handlePlayerLostEvent(losingPlayerID);
 					} 
 					else
 					{
@@ -119,12 +128,13 @@ namespace TowerVR
 					}
 					break;	
 				}
+				
 				case NetworkEventCodes.PlayerWon:
 				{
 					int winningPlayerID;
 					if (PlayerWonEvent.TryParse(content, out winningPlayerID))
 					{
-						_handlePlayerWonEvent(winningPlayerID);
+						handlePlayerWonEvent(winningPlayerID);
 					} 
 					else
 					{
@@ -132,67 +142,69 @@ namespace TowerVR
 					} 
 					break;	
 				}
-				case NetworkEventCodes.PlaceTowerPiece:
-				{
-					// todo
-					_handleSpawnTowerPieceEvent(); 
-					break;	
-				}
+				
 				default:
 					return;
 			}
 		}
 		
-		#endregion PUBLIC_MEMBER_FUNCTIONS
+		#endregion PROTECTED_MEMBER_FUNCTIONS
 		
-
+		
+		
 		#region ABSTRACT_MEMBER_FUNCTIONS
 		
 		//////////////////////////////////
 		/// PhotonNetworkEvent handles ///
 		//////////////////////////////////
 		
-		protected virtual void _handlePlayerReadyEvent(int playerID) {}
-		
-		protected virtual void _handleTryStartGameEvent(int playerID) {}
-		
-		protected virtual void _handleGameStateChangedEvent(int gameState) 
+		protected virtual void handleGameStateChangedEvent(int gameState) 
 		{
+			Log("handleGameStateChangedEvent");
+			
 			foreach (var handler in parent.gameStateChangedHandlers)
 			{ handler(gameState); }
 		}
 		
-		protected virtual void _handleTurnStateChangedEvent(int turnState) 
+		protected virtual void handleTurnStateChangedEvent(int turnState) 
 		{
+			Log("handleTurnStateChangedEvent");
+			
 			foreach (var handler in parent.turnStateChangedHandlers)
 			{ handler(turnState); }
 		}
 		
-		protected virtual void _handleNextPlayerEvent(int nextPlayerID) 
+		protected virtual void handleNextPlayerEvent(int nextPlayerID) 
 		{
+			Log("handleNextPlayerEvent");
+			
 			foreach (var handler in parent.nextPlayerTurnHandlers)
 			{ handler(nextPlayerID); }
 		}
 		
-		protected virtual void _handleScoreChangedEvent(int playerID, Score score) 
+		protected virtual void handleScoreChangedEvent(int playerID, Score score) 
 		{
+			Log("handleScoreChangedEvent");
+			
 			foreach (var handler in parent.scoreUpdatedHandlers)
 			{ handler(playerID, score); }
 		}
 		
-		protected virtual void _handlePlayerLostEvent(int playerID) 
+		protected virtual void handlePlayerLostEvent(int playerID) 
 		{
+			Log("handlePlayerLostEvent");
+			
 			foreach (var handler in parent.playerLostHandlers)
 			{ handler(playerID); }
 		}
 		
-		protected virtual void _handlePlayerWonEvent(int playerID) 
+		protected virtual void handlePlayerWonEvent(int playerID) 
 		{
+			Log("handlePlayerWonEvent");
+			
 			foreach (var handler in parent.playerWonHandlers)
 			{ handler(playerID); }
 		}
-		
-		protected virtual void _handleSpawnTowerPieceEvent() {}
 		
 		#endregion ABSTRACT_MEMBER_FUNCTIONS
 
@@ -201,12 +213,17 @@ namespace TowerVR
 		
 		public TowerGameManager parent;
 		
-		private void LogMalformedEventContent(string eventName, int senderID)
+		protected static void LogMalformedEventContent(string eventName, int senderID)
 		{
 			Debug.LogError("Received " + eventName + " with malformed event content from playerID=" + senderID + ".");
 		}
 		
 		#endregion PRIVATE_MEMBER_VARIABLES
+		
+		private static void Log(object obj)
+        {
+            Debug.Log(obj.ToString());
+        }
 
 	}
 }

@@ -20,7 +20,13 @@ namespace TowerVR
 			impl.tryStartGame();
 		}
 		
+		public void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
+		{
+			impl.placeTowerPiece(positionX, positionZ, rotationDegreesY);
+		}
+		
 		#endregion PUBLIC_MEMBER_FUNCTIONS
+		
 		
 		
 		#region DELEGATES
@@ -52,14 +58,14 @@ namespace TowerVR
 		{	
 			if (PhotonNetwork.isMasterClient)
 			{
-				Debug.Log("Player is master client, instantiating LocalTowerGameManagerImpl");
-				impl = gameObject.AddComponent<LocalTowerGameManagerImpl>();
+				Debug.Log("Player is master client, instantiating MasterTowerGameManagerImpl");
+				impl = gameObject.AddComponent<MasterTowerGameManagerImpl>();
 			}
 			
 			else
 			{
-				Debug.Log("Player is NOT master client, instantiating RemoteTowerGameManagerImpl");
-				impl = gameObject.AddComponent<RemoteTowerGameManagerImpl>();
+				Debug.Log("Player is NOT master client, instantiating TowerGameManagerImpl");
+				impl = gameObject.AddComponent<TowerGameManagerImpl>();
 			}
 			
 			impl.parent = this;

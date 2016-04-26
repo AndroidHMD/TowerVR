@@ -21,5 +21,7 @@ namespace TowerVR
         void notifyIsReady();
         
         void tryStartGame();
+        
+        void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY);
     }
 }

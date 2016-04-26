@@ -6,12 +6,36 @@ using System.Collections.Generic;
 
 namespace TowerVR
 {
-    public sealed class LocalTowerGameManagerImpl : TowerGameManagerImpl
-    {       
+    public sealed class MasterTowerGameManagerImpl : TowerGameManagerImpl
+    {      
+        #region PUBLIC_MEMBER_FUNCTIONS
+		
+		public sealed override void notifyIsReady()
+		{
+			handlePlayerReadyEvent(PhotonNetwork.player.ID);
+		}
+        
+        public sealed override void tryStartGame()
+		{
+			handleTryStartGameEvent(PhotonNetwork.player.ID);
+		}
+		
+		public sealed override void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
+		{
+			handlePlaceTowerPieceEvent(PhotonNetwork.player.ID, positionX, positionZ, rotationDegreesY);
+		}
+		
+		#endregion PUBLIC_MEMBER_FUNCTIONS
+        
+        
+        
+         
         #region PROTECTED_MEMBER_FUNCTIONS
         
-        void Awake()
+        protected sealed override void Awake()
         {	
+            base.Awake();
+            
 			gameState = GameState.AwaitingPlayers;
 			turnState = TurnState.NotStarted;
 			
@@ -25,13 +49,50 @@ namespace TowerVR
 			}
         }
         
+        protected sealed override void onEvent(byte eventCode, object content, int senderID)
+		{
+            base.onEvent(eventCode, content, senderID);
+            
+			switch (eventCode)
+			{
+				case NetworkEventCodes.PlayerReady:
+				{
+					handlePlayerReadyEvent(senderID); 
+					break;	
+				}
+				
+				case NetworkEventCodes.TryStartGame:
+				{
+					handleTryStartGameEvent(senderID); 
+					break;	
+				}
+				
+				case NetworkEventCodes.PlaceTowerPiece:
+				{
+					float posX, posZ, rotDegreesY;
+                    if (PlaceTowerPieceEvent.TryParse(content, out posX, out posZ, out rotDegreesY))
+                    {
+                        handlePlaceTowerPieceEvent(posX, posZ, rotDegreesY);
+                    }
+                    else
+                    {
+                        LogMalformedEventContent("PlaceTowerPieceEvent", senderID);
+                    }
+					break;	
+				}
+				
+				default:
+					return;
+			}
+		}
+        
         //////////////////////////////////
 		/// PhotonNetworkEvent handles ///
 		//////////////////////////////////
         
-        protected sealed override void _handlePlayerReadyEvent(int playerID)
+        protected void handlePlayerReadyEvent(int playerID)
         {
-            Log("_handlePlayerReadyEvent");
+            Log("handlePlayerReadyEvent");
             
             foreach (var player in playersReadyMap)
             {
@@ -49,9 +110,9 @@ namespace TowerVR
             }
         }
         
-		protected sealed override void _handleTryStartGameEvent(int playerID)
+		protected void handleTryStartGameEvent(int playerID)
         {
-            Log("_handleTryStartGameEvent");
+            Log("handleTryStartGameEvent");
             
             if (allPlayersReady())
             {
@@ -60,11 +121,9 @@ namespace TowerVR
             }
         }
         
-		protected sealed override void _handleSpawnTowerPieceEvent()
+		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
         {
-            Log("_handleSpawnTowerPieceEvent");
-            
-            Log("Not implemented...");
+            Log("handlePlaceTowerPieceEvent [playerID=" + playerID + " posX=" + posX + " posZ=" + posZ + "rotDegreesY=" + rotDegreesY + "]");
         }
         
         
@@ -109,11 +168,6 @@ namespace TowerVR
 			
 			return true;
 		}
-        
-        private void notifyAllPlayersReady()
-        {
-            
-        }
         
         private static void Log(object obj)
         {
