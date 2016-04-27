@@ -1,23 +1,41 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerCameraMovement : MonoBehaviour {
-	public Transform cameraTransform;
-	public PhotonView photonView;
+/// <summary>
+/// Updates position for a player object by setting its position to each player's client camera position
+/// </summary>
 
-	public MeshRenderer meshRenderer;
+public class PlayerCameraMovement : Photon.MonoBehaviour {
+	
+	public bool debugPosition = false;
+	private MeshRenderer meshRenderer;
+	private GameObject thisCamera;
+	private PhotonView thisPhotonView;
 
 	void Start () {
-		cameraTransform = GameObject.FindGameObjectWithTag("CameraAR").transform;
+		thisCamera = GameObject.FindGameObjectWithTag("MainCamera");	//cardboard main camera
+		thisPhotonView = this.GetComponent<PhotonView>();
+		meshRenderer = this.GetComponent<MeshRenderer>();
 	}
 
+	/// Update position
 	void Update () {
-		if (photonView.isMine) {
+		
+		// Make player object invisible and update its position for all players in the network room
+		if (thisPhotonView.isMine) {
 			meshRenderer.enabled = false;
 
-			transform.position = cameraTransform.position;
-			transform.rotation = cameraTransform.rotation;
-		} else {
+			transform.position = thisCamera.transform.position;
+			transform.rotation = thisCamera.transform.rotation;
+			
+			if (debugPosition)
+			{
+				Debug.Log("Pos. of my player obj. set to: " + thisCamera.transform.position);
+			}
+		} 
+		
+		// Ensure player objects of other players in the network room are visible
+		else {
 			meshRenderer.enabled = true;
 		}
 	}
