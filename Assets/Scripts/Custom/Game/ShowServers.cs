@@ -5,10 +5,7 @@ using System.Collections;
 public class ShowServers : MonoBehaviour   {
 
 	public GameObject cubePrefab;
-
-	private static int positionX = 0;
-	private static int positionY = 0;
-
+	private static int positionY = 20;
 	GameObject lobbyCube;
 
 	void Start () {
@@ -23,15 +20,10 @@ public class ShowServers : MonoBehaviour   {
 
 		foreach (RoomInfo room in PhotonNetwork.GetRoomList()) {
 
-			lobbyCube = Instantiate (cubePrefab, new Vector3 (positionX, positionY + 20, 20), transform.rotation) as GameObject;
+			lobbyCube = Instantiate (cubePrefab, new Vector3 (0, positionY, 20), transform.rotation) as GameObject;
 			lobbyCube.GetComponentInChildren<TextMesh> ().text = room.name;
 
-			positionX += 10;
-
-			if (positionX >= 50) {
-				positionX = 0;
-				positionY += 10;
-			} 
+			positionY += 10;
 		}
 	}
 
