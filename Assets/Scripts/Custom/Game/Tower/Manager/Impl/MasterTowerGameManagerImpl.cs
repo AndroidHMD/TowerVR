@@ -51,6 +51,7 @@ namespace TowerVR
             
 			gameState = GameState.AwaitingPlayers;
 			turnState = TurnState.NotStarted;
+			towerState = TowerState.Stationary;
 			
 			players = new HashSet<PhotonPlayer>();
 			playersReadyMap = new Dictionary<PhotonPlayer, bool>();
@@ -172,6 +173,18 @@ namespace TowerVR
                 Error(ev.trySendError);
             }
         }
+
+		/**
+         * Sync the tower state with all clients.
+         **/
+		private void syncTowerState()
+		{
+			var ev = new TowerStateChangedEvent(towerState);
+			if (!ev.trySend())
+			{
+				Error(ev.trySendError);
+			}
+		}
         
         /**
          * Initializes the player turn queue with the players that were online on scene startup.
@@ -244,6 +257,9 @@ namespace TowerVR
         
         // The turn state.
 		private int turnState;
+
+		// The tower state
+		private int towerState;
         
         // The players that we're in the room when the manager was instantiated.
         private HashSet<PhotonPlayer> players;

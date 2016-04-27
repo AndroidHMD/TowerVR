@@ -102,6 +102,20 @@ namespace TowerVR
 					} 
 					break;	
 				}
+
+				case NetworkEventCodes.TowerStateChanged:
+				{
+					int towerState;
+					if (TowerStateChangedEvent.TryParse(content, out towerState))
+					{
+						handleTowerStateChangedEvent(towerState);
+					}
+					else
+					{
+						LogMalformedEventContent("TowerStateChangedEvent", senderID);
+					} 
+					break;	
+				}
 				
 				case NetworkEventCodes.NextPlayer:
 				{
@@ -185,6 +199,14 @@ namespace TowerVR
 			
 			foreach (var handler in parent.turnStateChangedHandlers)
 			{ handler(turnState); }
+		}
+
+		protected virtual void handleTowerStateChangedEvent(int towerState) 
+		{
+			Log("handleTowerStateChangedEvent");
+
+			foreach (var handler in parent.towerStateChangedHandlers)
+			{ handler(towerState); }
 		}
 		
 		protected virtual void handleNextPlayerEvent(int nextPlayerID) 

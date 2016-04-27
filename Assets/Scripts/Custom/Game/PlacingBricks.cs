@@ -11,7 +11,7 @@ using System.Collections;
  * 
  * */
 
-public class PlacingBricks : MonoBehaviour {
+public class PlacingBricks : TowerVR.TowerGameBehaviour  {
 
 
 	// Update is called once per frame

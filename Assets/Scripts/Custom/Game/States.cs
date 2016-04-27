@@ -31,4 +31,18 @@ namespace TowerVR
 				   potentialTurnState <= TowerReacting;
 		}
 	}
+
+	public class TowerState
+	{
+		public const int Stationary 				= 0;
+		public const int Moving				 		= 1;
+		public const int IncreasingHeight			= 2;
+		public const int Falling	 				= 3;
+
+		public static bool IsValid(int potentialTurnState)
+		{
+			return potentialTurnState >= Stationary && 
+				potentialTurnState <= Falling;
+		}
+	}
 }

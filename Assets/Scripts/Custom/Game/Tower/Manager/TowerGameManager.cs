@@ -52,6 +52,9 @@ namespace TowerVR
 		
 		public delegate void TurnStateChangedHandler(int turnState);
 		public HashSet<TurnStateChangedHandler> turnStateChangedHandlers = new HashSet<TurnStateChangedHandler>();
+
+		public delegate void TowerStateChangedHandler(int towerState);
+		public HashSet<TowerStateChangedHandler> towerStateChangedHandlers = new HashSet<TowerStateChangedHandler>();
 		
 		public delegate void PlayerLostHandler(int losingPlayerID);
 		public HashSet<PlayerLostHandler> playerLostHandlers = new HashSet<PlayerLostHandler>();
