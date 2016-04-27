@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class CreateNewGame : MonoBehaviour {
 
@@ -30,7 +31,7 @@ public class CreateNewGame : MonoBehaviour {
 		options.maxPlayers = (byte)SetMaxPlayers.maxPlayers;
 		string serverName = RandomizeServerName.serverName;
 		PhotonNetwork.CreateRoom(serverName, options, TypedLobby.Default);
-		ChangeScene.ChangeToScene(2);
+		SceneManager.LoadScene(2);
 
 	}
 }

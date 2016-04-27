@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class JoinServer : MonoBehaviour {
 
@@ -8,6 +9,6 @@ public class JoinServer : MonoBehaviour {
 
 	public void joinServer(){
 		PhotonNetwork.JoinRoom (text.text);
-		ChangeScene.ChangeToScene (LevelIndex);
+		SceneManager.LoadScene (LevelIndex);
 	}
 }
