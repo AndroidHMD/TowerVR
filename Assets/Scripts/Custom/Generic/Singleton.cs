@@ -20,28 +20,16 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 		{
 			if(instance == null)
 			{
-				Debug.LogError("An instance of " + typeof(T) + 
-					" is needed in the scene, but there is none.");
+				instance = (T) FindObjectOfType(typeof(T));
+	
+				if (instance == null)
+				{
+					Debug.LogError("An instance of " + typeof(T) + 
+						" is needed in the scene, but there is none.");
+				}
 			}
-
-			return instance;
+ 
+         	return instance;
 		}
-	}
-
-	/**
-	 * Assign the singleton instance reference on script loading
-	 */
-	void Awake()
-	{
-		foreach(var manager in GameObject.FindGameObjectsWithTag("Manager"))
-		{
-			var singletonInstance = manager.GetComponent<T>();
-			if (singletonInstance != null)
-			{
-				instance = singletonInstance;
-				return;
-			}
-		}
-
 	}
 }
