@@ -116,7 +116,6 @@ namespace TowerVR
             if (allPlayersReady())
             {
                 gameState = GameState.AllPlayersReady;
-                syncGameState();
             }
         }
         
@@ -132,8 +131,6 @@ namespace TowerVR
                 
                 // todo remove this once testing is finished
                 InvokeRepeating("proceedPlayerTurn", 5, 5);
-                
-                syncGameState();
             }
         }
         
@@ -149,28 +146,30 @@ namespace TowerVR
         
         #region PRIVATE_MEMBER_FUNCTIONS
         
-        /**
-         * Sync the game state with all clients.
-         **/
-        private void syncGameState()
+        IEnumerator updateGameState()
         {
-            var ev = new GameStateChangedEvent(gameState);
-            if (!ev.trySend())
+            for (;;)
             {
-                Error(ev.trySendError);
+                Log("updateGameState");
+                
+                yield return new WaitForSeconds(ONE_TENTH_SECOND);
             }
         }
         
-        /**
-         * Sync the turn state with all clients.
-         **/
-        private void syncTurnState()
+        IEnumerator updateTurnState()
         {
-            var ev = new TurnStateChangedEvent(turnState);
-            if (!ev.trySend())
+            while (gameState == GameState.Running)
             {
-                Error(ev.trySendError);
+                Log("updateTurnState");
+                
+                yield return new WaitForSeconds(ONE_TENTH_SECOND);
             }
+        }
+        
+        void Update()
+        {
+            updateGameState();
+            updateTurnState();
         }
         
         /**
@@ -206,14 +205,12 @@ namespace TowerVR
             {
                 Error(ev.trySendError);
                 gameState = GameState.Stopped;
-                syncGameState();
                 return;
             }
             
             currentPlayer = nextPlayer;
             
             turnState = TurnState.SelectingTowerPiece;
-            syncTurnState();
         }
         
         /**
@@ -240,10 +237,42 @@ namespace TowerVR
         #region PRIVATE_MEMBER_VARIABLES
         
         // The game state.
-		private int gameState;
+		private int gameState
+        {
+            set
+            {
+                if (GameState.IsValid(value))
+                {
+                    // Set state and notify all clients of the new state
+                    gameState = value;
+                    var ev = new GameStateChangedEvent(gameState);
+                    if (!ev.trySend())
+                    {
+                        Error(ev.trySendError);
+                    }
+                }
+            }
+            get { return gameState; }
+        }
         
         // The turn state.
-		private int turnState;
+		private int turnState
+        {
+            set
+            {
+                if (TurnState.IsValid(value))
+                {
+                    // Set state and notify all clients of the new state
+                    turnState = value;   
+                    var ev = new TurnStateChangedEvent(turnState);
+                    if (!ev.trySend())
+                    {
+                        Error(ev.trySendError);
+                    }
+                }
+            }
+            get { return turnState; }
+        }
         
         // The players that we're in the room when the manager was instantiated.
         private HashSet<PhotonPlayer> players;
@@ -294,5 +323,8 @@ namespace TowerVR
         {
             Debug.LogError(obj.ToString());
         }
+        
+        private const float ONE_TENTH_SECOND = 0.1f;
+        private const float ONE_SECOND = 1.0f;
     }
 }
