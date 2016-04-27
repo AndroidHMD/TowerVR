@@ -1128,8 +1128,9 @@ GameObject:
   - 114: {fileID: 1017791935}
   - 114: {fileID: 1017791937}
   - 114: {fileID: 1017791938}
+  - 114: {fileID: 1017791939}
   m_Layer: 0
-  m_Name: GameLogic
+  m_Name: SceneLogic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1182,6 +1183,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b2d70dba45fd42fa87a6bac5ad929f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1017791939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1017791934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ebedb6e65b841d19901f45cf33df64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeOutTexture: {fileID: 2800000, guid: 97cd42aad35a0466e9d8834e32cd2fcc, type: 3}
+  fadeSpeed: 0.2
 --- !u!1 &1041719976
 GameObject:
   m_ObjectHideFlags: 0

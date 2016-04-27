@@ -1,5 +1,10 @@
 using UnityEngine;
 using System.Collections;
+
+/*
+ * A class for showing the actual fps. 
+ * Add to GameLogic-object in scene 
+ */
  
 public class FPSDisplay : MonoBehaviour
 {

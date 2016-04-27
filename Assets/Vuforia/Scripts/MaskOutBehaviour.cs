@@ -17,6 +17,7 @@ namespace Vuforia
 
         void Start ()
         {
+			//Add tag to all sides to the cube
 			gameObject.tag = "targetSide";
 
             if (VuforiaRuntimeUtilities.IsVuforiaEnabled())
