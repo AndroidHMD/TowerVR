@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿/* Reads the text of the pressed button and tries to 
+ * join a room with that name and then loads 
+ * the next scene.
+ */
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 

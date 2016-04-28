@@ -1,21 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
 public class ShowServers : MonoBehaviour   {
 
 	public GameObject cubePrefab;
 	private static int positionY = 20;
 	GameObject lobbyCube;
 
+	// Connects to PhotonNetwork
 	void Start () {
 		PhotonNetwork.ConnectUsingSettings ("1.0");
 	}
 
+	// Joins the lobby
 	public void OnConnectedToMaster() {
 		PhotonNetwork.JoinLobby ();
 	}
 		
+	// Spawns a cube for each room in Photon and displays them in a list with their name 
 	public void SpawnCube(){
 
 		foreach (RoomInfo room in PhotonNetwork.GetRoomList()) {
@@ -27,6 +29,7 @@ public class ShowServers : MonoBehaviour   {
 		}
 	}
 
+	// Displays number of rooms
 	void OnGUI()
 	{
 		GUILayout.Label(PhotonNetwork.connected ? "Connected" : "Disconnected");
