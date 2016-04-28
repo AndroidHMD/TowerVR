@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// Retrieves players from active room and spawns them in the scene
-/// </summary>
+/**
+* Retrieves players from active room and spawns them in the scene
+*/
 public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour 
 {
 	public string playerPrefabName;
@@ -17,7 +17,9 @@ public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour
 		//players = "";
 	}
 	
-	/// Called by Photon when player joins a room, whether created or not
+	/**
+	* Called by Photon when player joins a room, whether created or not
+	*/
 	void OnJoinedRoom() 
 	{
 		SpawnPlayer();
@@ -36,14 +38,18 @@ public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour
 		//  Debug.Log("DEBUG: Other player disconnected");
 	}
 	
-	/// Associates prefab in Resources/ to the player and loads into game for all in room
+	/**
+	* Associates prefab in Resources/ to the player and loads into game for all in room
+	*/
 	void SpawnPlayer()
 	{
 		thisPlayer = PhotonNetwork.Instantiate( playerPrefabName, Vector3.zero, Quaternion.identity, 0 );
 		// Debug.Log("DEBUG: New player instantiated, ");
 	}
 	
-	/// Updates list of current players in room for debug purpose
+	/**
+	* Updates list of current players in room for debug purpose
+	*/
 	void UpdatePlayerDebugList()
 	{
 		players = "";
@@ -53,7 +59,9 @@ public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour
 		}
 	}
 	
-	/// Prints player list to text in the upper right corner
+	/**
+	* Prints player list to text in the upper right corner
+	*/
 	void OnGUI()
 	{	
 		if (debugGuiOn) {

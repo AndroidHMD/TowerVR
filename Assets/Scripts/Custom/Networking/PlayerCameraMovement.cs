@@ -1,10 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// Updates position for a player object by setting its position to each player's client camera position
-/// </summary>
-
+/**
+* Updates position for a player object by setting its position to each player's client camera position
+*/
 public class PlayerCameraMovement : Photon.MonoBehaviour {
 	
 	public bool debugPosition = false;
@@ -18,7 +17,9 @@ public class PlayerCameraMovement : Photon.MonoBehaviour {
 		meshRenderer = this.GetComponent<MeshRenderer>();
 	}
 
-	/// Update position
+	/**
+	* Update position of player object by setting it to camera position
+	*/
 	void Update () {
 		
 		// Make player object invisible and update its position for all players in the network room
