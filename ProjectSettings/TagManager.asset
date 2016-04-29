@@ -6,6 +6,7 @@ TagManager:
   tags:
   - targetSide
   - New Tag
+  - CameraAR
   layers:
   - Default
   - TransparentFX
