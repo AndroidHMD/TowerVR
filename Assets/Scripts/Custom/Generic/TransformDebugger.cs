@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**
+ * 	Class for debugging gameobject's transform
+ * 
+ * */
+
 public class TransformDebugger : MonoBehaviour {
 	public bool useCustomDebugInterval = false;
 	public float updateIntervalSeconds = 1.0f;

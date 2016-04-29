@@ -13,6 +13,8 @@ namespace TowerVR
 		private int towerState;
 		private int currentPlayerID;
 
+		private MeshRenderer thisMesh;
+
 
 
 		void onGameStateChanged(int gameState)
@@ -37,6 +39,8 @@ namespace TowerVR
 			manager.gameStateChangedHandlers.Add(onGameStateChanged);
 			manager.towerStateChangedHandlers.Add (onTowerStateChanged);
 			manager.nextPlayerTurnHandlers.Add(onNextPlayerTurn);
+
+			thisMesh = this.GetComponent<MeshRenderer>();
 		}
 
 		// Update is called once per frame
@@ -46,19 +50,22 @@ namespace TowerVR
 			if (currentPlayerID == PhotonNetwork.player.ID)
 			{
 				//Rotation should follow the player
-				//transform.rotation = 
+				transform.rotation = GameObject.FindGameObjectWithTag("MainCamera").transform.rotation;
 			}
 
 			// Should we move up?
 			if (towerState == TowerState.IncreasingHeight) 
 			{
-				transform.position += Vector3.up * 50;
+				transform.position += (Vector3.up * 5);
 			}
 
 			// Is the tower falling?
-			if (towerState == TowerState.Falling) 
+			if (towerState == TowerState.Falling)
 			{
 				//Don't draw the grid
+				thisMesh.enabled = false;
+			} else {
+				thisMesh.enabled = true;
 			}
 
 		}

@@ -5,11 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu_HostJoin.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu_ChooseBackdrop.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu_GameRoom.unity
   - enabled: 1
     path: Assets/Scenes/TowerStacker.unity

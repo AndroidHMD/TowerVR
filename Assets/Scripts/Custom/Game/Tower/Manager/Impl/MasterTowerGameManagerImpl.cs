@@ -140,6 +140,11 @@ namespace TowerVR
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
         {
+			//Try placing TowerPiece
+
+			//Update towerState
+
+
             Log("handlePlaceTowerPieceEvent [playerID=" + playerID + " posX=" + posX + " posZ=" + posZ + "rotDegreesY=" + rotDegreesY + "]");
         }
         

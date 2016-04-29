@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - TowerPiece
+  - RayDebug
   - targetSide
-  - New Tag
   layers:
   - Default
   - TransparentFX

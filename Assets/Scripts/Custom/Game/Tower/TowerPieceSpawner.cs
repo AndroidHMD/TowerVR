@@ -100,7 +100,7 @@ namespace TowerVR
 			var towerPieceInfo = towerPieceInfos [towerPieceInfoIndex];
 			var material = materials [materialIndex];
 
-			var tp = TowerPiece.Create (towerPieceInfo, material);
+			var tp = TowerPiece.Create (towerPieceInfo);
 			towerPieces.Add (tp);
 		}
 
