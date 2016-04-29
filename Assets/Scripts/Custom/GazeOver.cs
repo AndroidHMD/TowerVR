@@ -36,7 +36,16 @@ public class GazeOver : MonoBehaviour {
 		//fade out and load new level
 		float fadeTime = GameObject.Find("SceneLogic").GetComponent<Fading>().BeginFade(1);
 		StartCoroutine(wait(fadeTime*2));
-
+		
+		// If level index is set to first scene, 
+		// leave room and go there disregarding other players
+		if (levelIndex == 0)
+		{
+			PhotonNetwork.LeaveRoom();
+			SceneManager.LoadScene(levelIndex);
+			return;
+		}
+		
 		if (loadSceneForAllPlayers)
 		{
 			PhotonNetwork.LoadLevel(levelNames[levelIndex]);
