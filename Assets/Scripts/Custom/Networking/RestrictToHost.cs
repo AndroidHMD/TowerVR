@@ -6,6 +6,8 @@ using System.Collections;
 * to game room host (e.g. master according to Photon Unity Networking)
 */
 public class RestrictToHost : Photon.MonoBehaviour{
+    
+    public bool debug = false;
     private MeshRenderer meshRenderer;
     private PhotonView thisPhotonView;
     
@@ -19,13 +21,17 @@ public class RestrictToHost : Photon.MonoBehaviour{
     {
         if (thisPhotonView.isMine)
         {
-            Debug.Log("defined, mine");
+            if (debug)
+                Debug.Log("defined, mine");
+            
             meshRenderer.enabled = true;
         } 
         
         else 
         {
-            Debug.Log("not mine");
+            if (debug)
+                Debug.Log("not mine");
+            
             meshRenderer.enabled = false;
         }
     }
