@@ -79,10 +79,19 @@ namespace TowerVR
 					//Check where cameraRay intersect with grid
 					if (findIntersection (out intersectionWithPlane)) 
 					{
-						//TODO: Only render outlines?
-						newPiece.GetComponent<MeshRenderer>().enabled = true; 
+						//See if we hit the tower
 						
-						newPiece.transform.position = intersectionWithPlane;					
+						RaycastHit hitInfo;
+						int layerMask = 1 <<8;
+						if(Physics.Raycast(intersectionWithPlane, Vector3.down, out hitInfo, Mathf.Infinity, layerMask, QueryTriggerInteraction.UseGlobal));
+						{
+							//TODO: Only render outlines?
+							newPiece.GetComponent<MeshRenderer>().enabled = true; 
+							newPiece.transform.position = hitInfo.point;
+						}
+											
+						
+						//newPiece.transform.position = intersectionWithPlane;					
 						newPiece.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
 						
 						
@@ -94,7 +103,7 @@ namespace TowerVR
 						if (Cardboard.SDK.Triggered) 
 						{
 							Debug.Log("Placed new piece");
-							//manager.placeTowerPiece (newPiece.transform.position.x, newPiece.transform.position.z, newPiece.transform.rotation.y);
+							manager.placeTowerPiece (newPiece.transform.position.x, newPiece.transform.position.z, newPiece.transform.rotation.y);
 						}
 					} 
 					else 

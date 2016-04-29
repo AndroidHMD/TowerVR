@@ -1809,7 +1809,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placingPlane: {fileID: 92443430}
-  newPiece: {fileID: 189834, guid: dc9af35fb8fc849ca97ed03d96ca7db9, type: 2}
 --- !u!114 &1062703636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1903,7 +1902,7 @@ GameObject:
   - 33: {fileID: 1080869181}
   - 23: {fileID: 1080869180}
   - 65: {fileID: 1080869179}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Building-base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3059,8 +3058,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1951963041}
   - 33: {fileID: 1951963044}
-  - 64: {fileID: 1951963043}
   - 23: {fileID: 1951963042}
+  - 64: {fileID: 1951963043}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged

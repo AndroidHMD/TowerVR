@@ -7,6 +7,9 @@ TagManager:
   - TowerPiece
   - RayDebug
   - targetSide
+  - placingGrid
+  - ARCamera
+  - TowerPieceObject
   layers:
   - Default
   - TransparentFX
@@ -16,7 +19,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - TowerBase
   - 
   - 
   - 
