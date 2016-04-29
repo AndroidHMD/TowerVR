@@ -21,8 +21,7 @@ public class GazeOver : MonoBehaviour {
 	{
 		if (loadSceneForAllPlayers)
 			PhotonNetwork.automaticallySyncScene = true;
-			// Debug.Log("setting ASS to true");
-			
+
 		// These are manually kept as the correct names of the scenes in the right order
 		// Reason being that there is no way to programatically get the name of a scene from its index
 		levelNames = new string[4]{"Menu_HostJoin", "Menu_ChooseBackdrop", "Menu_GameRoom", "TowerStacker"};
