@@ -46,8 +46,8 @@ public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour
 	/// Updates list of current players in room for debug purpose
 	void UpdatePlayerDebugList()
 	{
-		players = "";
-		foreach(PhotonPlayer player in PhotonNetwork.playerList)
+		players = PhotonNetwork.player.ToString() + "(you) ";
+		foreach(PhotonPlayer player in PhotonNetwork.otherPlayers)
 		{
 			players += player.ToString() + " ";
 		}
