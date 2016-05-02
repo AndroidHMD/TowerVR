@@ -1,45 +1,19 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/* Reads the text of the pressed button and tries to 
+ * join a room with that name and then loads 
+ * the next scene.
+ */
 
-public class JoinServer : MonoBehaviour, ICardboardGazeResponder  {
+using UnityEngine;
+using System.Collections;
+using UnityEngine.SceneManagement;
+
+public class JoinServer : MonoBehaviour {
 
 	public TextMesh text;
-
-	void Start () {
-		
-		GetComponent<Renderer>().material.color = Color.red;
-
-	}
+	public int LevelIndex;
 
 	public void joinServer(){
-
 		PhotonNetwork.JoinRoom (text.text);
-
-
+		SceneManager.LoadScene (LevelIndex);
 	}
-
-	#region ICardboardGazeResponder implementation
-
-	// Called when the Cardboard trigger is used, between OnGazeEnter
-	/// and OnGazeExit.
-	 	public void OnGazeEnter() {
-
-
-	}
-
-	/// Called when the user stops looking on the GameObject, after OnGazeEnter
-	/// was already called.
-	public void OnGazeExit() {
-
-
-
-
-	}
-	public void OnGazeTrigger() {
-
-		joinServer();
-	}
-
-	#endregion
-
 }
