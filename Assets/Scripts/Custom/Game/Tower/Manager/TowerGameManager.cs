@@ -28,6 +28,12 @@ namespace TowerVR
 		}
 		
 		/// See ITowerGameManager
+		public void selectTowerPiece(TowerPieceDifficulty difficulty)
+		{
+			impl.selectTowerPiece(difficulty);
+		}
+		
+		/// See ITowerGameManager
 		public void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
 		{
 			impl.placeTowerPiece(positionX, positionZ, rotationDegreesY);
