@@ -19,6 +19,5 @@ public class ConnectAndCreateTowerManager : MonoBehaviour
 		Debug.Log("OnJoinedRoom");
 		
 		gameObject.AddComponent<TowerVR.TowerGameManager>();
-		gameObject.AddComponent<TowerVR.PlayerTurnObserver>();
 	}
 }
