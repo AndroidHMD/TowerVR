@@ -42,6 +42,18 @@ namespace TowerVR
 		/**
 		 * Sends an event to the master client implementation.
 		 **/
+		public virtual void selectTowerPiece(TowerPieceDifficulty difficulty)
+		{
+			var ev = new SelectTowerPieceEvent(difficulty);
+			if (!ev.trySend())
+			{
+				Debug.LogError(ev.trySendError);
+			}
+		}
+		
+		/**
+		 * Sends an event to the master client implementation.
+		 **/
 		public virtual void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
 		{
 			var ev = new PlaceTowerPieceEvent(positionX, positionZ, rotationDegreesY);

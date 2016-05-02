@@ -32,6 +32,14 @@ namespace TowerVR
 		{
 			handleTryStartGameEvent(PhotonNetwork.player.ID);
 		}
+        
+        /**
+         * Overrides the event-sending to directly alert this implementation.
+         **/
+        public sealed override void selectTowerPiece(TowerPieceDifficulty difficulty)
+		{
+			handleSelectTowerPieceEvent(difficulty);
+		}
 		
         /**
          * Overrides the event-sending to directly alert this implementation.
@@ -81,6 +89,20 @@ namespace TowerVR
 				case NetworkEventCodes.TryStartGame:
 				{
 					handleTryStartGameEvent(senderID); 
+					break;	
+				}
+                
+                case NetworkEventCodes.SelectTowerPiece:
+				{
+                    TowerPieceDifficulty difficulty;
+                    if (SelectTowerPieceEvent.TryParse(content, out difficulty))
+                    {
+                        handleSelectTowerPieceEvent(difficulty);
+                    }
+					else
+                    {
+                        LogMalformedEventContent("SelectTowerPieceEvent", senderID);
+                    }
 					break;	
 				}
 				
@@ -139,6 +161,17 @@ namespace TowerVR
                 
                 syncGameState();
             }
+        }
+        
+        protected void handleSelectTowerPieceEvent(TowerPieceDifficulty difficulty)
+        {
+            // 3 arrays of brick types
+            
+            // display logic
+            
+            // select piece
+            
+            // return piece   
         }
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
