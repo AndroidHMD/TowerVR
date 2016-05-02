@@ -5,12 +5,19 @@ namespace TowerVR
 {
 	public class PlayerTurnObserver : TowerVR.TowerGameBehaviour 
 	{
+		private int turnState;
 		private int gameState;
 		private int currentPlayerID;
+		private bool hasReadied;
 		
 		void onGameStateChanged(int gameState)
 		{
 			this.gameState = gameState;
+		}
+		
+		void onTurnStateChanged(int turnState)
+		{
+			this.turnState = turnState;
 		}
 		
 		void onNextPlayerTurn(int nextPlayerID)
@@ -20,45 +27,56 @@ namespace TowerVR
 		
 		void Start () 
 		{
+			hasReadied = false;
+			
+			turnState = TurnState.NotStarted;
 			gameState = GameState.AwaitingPlayers;
 			
+			manager.turnStateChangedHandlers.Add(onTurnStateChanged);
 			manager.gameStateChangedHandlers.Add(onGameStateChanged);
 			manager.nextPlayerTurnHandlers.Add(onNextPlayerTurn);
-			manager.notifyIsReady();
-		}
-		
-		void Update()
-		{
-			if (Input.anyKeyDown || Input.touchCount > 0)
-			{
-				if (gameState == GameState.AwaitingPlayers)
-				{
-					manager.notifyIsReady();
-				}
-				
-				else
-				{
-					manager.tryStartGame();
-				}
-			}
 		}
 		
 		void OnDestroy()
 		{
+			manager.turnStateChangedHandlers.Remove(onTurnStateChanged);
 			manager.gameStateChangedHandlers.Remove(onGameStateChanged);
 			manager.nextPlayerTurnHandlers.Remove(onNextPlayerTurn);
 		}
 		
 		void OnGUI()
 		{
-			GUILayout.Label("GameState=" + gameState.ToString());
-			GUILayout.Label("Current player ID=" + currentPlayerID.ToString());
-			GUILayout.Label("Your player ID=" + PhotonNetwork.player.ID.ToString());
-			GUILayout.Label("Player count=" + PhotonNetwork.playerList.Length);
+			GUILayout.Label("Player count: " + PhotonNetwork.playerList.Length);
 			
-			if (currentPlayerID == PhotonNetwork.player.ID)
+			GUILayout.Label("GameState: " + GameState.ToString(gameState));
+			GUILayout.Label("TurnState: " + TurnState.ToString(turnState));
+			
+			if (gameState == GameState.AwaitingPlayers && !hasReadied)
 			{
-				GUILayout.Label("It is your turn!");
+				if (GUILayout.Button("Ready"))
+				{
+					hasReadied = true;
+					manager.notifyIsReady();
+				}
+			}
+			
+			if (gameState == GameState.AllPlayersReady)
+			{
+				if (GUILayout.Button("Start game"))
+				{
+					manager.tryStartGame();
+				}
+			}
+			
+			if (gameState == GameState.Running)
+			{
+				GUILayout.Label("Current player ID=" + currentPlayerID.ToString());
+				GUILayout.Label("Your player ID=" + PhotonNetwork.player.ID.ToString());
+				
+				if (currentPlayerID == PhotonNetwork.player.ID)
+				{
+					GUILayout.Label("It is your turn!");
+				}	
 			}
 		}
 	}

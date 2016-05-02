@@ -8,7 +8,7 @@ namespace TowerVR
     * 
     * Refer to the TowerGameManager's "DELEGATES"-documentation to see usage.
     * */
-    public class TowerGameBehaviour : MonoBehaviour
+    public abstract class TowerGameBehaviour : MonoBehaviour
     {
         /**
          * Exposed property that retrieves the scene's TowerGameManager singleton instance.

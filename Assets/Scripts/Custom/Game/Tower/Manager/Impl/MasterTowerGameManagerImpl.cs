@@ -48,6 +48,7 @@ namespace TowerVR
         protected sealed override void Awake()
         {	
             base.Awake();
+            turnTimer = gameObject.AddComponent<Timer>();
             
 			gameState = GameState.AwaitingPlayers;
 			turnState = TurnState.NotStarted;
@@ -107,6 +108,12 @@ namespace TowerVR
         {
             Log("handlePlayerReadyEvent");
             
+            if (gameState != GameState.AwaitingPlayers)
+            {
+                Error("Player called notifyIsReady when game already running.");
+                return;
+            }
+            
             PhotonPlayer photonPlayer;
             if (tryGetPhotonPlayer(playerID, out photonPlayer))
             {
@@ -123,14 +130,18 @@ namespace TowerVR
         {
             Log("handleTryStartGameEvent");
             
+            if (gameState != GameState.AllPlayersReady)
+            {
+                return;
+            }
+            
             if (allPlayersReady())
             {
-                gameState = GameState.Running;
                 initPlayerTurnQueue();
                 proceedPlayerTurn();
                 
-                // todo remove this once testing is finished
-                InvokeRepeating("proceedPlayerTurn", 5, 5);
+                gameState = GameState.Running;
+                turnTimer.start();
             }
         }
         
@@ -152,24 +163,54 @@ namespace TowerVR
             {
                 Log("updateGameState");
                 
-                yield return new WaitForSeconds(ONE_TENTH_SECOND);
+                yield return new WaitForSeconds(ONE_SECOND);
             }
         }
         
         IEnumerator updateTurnState()
         {
-            while (gameState == GameState.Running)
+            for (;;)
             {
-                Log("updateTurnState");
+                if (gameState == GameState.Running)
+                {
+                    switch (turnState)
+                    {
+                        case TurnState.SelectingTowerPiece:
+                            if (turnTimer.time > TurnTimeLimits.SelectingTowerPiece)
+                            {
+                                turnState = TurnState.PlacingTowerPiece;
+                            }
+                            break;
+                        case TurnState.PlacingTowerPiece:
+                            if (turnTimer.time > TurnTimeLimits.PlacingTowerPiece)
+                            {
+                                turnState = TurnState.TowerReacting;
+                            }
+                            break;
+                        case TurnState.TowerReacting:
+                            if (turnTimer.time > TurnTimeLimits.TowerReacting)
+                            {
+                                proceedPlayerTurn();
+                                turnState = TurnState.SelectingTowerPiece;
+                            }
+                            break;
+                    }
+                }
                 
-                yield return new WaitForSeconds(ONE_TENTH_SECOND);
+                yield return new WaitForSeconds(ONE_SECOND);
             }
         }
         
-        void Update()
+        void Start()
         {
-            updateGameState();
-            updateTurnState();
+            StartCoroutine("updateGameState");
+            StartCoroutine("updateTurnState");
+        }
+        
+        void OnDestroy()
+        {
+            StopCoroutine("updateGameState");
+            StopCoroutine("updateTurnState");
         }
         
         /**
@@ -237,6 +278,7 @@ namespace TowerVR
         #region PRIVATE_MEMBER_VARIABLES
         
         // The game state.
+        private int _backingGameState;
 		private int gameState
         {
             set
@@ -244,34 +286,38 @@ namespace TowerVR
                 if (GameState.IsValid(value))
                 {
                     // Set state and notify all clients of the new state
-                    gameState = value;
-                    var ev = new GameStateChangedEvent(gameState);
+                    _backingGameState = value;
+                    var ev = new GameStateChangedEvent(_backingGameState);
                     if (!ev.trySend())
                     {
                         Error(ev.trySendError);
                     }
                 }
             }
-            get { return gameState; }
+            get { return _backingGameState; }
         }
         
         // The turn state.
+        private int _backingTurnState;
 		private int turnState
         {
             set
             {
                 if (TurnState.IsValid(value))
                 {
+                    turnTimer.clear();
+                    turnTimer.start();
+                    
                     // Set state and notify all clients of the new state
-                    turnState = value;   
-                    var ev = new TurnStateChangedEvent(turnState);
+                    _backingTurnState = value;   
+                    var ev = new TurnStateChangedEvent(_backingTurnState);
                     if (!ev.trySend())
                     {
                         Error(ev.trySendError);
                     }
                 }
             }
-            get { return turnState; }
+            get { return _backingTurnState; }
         }
         
         // The players that we're in the room when the manager was instantiated.
@@ -293,6 +339,8 @@ namespace TowerVR
         
         // Reference to the current player.
         private PhotonPlayer currentPlayer;
+        
+        private Timer turnTimer;
         
         #endregion PRIVATE_MEMBER_VARIABLES
         
@@ -316,12 +364,12 @@ namespace TowerVR
         
         private static void Log(object obj)
         {
-            Debug.Log(obj.ToString());
+            Debug.Log("MasterTowerGameManagerImpl: " + obj.ToString());
         }
         
         private static void Error(object obj)
         {
-            Debug.LogError(obj.ToString());
+            Debug.LogError("MasterTowerGameManagerImpl: " + obj.ToString());
         }
         
         private const float ONE_TENTH_SECOND = 0.1f;

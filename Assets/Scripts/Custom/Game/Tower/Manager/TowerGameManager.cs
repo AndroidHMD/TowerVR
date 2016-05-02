@@ -13,6 +13,8 @@ namespace TowerVR
 	 **/
 	public sealed class TowerGameManager : Singleton<TowerGameManager>, ITowerGameManager
 	{		
+		public bool TEST_forceMasterImplementation = false;
+		
 		#region PUBLIC_MEMBER_FUNCTIONS
 		
 		/// See ITowerGameManager
@@ -73,7 +75,7 @@ namespace TowerVR
 		void Awake()
 		{	
 			// Instantiate an implementation of the correct type
-			if (PhotonNetwork.isMasterClient)
+			if (PhotonNetwork.isMasterClient || TEST_forceMasterImplementation)
 			{
 				Debug.Log("Player is master client, instantiating MasterTowerGameManagerImpl");
 				impl = gameObject.AddComponent<MasterTowerGameManagerImpl>();

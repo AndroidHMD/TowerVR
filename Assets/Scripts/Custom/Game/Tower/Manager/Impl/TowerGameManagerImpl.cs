@@ -228,14 +228,19 @@ namespace TowerVR
 		
 		protected static void LogMalformedEventContent(string eventName, int senderID)
 		{
-			Debug.LogError("Received " + eventName + " with malformed event content from playerID=" + senderID + ".");
+			Error("Received " + eventName + " with malformed event content from playerID=" + senderID + ".");
 		}
 		
 		#endregion PRIVATE_MEMBER_VARIABLES
 		
 		private static void Log(object obj)
         {
-            Debug.Log(obj.ToString());
+            Debug.Log("TowerGameManagerImpl: " + obj.ToString());
+        }
+		
+        private static void Error(object obj)
+        {
+            Debug.LogError("MasterTowerGameManagerImpl: " + obj.ToString());
         }
 
 	}
