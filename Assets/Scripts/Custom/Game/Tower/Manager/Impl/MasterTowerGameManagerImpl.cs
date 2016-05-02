@@ -153,8 +153,8 @@ namespace TowerVR
             {
                 numberOfObjects++;
                 stackedTowerPieces.Add(towerPiece);
-                Debug.Log("Stacked " + numberOfObjects + " objects!");
             }
+            Debug.Log("Stacked " + numberOfObjects + " objects!");
              
 
             Log("handlePlaceTowerPieceEvent [playerID=" + playerID + " posX=" + posX + " posZ=" + posZ + "rotDegreesY=" + rotDegreesY + "]");
