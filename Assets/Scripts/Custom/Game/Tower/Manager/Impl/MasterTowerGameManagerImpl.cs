@@ -12,6 +12,9 @@ namespace TowerVR
      **/ 
     public sealed class MasterTowerGameManagerImpl : TowerGameManagerImpl
     {      
+        
+        private List<GameObject> stackedTowerPieces;
+        
         #region PUBLIC_MEMBER_FUNCTIONS
 		
         /**
@@ -140,12 +143,28 @@ namespace TowerVR
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
         {
-			//Try placing TowerPiece
-
-			//Update towerState
-
+            stackedTowerPieces = new List<GameObject>();
+            
+			//Player will try and place TowerPiece in PlacingBrick.cs    
+            GameObject[] newPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
+            
+            int numberOfObjects = 0;
+            foreach (GameObject towerPiece in newPieces)
+            {
+                numberOfObjects++;
+                stackedTowerPieces.Add(towerPiece);
+                Debug.Log("Stacked " + numberOfObjects + " objects!");
+            }
+             
 
             Log("handlePlaceTowerPieceEvent [playerID=" + playerID + " posX=" + posX + " posZ=" + posZ + "rotDegreesY=" + rotDegreesY + "]");
+            
+            //Update towerState
+            turnState = TurnState.TowerReacting;
+            
+            //Update TowerState
+            towerState = TowerState.Moving;
+            
         }
         
         
