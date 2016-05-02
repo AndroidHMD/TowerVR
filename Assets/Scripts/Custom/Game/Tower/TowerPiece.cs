@@ -47,17 +47,17 @@ namespace TowerVR
 		/**
 		 * Instantiates a new GameObject and configures it as a tower piece with the specified info.
 		 * */
-		public static TowerPiece Create(TowerPieceInfo info, Material material)
+		public static TowerPiece Create(TowerPieceInfo info)
 		{
 			GameObject newTowerPiece = new GameObject("TowerPiece");
 
 			// Attached visual components
 			newTowerPiece.AddComponent<MeshFilter>().sharedMesh = info.mesh;
-			newTowerPiece.AddComponent<MeshRenderer>().sharedMaterial = material;
+			newTowerPiece.AddComponent<MeshRenderer>().sharedMaterial = info.material;
 			newTowerPiece.AddComponent<Rigidbody>().useGravity = true;
 			var mc = newTowerPiece.AddComponent<MeshCollider>();
 			mc.sharedMesh = info.mesh;
-			mc.convex = true;
+			mc.convex = false; 
 
 			// Attach the difficulty
 			var tp = newTowerPiece.AddComponent<TowerPiece>();

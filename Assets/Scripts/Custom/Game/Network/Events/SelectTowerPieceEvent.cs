@@ -47,7 +47,7 @@ namespace TowerVR
         /**
          * Tries to parse the contents of the event.
          **/
-        public static bool TryParse(object obj, TowerPieceDifficulty chosenDifficulty)
+        public static bool TryParse(object obj, out TowerPieceDifficulty chosenDifficulty)
         {
             int diff;
             chosenDifficulty = TowerPieceDifficulty.Easy;

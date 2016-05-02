@@ -30,6 +30,11 @@ namespace TowerVR
         void tryStartGame();
         
         /**
+         * Call to select a piece to place 
+         */
+        void selectTowerPiece(TowerPieceDifficulty difficulty);
+        
+        /**
          * Call this to place a tower piece. Will fail silently if it is not the client's turn.
          **/
         void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY);

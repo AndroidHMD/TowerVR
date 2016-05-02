@@ -29,6 +29,14 @@ namespace TowerVR
 		{
 			handleTryStartGameEvent(PhotonNetwork.player.ID);
 		}
+        
+        /**
+         * Overrides the event-sending to directly alert this implementation.
+         **/
+        public sealed override void selectTowerPiece(TowerPieceDifficulty difficulty)
+		{
+			handleSelectTowerPieceEvent(difficulty);
+		}
 		
         /**
          * Overrides the event-sending to directly alert this implementation.
@@ -52,6 +60,7 @@ namespace TowerVR
             
 			gameState = GameState.AwaitingPlayers;
 			turnState = TurnState.NotStarted;
+			towerState = TowerState.Stationary;
 			
 			players = new HashSet<PhotonPlayer>();
 			playersReadyMap = new Dictionary<PhotonPlayer, bool>();
@@ -78,6 +87,20 @@ namespace TowerVR
 				case NetworkEventCodes.TryStartGame:
 				{
 					handleTryStartGameEvent(senderID); 
+					break;	
+				}
+                
+                case NetworkEventCodes.SelectTowerPiece:
+				{
+                    TowerPieceDifficulty difficulty;
+                    if (SelectTowerPieceEvent.TryParse(content, out difficulty))
+                    {
+                        handleSelectTowerPieceEvent(difficulty);
+                    }
+					else
+                    {
+                        LogMalformedEventContent("SelectTowerPieceEvent", senderID);
+                    }
 					break;	
 				}
 				
@@ -145,8 +168,24 @@ namespace TowerVR
             }
         }
         
+        protected void handleSelectTowerPieceEvent(TowerPieceDifficulty difficulty)
+        {
+            // 3 arrays of brick types
+            
+            // display logic
+            
+            // select piece
+            
+            // return piece   
+        }
+        
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
         {
+			//Try placing TowerPiece
+
+			//Update towerState
+
+
             Log("handlePlaceTowerPieceEvent [playerID=" + playerID + " posX=" + posX + " posZ=" + posZ + "rotDegreesY=" + rotDegreesY + "]");
         }
         
@@ -318,6 +357,26 @@ namespace TowerVR
                 }
             }
             get { return _backingTurnState; }
+        }
+
+		// The tower state
+        private int _backingTowerState;
+		private int towerState
+        {
+            set
+            {
+                if (TowerState.IsValid(value))
+                {   
+                    // Set state and notify all clients of the new state
+                    _backingTowerState = value;   
+                    var ev = new TurnStateChangedEvent(_backingTowerState);
+                    if (!ev.trySend())
+                    {
+                        Error(ev.trySendError);
+                    }
+                }
+            }
+            get { return _backingTowerState; }
         }
         
         // The players that we're in the room when the manager was instantiated.

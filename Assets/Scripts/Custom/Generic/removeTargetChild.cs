@@ -2,7 +2,7 @@
 using System.Collections;
 
 /**
- *	Removes all sides to the cube so we doesn't render them, or that they occludes objects.
+ *	Removes all sides to the tracked cube so we doesn't render them, or that they occludes objects.
  */
 
 public class removeTargetChild : MonoBehaviour {

@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/* Automatically fades into a scene. Called by GazeOver-script to fade out when switching scenes. 
-* Public variable fadeSpeed determines the duration of the fading effect.
-* Public variable fadeOutTexture needs to have an images assigned, for example a black Image.  
-*/
+/** Automatically fades into a scene. Called by GazeOver-script to fade out when switching scenes. 
+ * Public variable fadeSpeed determines the duration of the fading effect.
+ * Public variable fadeOutTexture needs to have an images assigned, for example a black Image.  
+ **/
 
 public class Fading : MonoBehaviour {
 

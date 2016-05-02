@@ -42,6 +42,18 @@ namespace TowerVR
 		/**
 		 * Sends an event to the master client implementation.
 		 **/
+		public virtual void selectTowerPiece(TowerPieceDifficulty difficulty)
+		{
+			var ev = new SelectTowerPieceEvent(difficulty);
+			if (!ev.trySend())
+			{
+				Debug.LogError(ev.trySendError);
+			}
+		}
+		
+		/**
+		 * Sends an event to the master client implementation.
+		 **/
 		public virtual void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
 		{
 			var ev = new PlaceTowerPieceEvent(positionX, positionZ, rotationDegreesY);
@@ -99,6 +111,20 @@ namespace TowerVR
 					else
 					{
 						LogMalformedEventContent("TurnStateChangedEvent", senderID);
+					} 
+					break;	
+				}
+
+				case NetworkEventCodes.TowerStateChanged:
+				{
+					int towerState;
+					if (TowerStateChangedEvent.TryParse(content, out towerState))
+					{
+						handleTowerStateChangedEvent(towerState);
+					}
+					else
+					{
+						LogMalformedEventContent("TowerStateChangedEvent", senderID);
 					} 
 					break;	
 				}
@@ -185,6 +211,14 @@ namespace TowerVR
 			
 			foreach (var handler in parent.turnStateChangedHandlers)
 			{ handler(turnState); }
+		}
+
+		protected virtual void handleTowerStateChangedEvent(int towerState) 
+		{
+			Log("handleTowerStateChangedEvent");
+
+			foreach (var handler in parent.towerStateChangedHandlers)
+			{ handler(towerState); }
 		}
 		
 		protected virtual void handleNextPlayerEvent(int nextPlayerID) 

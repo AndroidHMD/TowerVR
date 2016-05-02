@@ -2,10 +2,13 @@ using UnityEngine;
 
 namespace Vuforia
 {
-	/*
-	 * Not used at the moment, 
+	/**
+	 * Class for handling events when tracking is lost. 
+	 * Should save latest position and interpolate when tracking is found again
 	 * 
-	 * */
+	 * Not used at the moment! 
+	 * 
+	 **/
 
 
 	public class LostTracking : MonoBehaviour
