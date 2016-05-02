@@ -17,6 +17,12 @@ public class GazeOver : MonoBehaviour {
     public int levelIndex;
 	private string[] levelNames;
 
+    //Variables for loading the level
+    public string LevelName;
+    public string LevelMaterial1;
+    public string LevelSkybox;
+
+
 	void Start()
 	{
 		if (loadSceneForAllPlayers)
@@ -29,7 +35,7 @@ public class GazeOver : MonoBehaviour {
 	//Function for switching scene. 	
 	public void SwitchScene(){
 		//TODO: This makes FadeOut work, but tracking doesn't because you have to use Keep ARcamera alive
-		//No solution found yet
+		//No solution found yet, you probably have to load ARCamera and CardboardMain in a seperate scene befora any objects and use KeepARCameraAlive
 		//DontDestroyOnLoad (GameObject.Find ("CardboardMain"));
 
 		//fade out and load new level
@@ -58,6 +64,14 @@ public class GazeOver : MonoBehaviour {
 		}
 		
 	}
+
+    //Function for loading prefabs/materials into a scene
+    public void LoadScene()
+    {
+        SpawnSelectedLevel.LoadedLevel = LevelName;
+        SpawnSelectedLevel.LoadedMaterial1 = LevelMaterial1;
+        SpawnSelectedLevel.LoadedSkybox = LevelSkybox;
+    }
 
 	//When you look at an object, change color to red
     public void OnPointerEnter()
