@@ -14,8 +14,7 @@ public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour
 	// wip
 	void Start()
 	{
-		SpawnPlayer();
-		UpdatePlayerDebugList();
+		
 	}
 	
 	/**
@@ -23,7 +22,8 @@ public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour
 	*/
 	void OnJoinedRoom() 
 	{
-		
+		SpawnPlayer();
+		UpdatePlayerDebugList();
 	}
 	
 	void OnPhotonPlayerConnected()
