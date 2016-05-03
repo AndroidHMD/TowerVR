@@ -511,7 +511,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e0bd804bf474e96bddbf7e2d57105d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelIndex: 2
+  loadSceneForAllPlayers: 0
+  levelIndex: 0
+  LevelName: 
+  LevelMaterial1: 
+  LevelSkybox: 
 --- !u!114 &11415994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -535,7 +539,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e0bd804bf474e96bddbf7e2d57105d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelIndex: 0
+  loadSceneForAllPlayers: 0
+  levelIndex: 0
+  LevelName: 
+  LevelMaterial1: 
+  LevelSkybox: 
 --- !u!114 &11431230
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -635,6 +643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c8bcec3509184428d3cc848ffd48c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelIndex: 2
 --- !u!114 &11462538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -646,7 +655,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e0bd804bf474e96bddbf7e2d57105d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelIndex: 2
+  loadSceneForAllPlayers: 0
+  levelIndex: 0
+  LevelName: 
+  LevelMaterial1: 
+  LevelSkybox: 
 --- !u!114 &11464144
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -658,7 +671,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e0bd804bf474e96bddbf7e2d57105d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelIndex: 2
+  loadSceneForAllPlayers: 0
+  levelIndex: 0
+  LevelName: 
+  LevelMaterial1: 
+  LevelSkybox: 
 --- !u!114 &11468712
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -813,7 +830,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e0bd804bf474e96bddbf7e2d57105d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelIndex: 2
+  loadSceneForAllPlayers: 0
+  levelIndex: 0
+  LevelName: 
+  LevelMaterial1: 
+  LevelSkybox: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

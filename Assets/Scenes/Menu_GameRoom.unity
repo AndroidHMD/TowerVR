@@ -1414,6 +1414,7 @@ GameObject:
   - 114: {fileID: 1017791937}
   - 114: {fileID: 1017791938}
   - 114: {fileID: 1017791939}
+  - 114: {fileID: 1017791940}
   m_Layer: 0
   m_Name: SceneLogic
   m_TagString: Untagged
@@ -1481,6 +1482,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeOutTexture: {fileID: 2800000, guid: 97cd42aad35a0466e9d8834e32cd2fcc, type: 3}
   fadeSpeed: 0.2
+--- !u!114 &1017791940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1017791934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04a07723e833cf4c802a2e97ba447e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefabName: PlayerObject
+  debugGuiOn: 0
 --- !u!114 &1062703636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2404,6 +2418,18 @@ Prefab:
     - target: {fileID: 11446880, guid: 0569c482df47e064da9092a068f01d8e, type: 2}
       propertyPath: LevelIndex
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 107298, guid: 0569c482df47e064da9092a068f01d8e, type: 2}
+      propertyPath: m_Name
+      value: StartCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446880, guid: 0569c482df47e064da9092a068f01d8e, type: 2}
+      propertyPath: levelIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 11446880, guid: 0569c482df47e064da9092a068f01d8e, type: 2}
+      propertyPath: loadSceneForAllPlayers
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0569c482df47e064da9092a068f01d8e, type: 2}

@@ -99,7 +99,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: b3a52dff3c7d5b642b0b74acfa6850e5, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -166,7 +166,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e0bd804bf474e96bddbf7e2d57105d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelIndex: 0
+  loadSceneForAllPlayers: 0
+  levelIndex: 0
+  LevelName: 
+  LevelMaterial1: 
+  LevelSkybox: 
 --- !u!114 &11460606
 MonoBehaviour:
   m_ObjectHideFlags: 1
