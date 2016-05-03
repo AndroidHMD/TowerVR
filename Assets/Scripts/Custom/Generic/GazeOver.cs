@@ -7,32 +7,73 @@ using UnityEngine.SceneManagement;
  * How to use: Make sure your object has a Collider. 
  * Add this script and set which scene it should chnage to with index (from build settings).
  * Add EventTrigger-component and use Pointer Down, Pointer Enter, Pointer Exit for the functions below.
+ * Check the box for the loadSceneForAllPlayers variable to use Photons functionality to sync the loaded scene.
  **/
 
 public class GazeOver : MonoBehaviour {
 
     private Color objColor;
-    public int LevelIndex;
+	public bool loadSceneForAllPlayers = false;
+    public int levelIndex;
+	private string[] levelNames;
 
-	///
-	///Function for switching scene. Ready for fading.	
-	///
+    //Variables for loading the level
+    public string LevelName;
+    public string LevelMaterial1;
+    public string LevelSkybox;
+
+
+	void Start()
+	{
+		if (loadSceneForAllPlayers)
+			PhotonNetwork.automaticallySyncScene = true;
+
+		// These are manually kept as the correct names of the scenes in the right order
+		// Reason being that there is no way to programatically get the name of a scene from its index
+		levelNames = new string[4]{"Menu_HostJoin", "Menu_ChooseBackdrop", "Menu_GameRoom", "TowerStacker"};
+	}
+	//Function for switching scene. 	
 	public void SwitchScene(){
 		//TODO: This makes FadeOut work, but tracking doesn't because you have to use Keep ARcamera alive
-		//No solution found yet
+		//No solution found yet, you probably have to load ARCamera and CardboardMain in a seperate scene befora any objects and use KeepARCameraAlive
 		//DontDestroyOnLoad (GameObject.Find ("CardboardMain"));
 
 		//fade out and load new level
 		float fadeTime = GameObject.Find("SceneLogic").GetComponent<Fading>().BeginFade(1);
 		StartCoroutine(wait(fadeTime*2));
-
-		SceneManager.LoadScene(LevelIndex);
-		Debug.Log ("Change to scene: " + LevelIndex);
+		
+		// If level index is set to first scene, 
+		// leave room and go there disregarding other players
+		if (levelIndex == 0)
+		{
+			PhotonNetwork.LeaveRoom();
+			SceneManager.LoadScene(levelIndex);
+			return;
+		}
+		
+		if (loadSceneForAllPlayers)
+		{
+			PhotonNetwork.LoadLevel(levelNames[levelIndex]);
+			Debug.Log ("Change to scene " + levelNames[levelIndex]);
+		}
+		
+		else
+		{
+			SceneManager.LoadScene(levelIndex);		
+			Debug.Log ("Change to scene " + levelIndex);
+		}
+		
 	}
 
-	/// <summary>
-	/// When you look at an object, change color to red
-	/// </summary>
+    //Function for loading prefabs/materials into a scene
+    public void LoadScene()
+    {
+        SpawnSelectedLevel.LoadedLevel = LevelName;
+        SpawnSelectedLevel.LoadedMaterial1 = LevelMaterial1;
+        SpawnSelectedLevel.LoadedSkybox = LevelSkybox;
+    }
+
+	//When you look at an object, change color to red
     public void OnPointerEnter()
     {
 		//Save the original color first

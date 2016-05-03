@@ -29,8 +29,8 @@ GameObject:
   - 65: {fileID: 6548934}
   - 23: {fileID: 2362086}
   - 114: {fileID: 11488708}
-  - 114: {fileID: 11475250}
   - 114: {fileID: 11402528}
+  - 114: {fileID: 11476716}
   m_Layer: 0
   m_Name: JoinCube
   m_TagString: Untagged
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 168934, guid: ab0783abb1da1154da59d509bf30df4f, type: 2}
---- !u!114 &11475250
+--- !u!114 &11476716
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -175,9 +175,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 165432}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38ae8fca26491ab45b7684c30b7ad933, type: 3}
+  m_Script: {fileID: 11500000, guid: 45e0bd804bf474e96bddbf7e2d57105d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LevelIndex: 0
 --- !u!114 &11488708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -194,8 +195,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11475250}
-          m_MethodName: OnGazeEnter
+        - m_Target: {fileID: 11476716}
+          m_MethodName: OnPointerEnter
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -211,8 +212,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11475250}
-          m_MethodName: OnGazeExit
+        - m_Target: {fileID: 11476716}
+          m_MethodName: OnPointerExit
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

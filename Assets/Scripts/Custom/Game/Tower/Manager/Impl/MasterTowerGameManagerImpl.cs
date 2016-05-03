@@ -59,6 +59,7 @@ namespace TowerVR
         protected sealed override void Awake()
         {	
             base.Awake();
+            turnTimer = gameObject.AddComponent<Timer>();
             
 			gameState = GameState.AwaitingPlayers;
 			turnState = TurnState.NotStarted;
@@ -133,6 +134,12 @@ namespace TowerVR
         {
             Log("handlePlayerReadyEvent");
             
+            if (gameState != GameState.AwaitingPlayers)
+            {
+                Error("Player called notifyIsReady when game already running.");
+                return;
+            }
+            
             PhotonPlayer photonPlayer;
             if (tryGetPhotonPlayer(playerID, out photonPlayer))
             {
@@ -142,7 +149,6 @@ namespace TowerVR
             if (allPlayersReady())
             {
                 gameState = GameState.AllPlayersReady;
-                syncGameState();
             }
         }
         
@@ -150,16 +156,18 @@ namespace TowerVR
         {
             Log("handleTryStartGameEvent");
             
+            if (gameState != GameState.AllPlayersReady)
+            {
+                return;
+            }
+            
             if (allPlayersReady())
             {
-                gameState = GameState.Running;
                 initPlayerTurnQueue();
                 proceedPlayerTurn();
                 
-                // todo remove this once testing is finished
-                InvokeRepeating("proceedPlayerTurn", 5, 5);
-                
-                syncGameState();
+                gameState = GameState.Running;
+                turnTimer.start();
             }
         }
         
@@ -197,6 +205,7 @@ namespace TowerVR
             
             //Update TowerState
             towerState = TowerState.Moving;
+            StartCoroutine(observeTower());
             
         }
         
@@ -207,41 +216,91 @@ namespace TowerVR
         
         #region PRIVATE_MEMBER_FUNCTIONS
         
-        /**
-         * Sync the game state with all clients.
-         **/
-        private void syncGameState()
+        IEnumerator updateGameState()
         {
-            var ev = new GameStateChangedEvent(gameState);
-            if (!ev.trySend())
+            for (;;)
             {
-                Error(ev.trySendError);
+                Log("updateGameState");
+                
+                yield return new WaitForSeconds(ONE_SECOND);
             }
         }
         
-        /**
-         * Sync the turn state with all clients.
-         **/
-        private void syncTurnState()
+        IEnumerator updateTurnState()
         {
-            var ev = new TurnStateChangedEvent(turnState);
-            if (!ev.trySend())
+            for (;;)
             {
-                Error(ev.trySendError);
+                if (gameState == GameState.Running)
+                {
+                    switch (turnState)
+                    {
+                        case TurnState.SelectingTowerPiece:
+                            if (turnTimer.time > TurnTimeLimits.SelectingTowerPiece)
+                            {
+                                turnState = TurnState.PlacingTowerPiece;
+                            }
+                            break;
+                        case TurnState.PlacingTowerPiece:
+                            if (turnTimer.time > TurnTimeLimits.PlacingTowerPiece)
+                            {
+                                turnState = TurnState.TowerReacting;
+                            }
+                            break;
+                        case TurnState.TowerReacting:
+                            
+                            if (towerState == TowerState.Stationary)
+                            {
+                                proceedPlayerTurn();
+                                turnState = TurnState.SelectingTowerPiece;
+                            }
+                            break;
+                    }
+                }
+                
+                yield return new WaitForSeconds(ONE_SECOND);
             }
         }
+        
+        IEnumerator observeTower()
+        {
+            yield return new WaitForSeconds(TurnTimeLimits.TowerReacting);
+            
+            
+            while(towerState == TowerState.Moving)
+            {
+                bool allPiecesStationary = true;
+                foreach (var towerPiece in stackedTowerPieces)
+                {
+                    Rigidbody rb = towerPiece.GetComponent<Rigidbody>();
+                    if(rb.velocity.magnitude > TowerConstants.MaxTowerVelocity || rb.angularVelocity.magnitude > TowerConstants.MaxTowerAngVelocity)
+                    {
+                        allPiecesStationary = false;
+                        break;
+                    }
+                    
+                }
+                if(allPiecesStationary)
+                {
+                    towerState = TowerState.Stationary;
+                    StopCoroutine(observeTower());
+                }
+                yield return null;
+            }
+            
+        }
 
-		/**
-         * Sync the tower state with all clients.
-         **/
-		private void syncTowerState()
-		{
-			var ev = new TowerStateChangedEvent(towerState);
-			if (!ev.trySend())
-			{
-				Error(ev.trySendError);
-			}
-		}
+        
+        void Start()
+        {
+            StartCoroutine("updateGameState");
+            StartCoroutine("updateTurnState");
+        }
+        
+        void OnDestroy()
+        {
+            StopCoroutine("updateGameState");
+            StopCoroutine("updateTurnState");
+        }
         
         /**
          * Initializes the player turn queue with the players that were online on scene startup.
@@ -276,14 +335,12 @@ namespace TowerVR
             {
                 Error(ev.trySendError);
                 gameState = GameState.Stopped;
-                syncGameState();
                 return;
             }
             
             currentPlayer = nextPlayer;
             
             turnState = TurnState.SelectingTowerPiece;
-            syncTurnState();
         }
         
         /**
@@ -310,13 +367,49 @@ namespace TowerVR
         #region PRIVATE_MEMBER_VARIABLES
         
         // The game state.
-		private int gameState;
+        private int _backingGameState;
+		private int gameState
+        {
+            set
+            {
+                if (GameState.IsValid(value))
+                {
+                    // Set state and notify all clients of the new state
+                    _backingGameState = value;
+                    var ev = new GameStateChangedEvent(_backingGameState);
+                    if (!ev.trySend())
+                    {
+                        Error(ev.trySendError);
+                    }
+                }
+            }
+            get { return _backingGameState; }
+        }
         
         // The turn state.
-		private int turnState;
-
-		// The tower state
-		private int towerState;
+        private int _backingTurnState;
+		private int turnState
+        {
+            set
+            {
+                if (TurnState.IsValid(value))
+                {
+                    turnTimer.clear();
+                    turnTimer.start();
+                    
+                    // Set state and notify all clients of the new state
+                    _backingTurnState = value;   
+                    var ev = new TurnStateChangedEvent(_backingTurnState);
+                    if (!ev.trySend())
+                    {
+                        Error(ev.trySendError);
+                    }
+                }
+            }
+            get { return _backingTurnState; }
+        }
+        
+        private int towerState;
         
         // The players that we're in the room when the manager was instantiated.
         private HashSet<PhotonPlayer> players;
@@ -337,6 +430,8 @@ namespace TowerVR
         
         // Reference to the current player.
         private PhotonPlayer currentPlayer;
+        
+        private Timer turnTimer;
         
         #endregion PRIVATE_MEMBER_VARIABLES
         
@@ -360,12 +455,15 @@ namespace TowerVR
         
         private static void Log(object obj)
         {
-            Debug.Log(obj.ToString());
+            Debug.Log("MasterTowerGameManagerImpl: " + obj.ToString());
         }
         
         private static void Error(object obj)
         {
-            Debug.LogError(obj.ToString());
+            Debug.LogError("MasterTowerGameManagerImpl: " + obj.ToString());
         }
+        
+        private const float ONE_TENTH_SECOND = 0.1f;
+        private const float ONE_SECOND = 1.0f;
     }
 }

@@ -16,6 +16,20 @@ namespace TowerVR
 			return potentialGameState >= AwaitingPlayers && 
 				   potentialGameState <= Stopped;
 		}
+		
+		public static string ToString(int gameState)
+		{
+			switch (gameState)
+			{
+				case AwaitingPlayers: return "AwaitingPlayers";
+				case AllPlayersReady: return "AllPlayersReady";
+				case Countdown: return "Countdown";
+				case Running: return "Running";
+				case Ended: return "Ended";
+				case Stopped: return "Stopped";
+				default: return "<INVALID_GAMESTATE>";
+			}
+		}
 	}
 
 	public class TurnState
@@ -29,6 +43,18 @@ namespace TowerVR
 		{
 			return potentialTurnState >= NotStarted && 
 				   potentialTurnState <= TowerReacting;
+		}
+		
+		public static string ToString(int turnState)
+		{
+			switch (turnState)
+			{
+				case NotStarted: return "NotStarted";
+				case SelectingTowerPiece: return "SelectingTowerPiece";
+				case PlacingTowerPiece: return "PlacingTowerPiece";
+				case TowerReacting: return "TowerReacting";
+				default: return "<INVALID_TURNSTATE>";
+			}
 		}
 	}
 
