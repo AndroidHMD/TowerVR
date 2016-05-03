@@ -12,6 +12,9 @@ namespace TowerVR
      **/ 
     public sealed class MasterTowerGameManagerImpl : TowerGameManagerImpl
     {      
+        
+        private List<GameObject> stackedTowerPieces;
+        
         #region PUBLIC_MEMBER_FUNCTIONS
 		
         /**
@@ -181,12 +184,29 @@ namespace TowerVR
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
         {
-			//Try placing TowerPiece
-
-			//Update towerState
-
+            stackedTowerPieces = new List<GameObject>();
+            
+			//Player will try and place TowerPiece in PlacingBrick.cs    
+            GameObject[] newPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
+            
+            int numberOfObjects = 0;
+            foreach (GameObject towerPiece in newPieces)
+            {
+                numberOfObjects++;
+                stackedTowerPieces.Add(towerPiece);
+            }
+            Debug.Log("Stacked " + numberOfObjects + " objects!");
+             
 
             Log("handlePlaceTowerPieceEvent [playerID=" + playerID + " posX=" + posX + " posZ=" + posZ + "rotDegreesY=" + rotDegreesY + "]");
+            
+            //Update towerState
+            turnState = TurnState.TowerReacting;
+            
+            //Update TowerState
+            towerState = TowerState.Moving;
+            StartCoroutine(observeTower());
+            
         }
         
         
@@ -227,7 +247,8 @@ namespace TowerVR
                             }
                             break;
                         case TurnState.TowerReacting:
-                            if (turnTimer.time > TurnTimeLimits.TowerReacting)
+                            
+                            if (towerState == TowerState.Stationary)
                             {
                                 proceedPlayerTurn();
                                 turnState = TurnState.SelectingTowerPiece;
@@ -239,6 +260,35 @@ namespace TowerVR
                 yield return new WaitForSeconds(ONE_SECOND);
             }
         }
+        
+        IEnumerator observeTower()
+        {
+            yield return new WaitForSeconds(TurnTimeLimits.TowerReacting);
+            
+            
+            while(towerState == TowerState.Moving)
+            {
+                bool allPiecesStationary = true;
+                foreach (var towerPiece in stackedTowerPieces)
+                {
+                    Rigidbody rb = towerPiece.GetComponent<Rigidbody>();
+                    if(rb.velocity.magnitude > TowerConstants.MaxTowerVelocity || rb.angularVelocity.magnitude > TowerConstants.MaxTowerAngVelocity)
+                    {
+                        allPiecesStationary = false;
+                        break;
+                    }
+                    
+                }
+                if(allPiecesStationary)
+                {
+                    towerState = TowerState.Stationary;
+                    StopCoroutine(observeTower());
+                }
+                yield return null;
+            }
+            
+        }
+
         
         void Start()
         {
@@ -358,26 +408,8 @@ namespace TowerVR
             }
             get { return _backingTurnState; }
         }
-
-		// The tower state
-        private int _backingTowerState;
-		private int towerState
-        {
-            set
-            {
-                if (TowerState.IsValid(value))
-                {   
-                    // Set state and notify all clients of the new state
-                    _backingTowerState = value;   
-                    var ev = new TurnStateChangedEvent(_backingTowerState);
-                    if (!ev.trySend())
-                    {
-                        Error(ev.trySendError);
-                    }
-                }
-            }
-            get { return _backingTowerState; }
-        }
+        
+        private int towerState;
         
         // The players that we're in the room when the manager was instantiated.
         private HashSet<PhotonPlayer> players;

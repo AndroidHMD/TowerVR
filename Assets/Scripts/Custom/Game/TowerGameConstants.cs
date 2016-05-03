@@ -9,4 +9,10 @@ namespace TowerVR
         // No instantiation of class
         private TurnTimeLimits() {}
     }
+    
+    public class TowerConstants
+    {
+        public const float MaxTowerVelocity = 0.2f;
+        public const float MaxTowerAngVelocity = 0.1f;
+    }
 }

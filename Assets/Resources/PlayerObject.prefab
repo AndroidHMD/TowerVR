@@ -13,7 +13,7 @@ GameObject:
   - 23: {fileID: 2357326}
   - 114: {fileID: 11477120}
   - 114: {fileID: 11476214}
-  - 114: {fileID: 11428394}
+  - 114: {fileID: 11466982}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Player
@@ -28,8 +28,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165380}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.3275933, z: 0}
-  m_LocalScale: {x: 35, y: 35, z: 35}
+  m_LocalPosition: {x: 0, y: -3.1, z: 0}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -39,7 +39,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165380}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
@@ -66,7 +66,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 165380}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11428394
+--- !u!114 &11466982
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -74,12 +74,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 165380}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8c6e4463abfc411aa76da81e849302a, type: 3}
+  m_Script: {fileID: 11500000, guid: f92f86e4d6acfae4d8557e383591f3da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 0}
-  photonView: {fileID: 11477120}
-  meshRenderer: {fileID: 2357326}
+  debugPosition: 1
 --- !u!114 &11476214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -156,7 +154,7 @@ MonoBehaviour:
   group: 0
   prefixBackup: -1
   observed: {fileID: 0}
-  synchronization: 3
+  synchronization: 1
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0

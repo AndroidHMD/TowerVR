@@ -26,7 +26,6 @@ namespace TowerVR
 		private bool justDoIt = true;
 
 
-		// 
 		void onTurnStateChanged(int turnState)
 		{
 			this.turnState = turnState;
@@ -79,47 +78,55 @@ namespace TowerVR
 					//Check where cameraRay intersect with grid
 					if (findIntersection (out intersectionWithPlane)) 
 					{
-						//See if we hit the tower
 						
+						
+						///The TowerPiece should be projected onto the tower
+						//VERSION 1
 						RaycastHit hitInfo;
-						int layerMask = 1 <<8;
-						if(Physics.Raycast(intersectionWithPlane, Vector3.down, out hitInfo, Mathf.Infinity, layerMask, QueryTriggerInteraction.UseGlobal));
+						int towerLayerMask = 1 << 8; //Sets Layer 8 to true
+						if(Physics.Raycast(intersectionWithPlane, Vector3.down, out hitInfo, Mathf.Infinity, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 						{
 							//TODO: Only render outlines?
 							newPiece.GetComponent<MeshRenderer>().enabled = true; 
-							newPiece.transform.position = hitInfo.point;
+							newPiece.transform.position = hitInfo.point + Vector3.up * newPiece.transform.localScale.y/2;
 						}
+						else
+						{
+							//If there's no intersection with Tower, don't render the new piece
+							newPiece.GetComponent<MeshRenderer>().enabled = false;
+						}
+						
+						//VERSION 2
+						//Translate down so long we don't hit a collider
+						//var newCol = newPiece.GetComponent<Collider>();
+						//while(!collisions) -> move down
 											
 						
-						//newPiece.transform.position = intersectionWithPlane;					
+						//newPiece.transform.position = intersectionWithPlane;	//See the prick on placing plane			
 						newPiece.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
-						
-						
-						///The brick should be projected onto the tower
-						//Vector3.Project?
-						
 						
 						//Satisfied? Then place the piece with the button
 						if (Cardboard.SDK.Triggered) 
 						{
-							Debug.Log("Placed new piece");
+												
+							Debug.Log("Placing new piece!");
+							GameObject pieceToAdd;
+							pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
+							pieceToAdd.tag = "newTowerPiece";
 							manager.placeTowerPiece (newPiece.transform.position.x, newPiece.transform.position.z, newPiece.transform.rotation.y);
 						}
-					} 
-					else 
-					{
-						//If there's no intersection, don't render the new piece
-						newPiece.GetComponent<MeshRenderer>().enabled = false;
+						
 					}
-					
+					 	
 				}
-
+				
 			}
 			else 
 			{
 				//Observe! Throw things on each other!?
 
 			}
+			
 		}
 			
 
@@ -136,7 +143,7 @@ namespace TowerVR
 
 			//Have the camera ray point slightly upward
 			Ray cameraRay = myCamera.ScreenPointToRay(
-				new Vector3(Screen.currentResolution.width/2, (4*Screen.currentResolution.height)/5, 0.0f));
+				new Vector3(Screen.currentResolution.width/2, (5*Screen.currentResolution.height)/6, 0.0f));
 				
 				
 			// For debugging purposes
