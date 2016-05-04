@@ -180,6 +180,7 @@ namespace TowerVR
             // select piece
             
             // return piece   
+            turnState = TurnState.PlacingTowerPiece;
         }
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
@@ -193,6 +194,7 @@ namespace TowerVR
             foreach (GameObject towerPiece in newPieces)
             {
                 numberOfObjects++;
+                towerPiece.layer = 8;
                 stackedTowerPieces.Add(towerPiece);
             }
             Debug.Log("Stacked " + numberOfObjects + " objects!");

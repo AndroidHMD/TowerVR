@@ -16,15 +16,13 @@ namespace TowerVR
 		private int towerState;
 		private int currentPlayerID;
 
-		public GameObject placingPlane;
+		public GameObject newPiece;
 
-		private GameObject newPiece;
+		public GameObject pieceToAdd;
 		private Camera myCamera;
-		private Vector3 intersectionWithPlane;
+		private bool noCube;
+		private bool hasPlaced;
 		
-		//TODO: remove all these variables
-		private bool justDoIt = true;
-
 
 		void onTurnStateChanged(int turnState)
 		{
@@ -49,6 +47,7 @@ namespace TowerVR
 			manager.nextPlayerTurnHandlers.Add(onNextPlayerTurn);
 
 			myCamera = Camera.main;	
+			noCube = true;
 					
 		}
 
@@ -56,120 +55,68 @@ namespace TowerVR
 		void Update () {
 
 			//Check if it is my turn, otherwise just observe
-			//if (currentPlayerID == PhotonNetwork.player.ID)
-			if(justDoIt)
+			if (currentPlayerID == PhotonNetwork.player.ID)
 			{
 				//If it is my turn, spawn new piece to be placed. 
-				//Change turnState to SelectingTowerPiece by adding function to TowerGameManager and call it!
-				//newPiece = manager.selectTowerPiece();
-				//Change turnState to PlacingTowerPiece
+				if(turnState == TurnState.SelectingTowerPiece)
+				{
+					//newPiece = ngt!
+					hasPlaced = false;
+					manager.selectTowerPiece(TowerPieceDifficulty.Easy);
+				}
+								
 				
-				//Temporary solution
-				newPiece = GameObject.FindGameObjectWithTag("TowerPiece");
-
-
-				//TODO: change back when the rest is implemented
 				//Proceed when turnState is PlacingTowerPiece
-				if(justDoIt)
-				//if (turnState == TurnState.PlacingTowerPiece) 
+				if (turnState == TurnState.PlacingTowerPiece && !hasPlaced) 
 				{
 
-
-					//Check where cameraRay intersect with grid
-					if (findIntersection (out intersectionWithPlane)) 
+					//Project the new piece directly where you look
+					RaycastHit hitInfo;
+					int towerLayerMask = 1 << 8; //Sets Layer 8 to true
+					if(Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hitInfo, Mathf.Infinity, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 					{
-						
-						
-						///The TowerPiece should be projected onto the tower
-						//VERSION 1
-						RaycastHit hitInfo;
-						int towerLayerMask = 1 << 8; //Sets Layer 8 to true
-						if(Physics.Raycast(intersectionWithPlane, Vector3.down, out hitInfo, Mathf.Infinity, towerLayerMask, QueryTriggerInteraction.UseGlobal))
+						//Instantiate a new towerpiece if there is none to be placed	
+						if(noCube)
 						{
-							//TODO: Only render outlines?
-							newPiece.GetComponent<MeshRenderer>().enabled = true; 
-							newPiece.transform.position = hitInfo.point + Vector3.up * newPiece.transform.localScale.y/2;
+							Debug.Log("NewPiece!");
+							pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
+							pieceToAdd.layer = 0;
+							pieceToAdd.GetComponent<Rigidbody>().isKinematic = false;
+							//pieceToAdd.GetComponent<Rigidbody>().detectCollisions = false;
+							noCube = false;
 						}
-						else
-						{
-							//If there's no intersection with Tower, don't render the new piece
-							newPiece.GetComponent<MeshRenderer>().enabled = false;
-						}
-						
-						//VERSION 2
-						//Translate down so long we don't hit a collider
-						//var newCol = newPiece.GetComponent<Collider>();
-						//while(!collisions) -> move down
-											
-						
-						//newPiece.transform.position = intersectionWithPlane;	//See the prick on placing plane			
-						newPiece.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
+						pieceToAdd.transform.position = hitInfo.point + Vector3.up * newPiece.transform.localScale.y/2;
+						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
+												
+						pieceToAdd.GetComponent<MeshRenderer>().enabled = true; 
 						
 						//Satisfied? Then place the piece with the button
 						if (Cardboard.SDK.Triggered) 
 						{
-												
-							Debug.Log("Placing new piece!");
-							GameObject pieceToAdd;
-							pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
+							
+							pieceToAdd.GetComponent<Rigidbody>().isKinematic = true;
+							//pieceToAdd.GetComponent<Rigidbody>().detectCollisions = true;
+							pieceToAdd.layer = 8;
 							pieceToAdd.tag = "newTowerPiece";
-							manager.placeTowerPiece (newPiece.transform.position.x, newPiece.transform.position.z, newPiece.transform.rotation.y);
+							noCube = true;
+							hasPlaced = true;
+							manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);
 						}
 						
 					}
-					 	
+					else
+					{
+						//If there's no intersection with Tower, don't render the new piece
+						pieceToAdd.GetComponent<MeshRenderer>().enabled = false;
+					}	
 				}
-				
 			}
-			else 
+			else //!myTurn
 			{
 				//Observe! Throw things on each other!?
-
-			}
-			
-		}
-			
-
-		/**
-		 *	Find intersection with placing plane 
-		 **/
-		bool findIntersection(out Vector3 intersectionWithPlane)
-		{
-			//Towerpiece should move in the grid above the playing field
-			Vector3 planePos = placingPlane.transform.position;
-
-			// create an infinite plane at placingPlanes position with normal pointing downward
-			Plane myPlane = new Plane (Vector3.down, planePos);
-
-			//Have the camera ray point slightly upward
-			Ray cameraRay = myCamera.ScreenPointToRay(
-				new Vector3(Screen.currentResolution.width/2, (5*Screen.currentResolution.height)/6, 0.0f));
-				
-				
-			// For debugging purposes
-			GameObject debugRay = GameObject.FindGameObjectWithTag("RayDebug");				
-
-			//If the ray hits the plane, return point of intersection
-			float dist;
-			if(myPlane.Raycast(cameraRay, out dist))
-			{			
-				Debug.Log("Found intersection");
-				intersectionWithPlane = cameraRay.GetPoint (dist);
-				
-				// For debugging purposes
-				debugRay.GetComponent<MeshRenderer>().enabled = true;
-				debugRay.transform.position = myCamera.transform.position + Vector3.up*2;
-				debugRay.transform.forward = intersectionWithPlane - myCamera.transform.position;
-				
-				return true;
-			}
-			else
-			{
-				debugRay.GetComponent<MeshRenderer>().enabled = false;
-				intersectionWithPlane = planePos;
-				return false;
 			}
 		}
+			
 
 
 		// Destroy listeners
