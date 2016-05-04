@@ -38,7 +38,7 @@ namespace TowerVR
          **/
         public sealed override void selectTowerPiece(TowerPieceDifficulty difficulty)
 		{
-			handleSelectTowerPieceEvent(difficulty);
+			handleSelectTowerPieceEvent(PhotonNetwork.player.ID, difficulty);
 		}
 		
         /**
@@ -67,11 +67,14 @@ namespace TowerVR
 			
 			players = new HashSet<PhotonPlayer>();
 			playersReadyMap = new Dictionary<PhotonPlayer, bool>();
+            playerScores = new Dictionary<PhotonPlayer, Score>();
 			
 			foreach (var photonPlayer in PhotonNetwork.playerList)
 			{
 				players.Add(photonPlayer);
-				playersReadyMap.Add(photonPlayer, false);
+				
+                playersReadyMap.Add(photonPlayer, false);
+                playerScores.Add(photonPlayer, new Score(0));
 			}
         }
         
@@ -98,7 +101,7 @@ namespace TowerVR
                     TowerPieceDifficulty difficulty;
                     if (SelectTowerPieceEvent.TryParse(content, out difficulty))
                     {
-                        handleSelectTowerPieceEvent(difficulty);
+                        handleSelectTowerPieceEvent(senderID, difficulty);
                     }
 					else
                     {
@@ -171,15 +174,9 @@ namespace TowerVR
             }
         }
         
-        protected void handleSelectTowerPieceEvent(TowerPieceDifficulty difficulty)
+        protected void handleSelectTowerPieceEvent(int playerID, TowerPieceDifficulty difficulty)
         {
-            // 3 arrays of brick types
-            
-            // display logic
-            
-            // select piece
-            
-            // return piece   
+            currentDifficulty = difficulty;
         }
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
@@ -206,7 +203,6 @@ namespace TowerVR
             //Update TowerState
             towerState = TowerState.Moving;
             StartCoroutine(observeTower());
-            
         }
         
         
@@ -247,7 +243,6 @@ namespace TowerVR
                             }
                             break;
                         case TurnState.TowerReacting:
-                            
                             if (towerState == TowerState.Stationary)
                             {
                                 proceedPlayerTurn();
@@ -292,14 +287,14 @@ namespace TowerVR
         
         void Start()
         {
-            StartCoroutine("updateGameState");
-            StartCoroutine("updateTurnState");
+            StartCoroutine(updateGameState());
+            StartCoroutine(updateTurnState());
         }
         
         void OnDestroy()
         {
-            StopCoroutine("updateGameState");
-            StopCoroutine("updateTurnState");
+            StopCoroutine(updateGameState());
+            StopCoroutine(updateTurnState());
         }
         
         /**
@@ -361,6 +356,23 @@ namespace TowerVR
 			return true;
 		}
         
+        private Tuple<PhotonPlayer, Score> getWinningPlayer()
+        {
+            PhotonPlayer winner = null;
+            Score score = new Score(-1);
+            
+            foreach (var playerScorePair in playerScores)
+            {
+                if (score.score < playerScorePair.Value.score)
+                {
+                    winner = playerScorePair.Key;
+                    score = playerScorePair.Value;
+                }
+            }
+            
+            return new Tuple<PhotonPlayer, Score>(winner, score);
+        }
+        
         #endregion PRIVATE_MEMBER_FUNCTIONS
         
         
@@ -417,6 +429,8 @@ namespace TowerVR
         // Flags to see if each player is online and ready.
         private IDictionary<PhotonPlayer, bool> playersReadyMap;
         
+        private IDictionary<PhotonPlayer, Score> playerScores;
+        
         /**
 		 * A queue containing the next players.
 		 * 
@@ -430,6 +444,8 @@ namespace TowerVR
         
         // Reference to the current player.
         private PhotonPlayer currentPlayer;
+        
+        private TowerPieceDifficulty currentDifficulty;
         
         private Timer turnTimer;
         
