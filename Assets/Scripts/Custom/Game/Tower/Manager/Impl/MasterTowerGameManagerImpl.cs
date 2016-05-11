@@ -196,9 +196,23 @@ namespace TowerVR
                 numberOfObjects++;
                 towerPiece.layer = 8;
                 stackedTowerPieces.Add(towerPiece);
+                
+                var rb = towerPiece.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.isKinematic = true;
+					rb.detectCollisions = true;
+                }
+                
+                // Take over ownership
+                var photonView = towerPiece.GetComponent<PhotonView>();
+                if (photonView != null && !photonView.isMine)
+                {
+                    photonView.RequestOwnership();
+                }
             }
-            Debug.Log("Stacked " + numberOfObjects + " objects!");
-             
+            
+            Log("Stacked: " + numberOfObjects + " objects");
 
             Log("handlePlaceTowerPieceEvent [playerID=" + playerID + " posX=" + posX + " posZ=" + posZ + "rotDegreesY=" + rotDegreesY + "]");
             
@@ -222,7 +236,7 @@ namespace TowerVR
         {
             for (;;)
             {
-                Log("updateGameState");
+                //Log("updateGameState");
                 
                 yield return new WaitForSeconds(ONE_SECOND);
             }

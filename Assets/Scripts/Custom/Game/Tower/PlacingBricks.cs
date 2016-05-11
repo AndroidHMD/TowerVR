@@ -22,6 +22,9 @@ namespace TowerVR
 		private Camera myCamera;
 		private bool noCube;
 		private bool hasPlaced;
+		private bool hasSelected;
+		private Bounds objectBounds;
+		private Vector3 objectExtent;
 		
 
 		void onTurnStateChanged(int turnState)
@@ -48,6 +51,8 @@ namespace TowerVR
 
 			myCamera = Camera.main;	
 			noCube = true;
+			hasPlaced = false;
+			hasSelected = false;
 					
 		}
 
@@ -58,55 +63,85 @@ namespace TowerVR
 			if (currentPlayerID == PhotonNetwork.player.ID)
 			{
 				//If it is my turn, spawn new piece to be placed. 
-				if(turnState == TurnState.SelectingTowerPiece)
+				if(turnState == TurnState.SelectingTowerPiece && !hasSelected)
 				{
 					//newPiece = ngt!
-					hasPlaced = false;
+					Mesh mesh = newPiece.GetComponent<MeshFilter>().mesh;
+					objectBounds = mesh.bounds;									//Gives (0.5, 0.5, 0.5)
+					//objectBounds = newPiece.GetComponent<Renderer>().bounds; 	//Gives (7.1, 5.0, 7.1)
+					//objectBounds = newPiece.GetComponent<Collider>().bounds; 	//Gives (0.0, 0.0, 0.0)
+					
+					objectExtent = Vector3.Scale(objectBounds.extents, newPiece.transform.localScale); //Gives (5.0, 5.0, 5.0)
+					Debug.Log("Selected!!! Bounds " + objectExtent);
+					
 					manager.selectTowerPiece(TowerPieceDifficulty.Easy);
+					hasSelected = true;
+					hasPlaced = false;
+					
+					
 				}
 								
 				
 				//Proceed when turnState is PlacingTowerPiece
 				if (turnState == TurnState.PlacingTowerPiece && !hasPlaced) 
-				{
-
+				{				
+				
 					//Project the new piece directly where you look
 					RaycastHit hitInfo;
 					int towerLayerMask = 1 << 8; //Sets Layer 8 to true
-					if(Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hitInfo, Mathf.Infinity, towerLayerMask, QueryTriggerInteraction.UseGlobal))
+					//Cast a ray from camera
+					//if(Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hitInfo, Mathf.Infinity, towerLayerMask, QueryTriggerInteraction.UseGlobal))
+					//Cast a box from cameras pow
+					if(Physics.BoxCast(myCamera.transform.position, objectExtent, myCamera.transform.forward, out hitInfo, newPiece.transform.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 					{
 						//Instantiate a new towerpiece if there is none to be placed	
 						if(noCube)
 						{
 							Debug.Log("NewPiece!");
 							pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
-							pieceToAdd.layer = 0;
-							pieceToAdd.GetComponent<Rigidbody>().isKinematic = false;
-							//pieceToAdd.GetComponent<Rigidbody>().detectCollisions = false;
 							noCube = false;
+							pieceToAdd.layer = 0;
 						}
-						pieceToAdd.transform.position = hitInfo.point + Vector3.up * newPiece.transform.localScale.y/2;
+						//if normal is up
+						if(hitInfo.normal == Vector3.up)
+						{
+							pieceToAdd.transform.position = hitInfo.point + Vector3.up * objectExtent.y;
+							pieceToAdd.GetComponent<MeshRenderer>().enabled = true; 
+						}
+						else
+						{
+							RaycastHit newHitInfo;
+							if(Physics.BoxCast(hitInfo.point, objectExtent, Vector3.down, out newHitInfo, newPiece.transform.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
+							{
+								pieceToAdd.transform.position = newHitInfo.point + Vector3.up * objectExtent.y + hitInfo.normal * objectExtent.z;
+								pieceToAdd.GetComponent<MeshRenderer>().enabled = true; 
+							}
+							else
+							{
+								//If there's no intersection with Tower below, don't render the new piece
+								pieceToAdd.GetComponent<MeshRenderer>().enabled = false;
+							}
+							
+						}
+					
 						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
-												
-						pieceToAdd.GetComponent<MeshRenderer>().enabled = true; 
+						
 						
 						//Satisfied? Then place the piece with the button
 						if (Cardboard.SDK.Triggered) 
 						{
-							
-							pieceToAdd.GetComponent<Rigidbody>().isKinematic = true;
-							//pieceToAdd.GetComponent<Rigidbody>().detectCollisions = true;
 							pieceToAdd.layer = 8;
-							pieceToAdd.tag = "newTowerPiece";
+							//pieceToAdd.tag = "newTowerPiece";
 							noCube = true;
 							hasPlaced = true;
+							hasSelected = false;
 							manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);
 						}
 						
 					}
 					else
 					{
-						//If there's no intersection with Tower, don't render the new piece
+						//If there's no intersection with Tower at all, don't render the new piece
 						pieceToAdd.GetComponent<MeshRenderer>().enabled = false;
 					}	
 				}

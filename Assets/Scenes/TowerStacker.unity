@@ -1349,7 +1349,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 226ead4ebc4c14ec885975e7cf823e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placingPlane: {fileID: 0}
   newPiece: {fileID: 189834, guid: dc9af35fb8fc849ca97ed03d96ca7db9, type: 2}
   pieceToAdd: {fileID: 0}
 --- !u!114 &1017791942
@@ -2123,6 +2122,18 @@ Prefab:
     - target: {fileID: 2000002, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_ClearFlags
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11414680, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
+      propertyPath: debugRotation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11414680, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
+      propertyPath: debugPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11414680, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}

@@ -9,14 +9,14 @@ GameObject:
   m_Component:
   - 4: {fileID: 473728}
   - 33: {fileID: 3328882}
-  - 65: {fileID: 6501574}
+  - 64: {fileID: 6453768}
   - 23: {fileID: 2334682}
   - 114: {fileID: 11486106}
   - 114: {fileID: 11447566}
   - 54: {fileID: 5433744}
   m_Layer: 0
   m_Name: TempTowerPiece
-  m_TagString: TowerPiece
+  m_TagString: newTowerPiece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,8 +81,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &6501574
-BoxCollider:
+--- !u!64 &6453768
+MeshCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -91,8 +91,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Convex: 1
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &11447566
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,7 +111,7 @@ MonoBehaviour:
   synchronization: 3
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
   - {fileID: 473728}
   ObservedComponentsFoldoutOpen: 1
