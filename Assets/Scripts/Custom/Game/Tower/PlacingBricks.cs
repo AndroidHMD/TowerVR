@@ -186,18 +186,6 @@ namespace TowerVR
             int hardIdx = 2;
             
             Debug.Log("set arrays");
-            /// 3 arrays with objects belonging to corresponding difficulties
-            // brickArrays[easyIdx] = easyBricks;
-            // brickArrays[mediumIdx] = mediumBricks;
-            // brickArrays[hardIdx] = hardBricks;
-            
-            /// Select random elements to be displayed
-            // for (int i = 0; i < displayedObjects.Length; i++)
-            // {
-            //     int randomIdx = Random.Range(0, (brickArrays[i].Count - 1));
-            //     // Debug.Log("Random index = " + randomIdx);
-            //     displayedObjects[i] = brickArrays[i][randomIdx];
-            // }
             
             int randomIdx = Random.Range(0, (easyBricks.Count - 1));
             Debug.Log("choosing easyBricks[" + randomIdx + "]");
@@ -210,7 +198,7 @@ namespace TowerVR
             /// Set origin positions of objects to display equal to camera positions
             for (int i = 0; i < displayedObjects.Length; i++)
             {
-				var fdsjkfld = Instantiate(displayedObjects[i], new Vector3(), Quaternion.identity) as GameObject;
+				displayedObjects[i] = Instantiate(displayedObjects[i], new Vector3(), Quaternion.identity) as GameObject;
                 displayedObjects[i].transform.position = myCamera.transform.position;
             }
 
