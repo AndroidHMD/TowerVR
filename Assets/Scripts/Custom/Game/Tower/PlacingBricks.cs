@@ -99,13 +99,19 @@ namespace TowerVR
 						{
 							Debug.Log("NewPiece!");
 							pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
+							pieceToAdd.GetComponent<Collider>().isTrigger = true;
 							noCube = false;
 							pieceToAdd.layer = 0;
 						}
 						//if normal is up
 						if(hitInfo.normal == Vector3.up)
 						{
-							pieceToAdd.transform.position = hitInfo.point + Vector3.up * objectExtent.y;
+							/*
+							* Man får ut punkten där den träffar, inte mittpunkten på objektet, jag tror detta påverkar att den hoppar fram och tillbaka. Oklart hur vi ska lösa det...
+							*/
+							
+							pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up;
+							//pieceToAdd.transform.position = hitInfo.point + Vector3.up * objectExtent.y;
 							pieceToAdd.GetComponent<MeshRenderer>().enabled = true; 
 						}
 						else
@@ -113,7 +119,8 @@ namespace TowerVR
 							RaycastHit newHitInfo;
 							if(Physics.BoxCast(hitInfo.point, objectExtent, Vector3.down, out newHitInfo, newPiece.transform.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 							{
-								pieceToAdd.transform.position = newHitInfo.point + Vector3.up * objectExtent.y + hitInfo.normal * objectExtent.z;
+								pieceToAdd.transform.position = (myCamera.transform.position + myCamera.transform.forward * hitInfo.distance)  + Vector3.down * newHitInfo.distance + Vector3.up;
+								//pieceToAdd.transform.position = newHitInfo.point + Vector3.up * objectExtent.y + hitInfo.normal * objectExtent.z;
 								pieceToAdd.GetComponent<MeshRenderer>().enabled = true; 
 							}
 							else
