@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /**
  * This script controls how the bricks are placed.
@@ -13,12 +14,18 @@ namespace TowerVR
 
 	public class PlacingBricks : TowerVR.TowerGameBehaviour  {
 
+		public GameObject placingPlane;
+		public List<GameObject> easyBricks = new List<GameObject>();
+        public List<GameObject> mediumBricks = new List<GameObject>();
+        public List<GameObject> hardBricks = new List<GameObject>();
+		
+		private GameObject [] displayedObjects = new GameObject[3];
+
 		private int turnState;
 		private int towerState;
 		private int currentPlayerID;
 
 		public GameObject newPiece;
-
 		public GameObject pieceToAdd;
 		private Camera myCamera;
 		private bool noCube;
@@ -26,7 +33,9 @@ namespace TowerVR
 		private bool hasSelected;
 		private Bounds objectBounds;
 		private Vector3 objectExtent;
-
+		
+		// temporary
+		private bool selecting = false;
 
 		void onTurnStateChanged(int turnState)
 		{
@@ -43,7 +52,6 @@ namespace TowerVR
 			this.currentPlayerID = nextPlayerID;
 		}
 
-
 		void Start ()
 		{
 			manager.turnStateChangedHandlers.Add(onTurnStateChanged);
@@ -54,9 +62,7 @@ namespace TowerVR
 			noCube = true;
 			hasPlaced = false;
 			hasSelected = false;
-
 		}
-
 
 		void Update () {
 
@@ -66,6 +72,13 @@ namespace TowerVR
 				//If it is my turn, spawn new piece to be placed.
 				if(turnState == TurnState.SelectingTowerPiece && !hasSelected)
 				{
+					if (!selecting)
+					{
+						Debug.Log("Calling");
+						selecting = true;
+						GetAndDisplay();
+					}
+					
 					//newPiece = ngt!
 					Debug.Log("Selecting piece");
 
@@ -73,9 +86,7 @@ namespace TowerVR
 					hasSelected = true;
 					hasPlaced = false;
 
-
 				}
-
 
 				//Proceed when turnState is PlacingTowerPiece
 				if (turnState == TurnState.PlacingTowerPiece && !hasPlaced)
@@ -150,8 +161,7 @@ namespace TowerVR
 				//Observe! Throw things on each other!?
 			}
 		}
-
-
+		
 		void placeBrick()
 		{
 			var rb = pieceToAdd.GetComponent<Rigidbody>();
@@ -163,7 +173,56 @@ namespace TowerVR
 			hasPlaced = true;
 			hasSelected = false;
 			manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);		
+
 		}
+		
+		/**
+		 *	Randomly select bricks to be displayed for player to choose 
+		 **/
+		public void GetAndDisplay () 
+        {
+            int easyIdx = 0;
+            int mediumIdx = 1;
+            int hardIdx = 2;
+            
+            Debug.Log("set arrays");
+            /// 3 arrays with objects belonging to corresponding difficulties
+            // brickArrays[easyIdx] = easyBricks;
+            // brickArrays[mediumIdx] = mediumBricks;
+            // brickArrays[hardIdx] = hardBricks;
+            
+            /// Select random elements to be displayed
+            // for (int i = 0; i < displayedObjects.Length; i++)
+            // {
+            //     int randomIdx = Random.Range(0, (brickArrays[i].Count - 1));
+            //     // Debug.Log("Random index = " + randomIdx);
+            //     displayedObjects[i] = brickArrays[i][randomIdx];
+            // }
+            
+            int randomIdx = Random.Range(0, (easyBricks.Count - 1));
+            Debug.Log("choosing easyBricks[" + randomIdx + "]");
+            displayedObjects[0] = easyBricks[randomIdx];
+            displayedObjects[1] = mediumBricks[Random.Range(0, (mediumBricks.Count - 1))];
+            displayedObjects[2] = hardBricks[Random.Range(0, (hardBricks.Count - 1))];
+            
+            Debug.Log("set positions");            
+            
+            /// Set origin positions of objects to display equal to camera positions
+            for (int i = 0; i < displayedObjects.Length; i++)
+            {
+				var fdsjkfld = Instantiate(displayedObjects[i], new Vector3(), Quaternion.identity) as GameObject;
+                displayedObjects[i].transform.position = myCamera.transform.position;
+            }
+
+            Debug.Log("translate");
+
+            /// Translate objects nicely
+            displayedObjects[easyIdx].transform.Translate(-5.0f, 0.0f, 7.0f);
+            displayedObjects[mediumIdx].transform.Translate(0.0f, 0.0f, 7.0f);
+            displayedObjects[hardIdx].transform.Translate(5.0f, 0.0f, 7.0f);
+            
+            Debug.Log("done with generate");
+        }
 
 		// Destroy listeners
 		void OnDestroy()
