@@ -15,11 +15,13 @@ namespace TowerVR
 	public class PlacingBricks : TowerVR.TowerGameBehaviour  {
 
 		public GameObject placingPlane;
+		
+		// We need a basic case for these in case they have not been set in the Unity Editor
 		public List<GameObject> easyBricks = new List<GameObject>();
         public List<GameObject> mediumBricks = new List<GameObject>();
         public List<GameObject> hardBricks = new List<GameObject>();
 		
-		private GameObject [] displayedObjects = new GameObject[3];
+		private List<GameObject> displayedObjects = new List<GameObject>();
 
 		private int turnState;
 		private int towerState;
@@ -79,9 +81,19 @@ namespace TowerVR
 						GetAndDisplay();
 					}
 					
+					if (selecting)
+					{
+						// Continuous update not needed?
+						// Debug.Log("updating object 0 to " + (myCamera.transform.position.x - 5.0f) + ", "  + myCamera.transform.position.y + ", " + (myCamera.transform.position.z + 7.0f));
+						// displayedObjects[0].transform.position = new Vector3(-5.0f, myCamera.transform.position.y, myCamera.transform.position.z + 7.0f);
+						// displayedObjects[1].transform.position = new Vector3(myCamera.transform.position.x, myCamera.transform.position.y, myCamera.transform.position.z + 7.0f);
+						// displayedObjects[2].transform.position = new Vector3(myCamera.transform.position.x + 5.0f, myCamera.transform.position.y, myCamera.transform.position.z + 7.0f);
+						
+						// ... selecting = false
+					}
+					
 					//newPiece = ngt!
 					Debug.Log("Selecting piece");
-
 					manager.selectTowerPiece(TowerPieceDifficulty.Easy);
 					hasSelected = true;
 					hasPlaced = false;
@@ -181,33 +193,38 @@ namespace TowerVR
 		 **/
 		public void GetAndDisplay () 
         {
+			// Variables to keep track
             int easyIdx = 0;
             int mediumIdx = 1;
             int hardIdx = 2;
             
-            Debug.Log("set arrays");
+            // Debug.Log("set arrays");
+			List<GameObject> tempList = new List<GameObject>();
             
-            int randomIdx = Random.Range(0, (easyBricks.Count - 1));
-            Debug.Log("choosing easyBricks[" + randomIdx + "]");
-            displayedObjects[0] = easyBricks[randomIdx];
-            displayedObjects[1] = mediumBricks[Random.Range(0, (mediumBricks.Count - 1))];
-            displayedObjects[2] = hardBricks[Random.Range(0, (hardBricks.Count - 1))];
+            // int randomIdx = Random.Range(0, (easyBricks.Count - 1)); 	// debug
+            // Debug.Log("choosing easyBricks[" + randomIdx + "]");
+            tempList.Insert(easyIdx, easyBricks[ Random.Range(0, (easyBricks.Count - 1)) ]);
+            tempList.Insert(mediumIdx, mediumBricks[ Random.Range(0, (mediumBricks.Count - 1)) ]);
+            tempList.Insert(hardIdx, hardBricks[ Random.Range(0, (hardBricks.Count - 1)) ]);
             
-            Debug.Log("set positions");            
+            // Debug.Log("Array length: " + tempList.Count);            
             
             /// Set origin positions of objects to display equal to camera positions
-            for (int i = 0; i < displayedObjects.Length; i++)
+            for (int i = 0; i < tempList.Count; i++)
             {
-				displayedObjects[i] = Instantiate(displayedObjects[i], new Vector3(), Quaternion.identity) as GameObject;
-                displayedObjects[i].transform.position = myCamera.transform.position;
+				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.identity) as GameObject;
+				temp.transform.SetParent(myCamera.transform);
+				// Debug.Log("Adding to list");
+				displayedObjects.Add(temp);
+				
             }
 
-            Debug.Log("translate");
+            // Debug.Log("translate first time");
 
-            /// Translate objects nicely
-            displayedObjects[easyIdx].transform.Translate(-5.0f, 0.0f, 7.0f);
-            displayedObjects[mediumIdx].transform.Translate(0.0f, 0.0f, 7.0f);
-            displayedObjects[hardIdx].transform.Translate(5.0f, 0.0f, 7.0f);
+            // Translate objects nicely
+            displayedObjects[easyIdx].transform.Translate(-1.0f, 0.0f, 3.0f);
+            displayedObjects[mediumIdx].transform.Translate(0.0f, 0.0f, 3.0f);
+            displayedObjects[hardIdx].transform.Translate(1.0f, 0.0f, 3.0f);
             
             Debug.Log("done with generate");
         }
