@@ -17,8 +17,10 @@ namespace TowerVR
 			{
 				rb.isKinematic = false;
 				rb.detectCollisions = false;
+				rb.useGravity = false;
 			}
 			gameObject.layer = 8;
+			gameObject.tag = "newTowerPiece";
 		}
 		
 		void OnOwnershipRequest(object[] viewAndPlayer)
@@ -30,5 +32,29 @@ namespace TowerVR
 			
 			view.TransferOwnership(player.ID);
  		} 
+		 
+		void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+		{
+			
+			var rb = gameObject.GetComponent<Rigidbody>();
+			if (stream.isWriting)
+			{
+				//We own this player: send the others our data
+				stream.SendNext((bool) rb.isKinematic );
+				stream.SendNext((bool) rb.detectCollisions );
+				stream.SendNext((bool) rb.useGravity );
+				stream.SendNext(transform.position);
+				stream.SendNext(transform.rotation);
+			}
+			else
+			{
+				//Network player, receive data
+				rb.isKinematic = (bool)stream.ReceiveNext();
+				rb.detectCollisions = (bool)stream.ReceiveNext();
+				rb.useGravity = (bool)stream.ReceiveNext();
+				transform.position = (Vector3)stream.ReceiveNext();
+				transform.rotation = (Quaternion)stream.ReceiveNext();
+			}
+		}
 	}
 }

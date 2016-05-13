@@ -4,7 +4,7 @@ using System.Collections;
 public class ShowServers : MonoBehaviour   {
 
 	public GameObject cubePrefab;
-	private static int positionY = 50;
+	private static int positionY = 30;
 	GameObject lobbyCube;
 
 	// Connects to PhotonNetwork
@@ -25,7 +25,7 @@ public class ShowServers : MonoBehaviour   {
 			lobbyCube = Instantiate (cubePrefab, new Vector3 (10, positionY, 0), transform.rotation) as GameObject;
 			lobbyCube.GetComponentInChildren<TextMesh> ().text = room.name;
 
-			positionY += 15;
+			positionY += 10;
 		}
 	}
 

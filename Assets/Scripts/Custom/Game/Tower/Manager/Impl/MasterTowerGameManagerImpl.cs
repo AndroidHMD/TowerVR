@@ -181,11 +181,12 @@ namespace TowerVR
             
             // return piece   
             turnState = TurnState.PlacingTowerPiece;
+            Log("handleSelectTowerPieceEvent. Difficulty: " + difficulty);
         }
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
         {
-            stackedTowerPieces = new List<GameObject>();
+            stackedTowerPieces = new List<GameObject>(); //Cleans old list
             
 			//Player will try and place TowerPiece in PlacingBrick.cs    
             GameObject[] newPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
@@ -194,15 +195,15 @@ namespace TowerVR
             foreach (GameObject towerPiece in newPieces)
             {
                 numberOfObjects++;
-                towerPiece.layer = 8;
                 stackedTowerPieces.Add(towerPiece);
                 
-                var rb = towerPiece.GetComponent<Rigidbody>();
+                /*var rb = towerPiece.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
                     rb.isKinematic = true;
-					rb.detectCollisions = true;
-                }
+                    rb.detectCollisions = true;
+                    rb.useGravity = true;
+                }*/
                 
                 // Take over ownership
                 var photonView = towerPiece.GetComponent<PhotonView>();
@@ -287,7 +288,7 @@ namespace TowerVR
                 bool allPiecesStationary = true;
                 foreach (var towerPiece in stackedTowerPieces)
                 {
-                    Rigidbody rb = towerPiece.GetComponent<Rigidbody>();
+                    var rb = towerPiece.GetComponent<Rigidbody>();
                     if(rb.velocity.magnitude > TowerConstants.MaxTowerVelocity || rb.angularVelocity.magnitude > TowerConstants.MaxTowerAngVelocity)
                     {
                         allPiecesStationary = false;

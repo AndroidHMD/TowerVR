@@ -52,18 +52,19 @@ public abstract class PhotonNetworkEvent
     {
         if (eventCode < 0 || eventCode > 199)
         {
-            trySendError = "Trying to send a PhotonNetworkEvent with an event code outside of [0, 199], aborting.";
+            Debug.Log("Trying to send a PhotonNetworkEvent with an event code outside of [0, 199], aborting.");
             return false;
         }
         
         if (alreadySuccessfullySent)
         {
-            trySendError = "Trying to send an already successfully sent PhotonNetworkEvent again..."; 
+            Debug.Log("Trying to send an already successfully sent PhotonNetworkEvent again..."); 
             return false;
         }
         
         if (!contentIsValid())
         {
+            Debug.Log("Content not valid");
             return false;
         }
 

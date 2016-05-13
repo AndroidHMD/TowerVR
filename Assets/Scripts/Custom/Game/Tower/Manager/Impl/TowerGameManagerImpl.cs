@@ -44,7 +44,9 @@ namespace TowerVR
 		 **/
 		public virtual void selectTowerPiece(TowerPieceDifficulty difficulty)
 		{
+			
 			var ev = new SelectTowerPieceEvent(difficulty);
+			
 			if (!ev.trySend())
 			{
 				Debug.LogError(ev.trySendError);

@@ -4,7 +4,8 @@ using System.Collections;
 /**
  * This script controls how the bricks are placed.
  * Add to SceneLogic object.
- * 
+ *
+ * A TowerPiece-script needs to be added to new bricks
  **/
 
 namespace TowerVR
@@ -25,7 +26,7 @@ namespace TowerVR
 		private bool hasSelected;
 		private Bounds objectBounds;
 		private Vector3 objectExtent;
-		
+
 
 		void onTurnStateChanged(int turnState)
 		{
@@ -43,17 +44,17 @@ namespace TowerVR
 		}
 
 
-		void Start () 
+		void Start ()
 		{
 			manager.turnStateChangedHandlers.Add(onTurnStateChanged);
 			manager.towerStateChangedHandlers.Add (onTowerStateChanged);
 			manager.nextPlayerTurnHandlers.Add(onNextPlayerTurn);
 
-			myCamera = Camera.main;	
+			myCamera = Camera.main;
 			noCube = true;
 			hasPlaced = false;
 			hasSelected = false;
-					
+
 		}
 
 
@@ -62,39 +63,31 @@ namespace TowerVR
 			//Check if it is my turn, otherwise just observe
 			if (currentPlayerID == PhotonNetwork.player.ID)
 			{
-				//If it is my turn, spawn new piece to be placed. 
+				//If it is my turn, spawn new piece to be placed.
 				if(turnState == TurnState.SelectingTowerPiece && !hasSelected)
 				{
 					//newPiece = ngt!
-					Mesh mesh = newPiece.GetComponent<MeshFilter>().mesh;
-					objectBounds = mesh.bounds;									//Gives (0.5, 0.5, 0.5)
-					//objectBounds = newPiece.GetComponent<Renderer>().bounds; 	//Gives (7.1, 5.0, 7.1)
-					//objectBounds = newPiece.GetComponent<Collider>().bounds; 	//Gives (0.0, 0.0, 0.0)
-					
-					objectExtent = Vector3.Scale(objectBounds.extents, newPiece.transform.localScale); //Gives (5.0, 5.0, 5.0)
-					Debug.Log("Selected!!! Bounds " + objectExtent);
-					
+					Debug.Log("Selecting piece");
+
 					manager.selectTowerPiece(TowerPieceDifficulty.Easy);
 					hasSelected = true;
 					hasPlaced = false;
-					
-					
+
+
 				}
-								
-				
+
+
 				//Proceed when turnState is PlacingTowerPiece
-				if (turnState == TurnState.PlacingTowerPiece && !hasPlaced) 
-				{				
-				
+				if (turnState == TurnState.PlacingTowerPiece && !hasPlaced)
+				{
+
 					//Project the new piece directly where you look
 					RaycastHit hitInfo;
 					int towerLayerMask = 1 << 8; //Sets Layer 8 to true
-					//Cast a ray from camera
-					//if(Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hitInfo, Mathf.Infinity, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 					//Cast a box from cameras pow
 					if(Physics.BoxCast(myCamera.transform.position, objectExtent, myCamera.transform.forward, out hitInfo, newPiece.transform.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 					{
-						//Instantiate a new towerpiece if there is none to be placed	
+						//Instantiate a new towerpiece if there is none to be placed
 						if(noCube)
 						{
 							Debug.Log("NewPiece!");
@@ -102,55 +95,74 @@ namespace TowerVR
 							pieceToAdd.GetComponent<Collider>().isTrigger = true;
 							noCube = false;
 							pieceToAdd.layer = 0;
+
+							Mesh mesh = pieceToAdd.GetComponent<MeshFilter>().mesh;
+							objectBounds = mesh.bounds;
+							objectExtent = Vector3.Scale(objectBounds.extents, pieceToAdd.transform.localScale);
 						}
 						//if normal is up
 						if(hitInfo.normal == Vector3.up)
 						{
-							/*
-							* Man får ut punkten där den träffar, inte mittpunkten på objektet, jag tror detta påverkar att den hoppar fram och tillbaka. Oklart hur vi ska lösa det...
-							*/
-							
-							pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up;
+							pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance; // + Vector3.up*5;
 							//pieceToAdd.transform.position = hitInfo.point + Vector3.up * objectExtent.y;
-							pieceToAdd.GetComponent<MeshRenderer>().enabled = true; 
+							pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 						}
 						else
 						{
 							RaycastHit newHitInfo;
 							if(Physics.BoxCast(hitInfo.point, objectExtent, Vector3.down, out newHitInfo, newPiece.transform.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 							{
-								pieceToAdd.transform.position = (myCamera.transform.position + myCamera.transform.forward * hitInfo.distance)  + Vector3.down * newHitInfo.distance + Vector3.up;
+								pieceToAdd.transform.position = (myCamera.transform.position + myCamera.transform.forward * hitInfo.distance)  + Vector3.down * newHitInfo.distance; // + Vector3.up*5;
 								//pieceToAdd.transform.position = newHitInfo.point + Vector3.up * objectExtent.y + hitInfo.normal * objectExtent.z;
-								pieceToAdd.GetComponent<MeshRenderer>().enabled = true; 
+								pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 							}
 							else
 							{
 								//If there's no intersection with Tower below, don't render the new piece
 								pieceToAdd.GetComponent<MeshRenderer>().enabled = false;
 							}
-							
+
 						}
-					
+
 						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
-						
-						
+
+
 						//Satisfied? Then place the piece with the button
-						if (Cardboard.SDK.Triggered) 
+						if (Cardboard.SDK.Triggered)
 						{
-							pieceToAdd.layer = 8;
-							//pieceToAdd.tag = "newTowerPiece";
+							Debug.Log("Placing piece!");
+							var rb = pieceToAdd.GetComponent<Rigidbody>();
+							rb.isKinematic = true;
+							rb.detectCollisions = true;
+							rb.useGravity = true;
+
+
 							noCube = true;
 							hasPlaced = true;
 							hasSelected = false;
 							manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);
 						}
-						
+
 					}
 					else
 					{
 						//If there's no intersection with Tower at all, don't render the new piece
 						pieceToAdd.GetComponent<MeshRenderer>().enabled = false;
-					}	
+					}
+				}
+				//Did the time run out? Place it!
+				if (turnState == TurnState.TowerReacting && !hasPlaced)
+				{
+					Debug.Log("Time's up! Placing piece!");
+					var rb = pieceToAdd.GetComponent<Rigidbody>();
+					rb.isKinematic = true;
+					rb.detectCollisions = true;
+					rb.useGravity = true;
+
+					noCube = true;
+					hasPlaced = true;
+					hasSelected = false;
+					manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);
 				}
 			}
 			else //!myTurn
@@ -158,7 +170,7 @@ namespace TowerVR
 				//Observe! Throw things on each other!?
 			}
 		}
-			
+
 
 
 		// Destroy listeners
