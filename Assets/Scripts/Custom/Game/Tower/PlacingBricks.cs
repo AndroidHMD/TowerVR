@@ -92,19 +92,17 @@ namespace TowerVR
 						{
 							Debug.Log("NewPiece!");
 							pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
-							pieceToAdd.GetComponent<Collider>().isTrigger = true;
 							noCube = false;
 							pieceToAdd.layer = 0;
 
 							Mesh mesh = pieceToAdd.GetComponent<MeshFilter>().mesh;
 							objectBounds = mesh.bounds;
-							objectExtent = Vector3.Scale(objectBounds.extents, pieceToAdd.transform.localScale);
+							objectExtent = Vector3.Scale(objectBounds.extents, pieceToAdd.transform.localScale); //Get correct bounding box
 						}
 						//if normal is up
 						if(hitInfo.normal == Vector3.up)
 						{
-							pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance; // + Vector3.up*5;
-							//pieceToAdd.transform.position = hitInfo.point + Vector3.up * objectExtent.y;
+							pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up*5;
 							pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 						}
 						else
@@ -112,8 +110,7 @@ namespace TowerVR
 							RaycastHit newHitInfo;
 							if(Physics.BoxCast(hitInfo.point, objectExtent, Vector3.down, out newHitInfo, newPiece.transform.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 							{
-								pieceToAdd.transform.position = (myCamera.transform.position + myCamera.transform.forward * hitInfo.distance)  + Vector3.down * newHitInfo.distance; // + Vector3.up*5;
-								//pieceToAdd.transform.position = newHitInfo.point + Vector3.up * objectExtent.y + hitInfo.normal * objectExtent.z;
+								pieceToAdd.transform.position = (myCamera.transform.position + myCamera.transform.forward * hitInfo.distance)  + Vector3.down * newHitInfo.distance + Vector3.up*5;
 								pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 							}
 							else
@@ -130,17 +127,8 @@ namespace TowerVR
 						//Satisfied? Then place the piece with the button
 						if (Cardboard.SDK.Triggered)
 						{
-							Debug.Log("Placing piece!");
-							var rb = pieceToAdd.GetComponent<Rigidbody>();
-							rb.isKinematic = true;
-							rb.detectCollisions = true;
-							rb.useGravity = true;
-
-
-							noCube = true;
-							hasPlaced = true;
-							hasSelected = false;
-							manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);
+							Debug.Log("Button triggered! Placing piece!");
+							placeBrick();
 						}
 
 					}
@@ -154,15 +142,7 @@ namespace TowerVR
 				if (turnState == TurnState.TowerReacting && !hasPlaced)
 				{
 					Debug.Log("Time's up! Placing piece!");
-					var rb = pieceToAdd.GetComponent<Rigidbody>();
-					rb.isKinematic = true;
-					rb.detectCollisions = true;
-					rb.useGravity = true;
-
-					noCube = true;
-					hasPlaced = true;
-					hasSelected = false;
-					manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);
+					placeBrick();
 				}
 			}
 			else //!myTurn
@@ -172,6 +152,18 @@ namespace TowerVR
 		}
 
 
+		void placeBrick()
+		{
+			var rb = pieceToAdd.GetComponent<Rigidbody>();
+			rb.isKinematic = false;
+			rb.detectCollisions = true;
+			rb.useGravity = true;
+
+			noCube = true;
+			hasPlaced = true;
+			hasSelected = false;
+			manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);		
+		}
 
 		// Destroy listeners
 		void OnDestroy()

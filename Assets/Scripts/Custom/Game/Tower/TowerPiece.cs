@@ -15,12 +15,13 @@ namespace TowerVR
 			var rb = gameObject.GetComponent<Rigidbody>();
 			if (rb != null)
 			{
-				rb.isKinematic = false;
+				rb.isKinematic = true;
 				rb.detectCollisions = false;
 				rb.useGravity = false;
 			}
 			gameObject.layer = 8;
 			gameObject.tag = "newTowerPiece";
+			gameObject.GetComponent<Collider>().isTrigger = false;
 		}
 		
 		void OnOwnershipRequest(object[] viewAndPlayer)

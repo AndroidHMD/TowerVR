@@ -196,15 +196,7 @@ namespace TowerVR
             {
                 numberOfObjects++;
                 stackedTowerPieces.Add(towerPiece);
-                
-                /*var rb = towerPiece.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.isKinematic = true;
-                    rb.detectCollisions = true;
-                    rb.useGravity = true;
-                }*/
-                
+                                
                 // Take over ownership
                 var photonView = towerPiece.GetComponent<PhotonView>();
                 if (photonView != null && !photonView.isMine)
