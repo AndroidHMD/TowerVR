@@ -14,19 +14,6 @@ public class CreateNewGame : MonoBehaviour {
 		PhotonNetwork.JoinLobby ();
 	}
 
-	void OnGUI()
-	{
-		GUILayout.Label(PhotonNetwork.connected ? "Connected" : "Disconnected");
-
-		if (PhotonNetwork.connected)
-		{
-			
-			GUILayout.Label("Room name: " + PhotonNetwork.room.name); 
-			GUILayout.Label("players in room: " + PhotonNetwork.room.playerCount);  
-			GUILayout.Label("Max players in room: " + PhotonNetwork.room.maxPlayers.ToString()); 
-		}
-	}
-
 	public void StartNewGame() {
 
 		RoomOptions options = new RoomOptions ();

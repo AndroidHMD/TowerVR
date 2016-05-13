@@ -59,6 +59,7 @@ namespace TowerVR
         protected sealed override void Awake()
         {	
             base.Awake();
+            
             turnTimer = gameObject.AddComponent<Timer>();
             
 			gameState = GameState.AwaitingPlayers;
@@ -188,7 +189,7 @@ namespace TowerVR
         {
             stackedTowerPieces = new List<GameObject>(); //Cleans old list
             
-			//Player will try and place TowerPiece in PlacingBrick.cs    
+			//Player will first try and place TowerPiece in PlacingBrick.cs    
             GameObject[] newPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
             
             int numberOfObjects = 0;
@@ -277,12 +278,24 @@ namespace TowerVR
             
             while(towerState == TowerState.Moving)
             {
+                if(FallingTowerDetection.hitDetected)
+                {
+                    Debug.Log("Tower falling!");
+                    //towerState = TowerState.Falling;
+                    //var col = FallingTowerDetection.detectedCollider;
+                    //Destroy(col.gameObject);
+                    FallingTowerDetection.hitDetected = false;
+                    
+                    towerState = TowerState.Stationary; //Temp solution for testing
+                    yield return null;
+                }
+                
                 bool allPiecesStationary = true;
                 foreach (var towerPiece in stackedTowerPieces)
                 {
                     var rb = towerPiece.GetComponent<Rigidbody>();
                     if(rb.velocity.magnitude > TowerConstants.MaxTowerVelocity || rb.angularVelocity.magnitude > TowerConstants.MaxTowerAngVelocity)
-                    {
+                    {        
                         allPiecesStationary = false;
                         break;
                     }

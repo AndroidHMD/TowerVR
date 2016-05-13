@@ -72,8 +72,6 @@ namespace TowerVR
 					manager.selectTowerPiece(TowerPieceDifficulty.Easy);
 					hasSelected = true;
 					hasPlaced = false;
-
-
 				}
 
 
@@ -102,7 +100,7 @@ namespace TowerVR
 						//if normal is up
 						if(hitInfo.normal == Vector3.up)
 						{
-							pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up*5;
+							pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up;
 							pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 						}
 						else
@@ -110,7 +108,7 @@ namespace TowerVR
 							RaycastHit newHitInfo;
 							if(Physics.BoxCast(hitInfo.point, objectExtent, Vector3.down, out newHitInfo, newPiece.transform.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 							{
-								pieceToAdd.transform.position = (myCamera.transform.position + myCamera.transform.forward * hitInfo.distance)  + Vector3.down * newHitInfo.distance + Vector3.up*5;
+								pieceToAdd.transform.position = (myCamera.transform.position + myCamera.transform.forward * hitInfo.distance)  + Vector3.down * newHitInfo.distance + Vector3.up;
 								pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 							}
 							else
@@ -159,6 +157,7 @@ namespace TowerVR
 			rb.detectCollisions = true;
 			rb.useGravity = true;
 
+			pieceToAdd.layer = 8;
 			noCube = true;
 			hasPlaced = true;
 			hasSelected = false;

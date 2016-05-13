@@ -24,7 +24,7 @@ namespace TowerVR
 			gameObject.GetComponent<Collider>().isTrigger = false;
 		}
 		
-		void OnOwnershipRequest(object[] viewAndPlayer)
+		public override void OnOwnershipRequest(object[] viewAndPlayer)
 		{
 			PhotonView view = viewAndPlayer[0] as PhotonView;
 			PhotonPlayer player = viewAndPlayer[1] as PhotonPlayer;
