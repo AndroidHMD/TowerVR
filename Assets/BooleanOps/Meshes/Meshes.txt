@@ -1,0 +1,1 @@
+This folder is the default repository for mesh files created with Mesh Maker. This text file is a placeholder for the empty folder.

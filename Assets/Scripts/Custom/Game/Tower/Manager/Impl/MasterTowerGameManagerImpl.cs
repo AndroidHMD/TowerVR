@@ -166,6 +166,7 @@ namespace TowerVR
             {
                 initPlayerTurnQueue();
                 proceedPlayerTurn();
+                turnState = TurnState.SelectingTowerPiece;
                 
                 gameState = GameState.Running;
                 turnTimer.start();
@@ -208,7 +209,7 @@ namespace TowerVR
             
             //Update TowerState
             towerState = TowerState.Moving;
-            StartCoroutine(observeTower());
+            
             
         }
         
@@ -247,6 +248,7 @@ namespace TowerVR
                             if (turnTimer.time > TurnTimeLimits.PlacingTowerPiece)
                             {
                                 turnState = TurnState.TowerReacting;
+                                towerState = TowerState.Moving;
                             }
                             break;
                         case TurnState.TowerReacting:
@@ -264,57 +266,67 @@ namespace TowerVR
             }
         }
         
-        IEnumerator observeTower()
+        IEnumerator updateTowerState()
         {
-            yield return new WaitForSeconds(TurnTimeLimits.TowerReacting);
-            
-            
-            while(towerState == TowerState.Moving)
+            for (;;)
             {
-                if(FallingTowerDetection.hitDetected)
+                if(turnState == TurnState.TowerReacting)
                 {
-                    Debug.Log("Tower falling!");
-                    //towerState = TowerState.Falling;
-                    //var col = FallingTowerDetection.detectedCollider;
-                    //Destroy(col.gameObject);
-                    FallingTowerDetection.hitDetected = false;
                     
-                    towerState = TowerState.Stationary; //Temp solution for testing
-                    yield return null;
+                    yield return new WaitForSeconds(TurnTimeLimits.TowerReacting);
+                                
+                    while(towerState == TowerState.Moving)
+                    {
+                        if(FallingTowerDetection.hitDetected)
+                        {
+                            Debug.Log("Tower falling!");
+                            //towerState = TowerState.Falling;
+                            //var col = FallingTowerDetection.detectedCollider;
+                            //Destroy(col.gameObject);
+                            FallingTowerDetection.hitDetected = false;
+                            
+                            towerState = TowerState.Stationary; //Temp solution for testing
+                            yield return null;
+                        }
+                        
+                        bool allPiecesStationary = true;
+                        foreach (var towerPiece in stackedTowerPieces)
+                        {
+                            var rb = towerPiece.GetComponent<Rigidbody>();
+                            if(rb.velocity.magnitude > TowerConstants.MaxTowerVelocity || rb.angularVelocity.magnitude > TowerConstants.MaxTowerAngVelocity)
+                            {        
+                                allPiecesStationary = false;
+                                break;
+                            }
+                            
+                        }
+                        if(allPiecesStationary)
+                        {
+                            IncreaseHeight.checkIncreaseHeight = true;
+                            towerState = TowerState.Stationary;
+                            
+                        }
+                        yield return null;
+                    }
                 }
                 
-                bool allPiecesStationary = true;
-                foreach (var towerPiece in stackedTowerPieces)
-                {
-                    var rb = towerPiece.GetComponent<Rigidbody>();
-                    if(rb.velocity.magnitude > TowerConstants.MaxTowerVelocity || rb.angularVelocity.magnitude > TowerConstants.MaxTowerAngVelocity)
-                    {        
-                        allPiecesStationary = false;
-                        break;
-                    }
-                    
-                }
-                if(allPiecesStationary)
-                {
-                    towerState = TowerState.Stationary;
-                    StopCoroutine(observeTower());
-                }
-                yield return null;
+                yield return new WaitForSeconds(ONE_SECOND);
             }
-            
         }
-
+        
         
         void Start()
         {
             StartCoroutine("updateGameState");
             StartCoroutine("updateTurnState");
+            StartCoroutine("updateTowerState");
         }
         
         void OnDestroy()
         {
             StopCoroutine("updateGameState");
             StopCoroutine("updateTurnState");
+            StopCoroutine("updateTowerState");
         }
         
         /**
@@ -355,7 +367,6 @@ namespace TowerVR
             
             currentPlayer = nextPlayer;
             
-            turnState = TurnState.SelectingTowerPiece;
         }
         
         /**

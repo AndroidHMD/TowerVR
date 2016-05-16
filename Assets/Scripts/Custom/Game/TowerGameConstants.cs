@@ -14,5 +14,6 @@ namespace TowerVR
     {
         public const float MaxTowerVelocity = 0.2f;
         public const float MaxTowerAngVelocity = 0.1f;
+        public const float IncreaseHeightTime = 4.0f;
     }
 }

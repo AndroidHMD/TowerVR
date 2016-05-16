@@ -62,8 +62,7 @@ namespace TowerVR
 	{
 		public const int Stationary 				= 0;
 		public const int Moving				 		= 1;
-		public const int IncreasingHeight			= 2;
-		public const int Falling	 				= 3;
+		public const int Falling	 				= 2;
 
 		public static bool IsValid(int potentialTurnState)
 		{
