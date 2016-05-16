@@ -8,62 +8,54 @@ namespace TowerVR
 	 * 
 	 * This component should be attached to a GameObject that has a mesh, a mesh collider and a material.
 	 * */
-	public class TowerPiece : NetworkedBehaviour
+	public class TowerPiece : Photon.PunBehaviour
 	{
-		public TowerPieceDifficulty difficulty 
-		{ 
-			get; private set;
-		}
-
-		public MeshFilter meshFilter
-		{ 
-			get { return internalGetComponent<MeshFilter>(); } 
-		}
-
-		public MeshCollider meshCollider 
-		{ 
-			get { return internalGetComponent<MeshCollider>(); }
-		}
-
-
-		public Material material 
-		{ 
-			get { return internalGetComponent<Material>(); }
-		}
-
-		/**
-		 * Internal helper to get a component. Logs an error if none attached.
-		 * */
-		private T internalGetComponent<T>()
+		void Start()
 		{
-			var component = gameObject.GetComponent<T>();
-			if (component == null)
+			var rb = gameObject.GetComponent<Rigidbody>();
+			if (rb != null)
 			{
-				Debug.LogError("TowerPiece GameObject has no " + typeof(T).GetType().Name + " attached.");
+				rb.isKinematic = true;
+				rb.detectCollisions = false;
+				rb.useGravity = false;
 			}
-			return component;
+			gameObject.layer = 8;
+			gameObject.tag = "newTowerPiece";
+			gameObject.GetComponent<Collider>().isTrigger = false;
 		}
-
-		/**
-		 * Instantiates a new GameObject and configures it as a tower piece with the specified info.
-		 * */
-		public static TowerPiece Create(TowerPieceInfo info, Material material)
+		
+		public override void OnOwnershipRequest(object[] viewAndPlayer)
 		{
-			GameObject newTowerPiece = new GameObject("TowerPiece");
-
-			// Attached visual components
-			newTowerPiece.AddComponent<MeshFilter>().sharedMesh = info.mesh;
-			newTowerPiece.AddComponent<MeshRenderer>().sharedMaterial = material;
-			newTowerPiece.AddComponent<Rigidbody>().useGravity = true;
-			var mc = newTowerPiece.AddComponent<MeshCollider>();
-			mc.sharedMesh = info.mesh;
-			mc.convex = true;
-
-			// Attach the difficulty
-			var tp = newTowerPiece.AddComponent<TowerPiece>();
-			tp.difficulty = info.difficulty;
-
-			return tp;
+			PhotonView view = viewAndPlayer[0] as PhotonView;
+			PhotonPlayer player = viewAndPlayer[1] as PhotonPlayer;
+			
+			Debug.Log("OnOwnershipRequest from " + player.ID);
+			
+			view.TransferOwnership(player.ID);
+ 		} 
+		 
+		void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+		{
+			
+			var rb = gameObject.GetComponent<Rigidbody>();
+			if (stream.isWriting)
+			{
+				//We own this player: send the others our data
+				stream.SendNext((bool) rb.isKinematic );
+				stream.SendNext((bool) rb.detectCollisions );
+				stream.SendNext((bool) rb.useGravity );
+				stream.SendNext(transform.position);
+				stream.SendNext(transform.rotation);
+			}
+			else
+			{
+				//Network player, receive data
+				rb.isKinematic = (bool)stream.ReceiveNext();
+				rb.detectCollisions = (bool)stream.ReceiveNext();
+				rb.useGravity = (bool)stream.ReceiveNext();
+				transform.position = (Vector3)stream.ReceiveNext();
+				transform.rotation = (Quaternion)stream.ReceiveNext();
+			}
 		}
 	}
 }
