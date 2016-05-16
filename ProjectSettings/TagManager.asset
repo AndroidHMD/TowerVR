@@ -4,9 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - TowerPiece
+  - RayDebug
   - targetSide
-  - New Tag
-  - CameraAR
+  - placingGrid
+  - ARCamera
+  - TowerPieceObject
+  - newTowerPiece
   layers:
   - Default
   - TransparentFX
@@ -16,8 +20,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - TowerBase
+  - Ground
   - 
   - 
   - 

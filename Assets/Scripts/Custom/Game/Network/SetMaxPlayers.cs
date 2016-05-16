@@ -22,9 +22,14 @@ public class SetMaxPlayers : MonoBehaviour {
 	void Update(){
 
 		if (maxPlayers == players)
-			gameObject.GetComponent<Renderer> ().material.color = Color.green;
+		{
+			//gameObject.GetComponent<Renderer> ().material.color = Color.green;
+		}
 		else
-			gameObject.GetComponent<Renderer> ().material.color = color;
+		{
+			//gameObject.GetComponent<Renderer> ().material.color = color;
+		}
+			
 	}
 
 	// sets this object to the currently active one.

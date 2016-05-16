@@ -14,7 +14,7 @@ namespace TowerVR
                                     float positionZ,
                                     float rotationDegreesY)
         {
-            eventCode = NetworkEventCodes.NextPlayer;
+            eventCode = NetworkEventCodes.PlaceTowerPiece;
             setReceivers(ReceiverGroup.MasterClient);
             
             content = new float[3]
