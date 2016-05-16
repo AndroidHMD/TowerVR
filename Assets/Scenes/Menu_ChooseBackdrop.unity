@@ -110,8 +110,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1374162889}
   - {fileID: 461241356}
+  - {fileID: 1374162889}
   m_Father: {fileID: 0}
   m_RootOrder: 8
 --- !u!1 &75749732
@@ -605,8 +605,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.2694585, y: 2.2825818, z: 0.34288433}
+  m_Center: {x: -0.000046920777, y: -0.006555176, z: -0.0011741639}
 --- !u!4 &275507665 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: add4ad352a55f4dd686b6f7f2886e160, type: 3}
@@ -1141,8 +1141,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.2694585, y: 2.2825818, z: 0.34288433}
+  m_Center: {x: -0.000046920777, y: -0.006555176, z: -0.0011741639}
 --- !u!4 &461241356
 Transform:
   m_ObjectHideFlags: 0
@@ -1160,7 +1160,7 @@ Transform:
   - {fileID: 1420996113}
   - {fileID: 1863421918}
   m_Father: {fileID: 57426792}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!1 &522406966 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100006, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
@@ -1772,8 +1772,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 9.08351, y: 2.4936013, z: 0.3274386}
+  m_Center: {x: 0.17868881, y: 0.10102119, z: 0.18874817}
 --- !u!1 &863123780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2917,8 +2917,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 5.7673945, y: 1.4528321, z: 0.24131651}
+  m_Center: {x: -2.3017597, y: 0.31332093, z: -0.051958084}
 --- !u!1 &1381084989
 GameObject:
   m_ObjectHideFlags: 0
@@ -3324,8 +3324,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.2694585, y: 2.2825818, z: 0.34288433}
+  m_Center: {x: -0.000046920777, y: -0.006555176, z: -0.0011741639}
 --- !u!1001 &1448104775
 Prefab:
   m_ObjectHideFlags: 0
@@ -3852,8 +3852,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.2694585, y: 2.2825818, z: 0.34288433}
+  m_Center: {x: -0.000046920777, y: -0.006555176, z: -0.0011741639}
 --- !u!1 &1904796373
 GameObject:
   m_ObjectHideFlags: 0

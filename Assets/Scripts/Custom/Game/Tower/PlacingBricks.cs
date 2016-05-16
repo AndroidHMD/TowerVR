@@ -121,33 +121,12 @@ namespace TowerVR
 							Mesh mesh = pieceToAdd.GetComponent<MeshFilter>().mesh;
 							objectBounds = mesh.bounds;
 							objectExtent = Vector3.Scale(objectBounds.extents, pieceToAdd.transform.localScale); //Get correct bounding box
-							Debug.Log("ObjectExtent: "+ objectExtent);
+							//Debug.Log("ObjectExtent: "+ objectExtent);
 							
 						}
-						//if normal is up
-						if(hitInfo.normal == Vector3.up)
-						{
-							pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up;
-							pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
-						}
-						else
-						{
-							RaycastHit newHitInfo;
-							if(Physics.BoxCast(hitInfo.point, objectExtent, Vector3.down, out newHitInfo, newPiece.transform.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
-							{
-								pieceToAdd.transform.position = (myCamera.transform.position + myCamera.transform.forward * hitInfo.distance)  + Vector3.down * newHitInfo.distance + Vector3.up;
-								pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
-							}
-							else
-							{
-								//If there's no intersection with Tower below, don't render the new piece
-								pieceToAdd.GetComponent<MeshRenderer>().enabled = false;
-							}
-
-						}
-
+						pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
+						pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up;
 						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
-
 
 						//Satisfied? Then place the piece with the button
 						if (Cardboard.SDK.Triggered)
