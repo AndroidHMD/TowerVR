@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /**
  * This script controls how the bricks are placed.
@@ -13,12 +14,20 @@ namespace TowerVR
 
 	public class PlacingBricks : TowerVR.TowerGameBehaviour  {
 
+		public GameObject placingPlane;
+		
+		// We need a basic case for these in case they have not been set in the Unity Editor
+		public List<GameObject> easyBricks = new List<GameObject>();
+        public List<GameObject> mediumBricks = new List<GameObject>();
+        public List<GameObject> hardBricks = new List<GameObject>();
+		
+		private List<GameObject> displayedObjects = new List<GameObject>();
+
 		private int turnState;
 		private int towerState;
 		private int currentPlayerID;
 
 		public GameObject newPiece;
-
 		public GameObject pieceToAdd;
 		private Camera myCamera;
 		private bool noCube;
@@ -26,7 +35,9 @@ namespace TowerVR
 		private bool hasSelected;
 		private Bounds objectBounds;
 		private Vector3 objectExtent;
-
+		
+		// temporary
+		private bool selecting = false;
 
 		void onTurnStateChanged(int turnState)
 		{
@@ -43,7 +54,6 @@ namespace TowerVR
 			this.currentPlayerID = nextPlayerID;
 		}
 
-
 		void Start ()
 		{
 			manager.turnStateChangedHandlers.Add(onTurnStateChanged);
@@ -54,9 +64,7 @@ namespace TowerVR
 			noCube = true;
 			hasPlaced = false;
 			hasSelected = false;
-
 		}
-
 
 		void Update () {
 
@@ -66,14 +74,31 @@ namespace TowerVR
 				//If it is my turn, spawn new piece to be placed.
 				if(turnState == TurnState.SelectingTowerPiece && !hasSelected)
 				{
+					if (!selecting)
+					{
+						Debug.Log("Calling");
+						selecting = true;
+						GetAndDisplay();
+					}
+					
+					if (selecting)
+					{
+						// Continuous update not needed?
+						// Debug.Log("updating object 0 to " + (myCamera.transform.position.x - 5.0f) + ", "  + myCamera.transform.position.y + ", " + (myCamera.transform.position.z + 7.0f));
+						// displayedObjects[0].transform.position = new Vector3(-5.0f, myCamera.transform.position.y, myCamera.transform.position.z + 7.0f);
+						// displayedObjects[1].transform.position = new Vector3(myCamera.transform.position.x, myCamera.transform.position.y, myCamera.transform.position.z + 7.0f);
+						// displayedObjects[2].transform.position = new Vector3(myCamera.transform.position.x + 5.0f, myCamera.transform.position.y, myCamera.transform.position.z + 7.0f);
+						
+						// ... selecting = false
+					}
+					
 					//newPiece = ngt!
 					Debug.Log("Selecting piece");
-
 					manager.selectTowerPiece(TowerPieceDifficulty.Easy);
 					hasSelected = true;
 					hasPlaced = false;
-				}
 
+				}
 
 				//Proceed when turnState is PlacingTowerPiece
 				if (turnState == TurnState.PlacingTowerPiece && !hasPlaced)
@@ -96,6 +121,8 @@ namespace TowerVR
 							Mesh mesh = pieceToAdd.GetComponent<MeshFilter>().mesh;
 							objectBounds = mesh.bounds;
 							objectExtent = Vector3.Scale(objectBounds.extents, pieceToAdd.transform.localScale); //Get correct bounding box
+							Debug.Log("ObjectExtent: "+ objectExtent);
+							
 						}
 						//if normal is up
 						if(hitInfo.normal == Vector3.up)
@@ -148,8 +175,7 @@ namespace TowerVR
 				//Observe! Throw things on each other!?
 			}
 		}
-
-
+		
 		void placeBrick()
 		{
 			var rb = pieceToAdd.GetComponent<Rigidbody>();
@@ -162,7 +188,49 @@ namespace TowerVR
 			hasPlaced = true;
 			hasSelected = false;
 			manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);		
+
 		}
+		
+		/**
+		 *	Randomly select bricks to be displayed for player to choose 
+		 **/
+		public void GetAndDisplay () 
+        {
+			// Variables to keep track
+            int easyIdx = 0;
+            int mediumIdx = 1;
+            int hardIdx = 2;
+            
+            // Debug.Log("set arrays");
+			List<GameObject> tempList = new List<GameObject>();
+            
+            // int randomIdx = Random.Range(0, (easyBricks.Count - 1)); 	// debug
+            // Debug.Log("choosing easyBricks[" + randomIdx + "]");
+            tempList.Insert(easyIdx, easyBricks[ Random.Range(0, (easyBricks.Count - 1)) ]);
+            tempList.Insert(mediumIdx, mediumBricks[ Random.Range(0, (mediumBricks.Count - 1)) ]);
+            tempList.Insert(hardIdx, hardBricks[ Random.Range(0, (hardBricks.Count - 1)) ]);
+            
+            // Debug.Log("Array length: " + tempList.Count);            
+            
+            /// Set origin positions of objects to display equal to camera positions
+            for (int i = 0; i < tempList.Count; i++)
+            {
+				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.identity) as GameObject;
+				temp.transform.SetParent(myCamera.transform);
+				// Debug.Log("Adding to list");
+				displayedObjects.Add(temp);
+				
+            }
+
+            // Debug.Log("translate first time");
+
+            // Translate objects nicely
+            displayedObjects[easyIdx].transform.Translate(-1.0f, 0.0f, 3.0f);
+            displayedObjects[mediumIdx].transform.Translate(0.0f, 0.0f, 3.0f);
+            displayedObjects[hardIdx].transform.Translate(1.0f, 0.0f, 3.0f);
+            
+            Debug.Log("done with generate");
+        }
 
 		// Destroy listeners
 		void OnDestroy()

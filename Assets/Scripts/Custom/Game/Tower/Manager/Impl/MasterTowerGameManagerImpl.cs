@@ -173,14 +173,7 @@ namespace TowerVR
         }
         
         protected void handleSelectTowerPieceEvent(TowerPieceDifficulty difficulty)
-        {
-            // 3 arrays of brick types
-            
-            // display logic
-            
-            // select piece
-            
-            // return piece   
+        {   
             turnState = TurnState.PlacingTowerPiece;
             Log("handleSelectTowerPieceEvent. Difficulty: " + difficulty);
         }
