@@ -71,7 +71,6 @@ namespace TowerVR
 			//Check if it is my turn, otherwise just observe
 			if (currentPlayerID == PhotonNetwork.player.ID)
 			{
-				
 				if (!selecting)
 				{
 					Debug.Log("Calling");
@@ -211,11 +210,14 @@ namespace TowerVR
 			Vector3 mediumObjectWidth = displayedObjects[mediumIdx].GetComponent<MeshRenderer>().bounds.size;			
 			Vector3 hardObjectWidth = displayedObjects[hardIdx].GetComponent<MeshRenderer>().bounds.size;
 			
-			float translationDistance = mediumObjectWidth.x/2.0f + 1.0f + easyObjectWidth.x/2.0f; 
+			float transDistLeft = mediumObjectWidth.x/2.0f + 1.0f + easyObjectWidth.x/2.0f; 
+			float transDistRight = - (mediumObjectWidth.x/2.0f + 1.0f + hardObjectWidth.x/2.0f);
+			
+			// Debug.Log("distances are " + transDistLeft + ", " + transDistRight);
 			
 			// Tranform relative to camera's local coordinates
-			displayedObjects[easyIdx].transform.Translate(translationDistance, 0, 0, myCamera.transform);
-			displayedObjects[hardIdx].transform.Translate(-translationDistance, 0, 0, myCamera.transform);
+			displayedObjects[easyIdx].transform.Translate(transDistLeft, 0, 0, myCamera.transform);
+			displayedObjects[hardIdx].transform.Translate(transDistRight, 0, 0, myCamera.transform);
 			
             // Debug.Log("done with generate");
         }
