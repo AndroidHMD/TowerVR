@@ -71,26 +71,24 @@ namespace TowerVR
 			//Check if it is my turn, otherwise just observe
 			if (currentPlayerID == PhotonNetwork.player.ID)
 			{
+				
+				if (!selecting)
+				{
+					Debug.Log("Calling");
+					selecting = true;
+					GetAndDisplay();
+				}
+				
+				if (selecting)
+				{
+					// Continuous update not needed?
+					
+					// ... selecting = false
+				}
+			
 				//If it is my turn, spawn new piece to be placed.
 				if(turnState == TurnState.SelectingTowerPiece && !hasSelected)
 				{
-					if (!selecting)
-					{
-						Debug.Log("Calling");
-						selecting = true;
-						GetAndDisplay();
-					}
-					
-					if (selecting)
-					{
-						// Continuous update not needed?
-						// Debug.Log("updating object 0 to " + (myCamera.transform.position.x - 5.0f) + ", "  + myCamera.transform.position.y + ", " + (myCamera.transform.position.z + 7.0f));
-						// displayedObjects[0].transform.position = new Vector3(-5.0f, myCamera.transform.position.y, myCamera.transform.position.z + 7.0f);
-						// displayedObjects[1].transform.position = new Vector3(myCamera.transform.position.x, myCamera.transform.position.y, myCamera.transform.position.z + 7.0f);
-						// displayedObjects[2].transform.position = new Vector3(myCamera.transform.position.x + 5.0f, myCamera.transform.position.y, myCamera.transform.position.z + 7.0f);
-						
-						// ... selecting = false
-					}
 					
 					//newPiece = ngt!
 					Debug.Log("Selecting piece");
@@ -200,20 +198,26 @@ namespace TowerVR
             for (int i = 0; i < tempList.Count; i++)
             {
 				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.identity) as GameObject;
-				temp.transform.SetParent(myCamera.transform);
-				// Debug.Log("Adding to list");
 				displayedObjects.Add(temp);
 				
             }
 
-            // Debug.Log("translate first time");
-
-            // Translate objects nicely
-            displayedObjects[easyIdx].transform.Translate(-1.0f, 0.0f, 3.0f);
-            displayedObjects[mediumIdx].transform.Translate(0.0f, 0.0f, 3.0f);
-            displayedObjects[hardIdx].transform.Translate(1.0f, 0.0f, 3.0f);
-            
-            Debug.Log("done with generate");
+			for (int i = 0; i < displayedObjects.Count; i++) {
+				displayedObjects[i].transform.position = new Vector3(myCamera.transform.position.x/1.2f, 3.0f, myCamera.transform.position.z/1.2f);
+				displayedObjects[i].transform.LookAt(myCamera.transform);
+			}
+			
+			Vector3 easyObjectWidth = displayedObjects[easyIdx].GetComponent<MeshRenderer>().bounds.size;
+			Vector3 mediumObjectWidth = displayedObjects[mediumIdx].GetComponent<MeshRenderer>().bounds.size;			
+			Vector3 hardObjectWidth = displayedObjects[hardIdx].GetComponent<MeshRenderer>().bounds.size;
+			
+			float translationDistance = mediumObjectWidth.x/2.0f + 1.0f + easyObjectWidth.x/2.0f; 
+			
+			// Tranform relative to camera's local coordinates
+			displayedObjects[easyIdx].transform.Translate(translationDistance, 0, 0, myCamera.transform);
+			displayedObjects[hardIdx].transform.Translate(-translationDistance, 0, 0, myCamera.transform);
+			
+            // Debug.Log("done with generate");
         }
 
 		// Destroy listeners
