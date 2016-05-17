@@ -11,7 +11,7 @@ namespace TowerVR
 	 * 
 	 * Do not use this class directly in the game logic. 
 	 **/
-	public class TowerGameManagerImpl : Singleton<TowerGameManagerImpl>, ITowerGameManager
+	public class TowerGameManagerImpl : MonoBehaviour, ITowerGameManager
 	{
 		#region PUBLIC_MEMBER_FUNCTIONS
 		
