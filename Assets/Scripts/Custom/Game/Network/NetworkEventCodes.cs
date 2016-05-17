@@ -13,16 +13,17 @@ namespace TowerVR
 		
 		public const byte GameStateChanged 	= 3;
 		public const byte TurnStateChanged 	= 4;
-		public const byte NextPlayer		= 5;
-		public const byte ScoreChanged 		= 6;
-		public const byte PlayerLost 		= 7;
-		public const byte PlayerWon 		= 8;
-		
-		public const byte PlaceTowerPiece 	= 0;
+		public const byte TowerStateChanged = 5;
+		public const byte NextPlayer		= 6;
+		public const byte ScoreChanged 		= 7;
+		public const byte PlayerLost 		= 8;
+		public const byte PlayerWon 		= 9;
+		public const byte SelectTowerPiece  = 10;
+		public const byte PlaceTowerPiece 	= 11;
 		
 		public static bool IsValid(byte potentialEventCode)
 		{
-			return potentialEventCode >= 0 && potentialEventCode <= 8;
+			return potentialEventCode >= 0 && potentialEventCode <= 11;
 		}
 	}
 }

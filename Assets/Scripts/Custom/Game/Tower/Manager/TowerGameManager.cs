@@ -30,6 +30,12 @@ namespace TowerVR
 		}
 		
 		/// See ITowerGameManager
+		public void selectTowerPiece(TowerPieceDifficulty difficulty)
+		{
+			impl.selectTowerPiece(difficulty);
+		}
+		
+		/// See ITowerGameManager
 		public void placeTowerPiece(float positionX, float positionZ, float rotationDegreesY)
 		{
 			impl.placeTowerPiece(positionX, positionZ, rotationDegreesY);
@@ -54,6 +60,9 @@ namespace TowerVR
 		
 		public delegate void TurnStateChangedHandler(int turnState);
 		public HashSet<TurnStateChangedHandler> turnStateChangedHandlers = new HashSet<TurnStateChangedHandler>();
+
+		public delegate void TowerStateChangedHandler(int towerState);
+		public HashSet<TowerStateChangedHandler> towerStateChangedHandlers = new HashSet<TowerStateChangedHandler>();
 		
 		public delegate void PlayerLostHandler(int losingPlayerID);
 		public HashSet<PlayerLostHandler> playerLostHandlers = new HashSet<PlayerLostHandler>();
