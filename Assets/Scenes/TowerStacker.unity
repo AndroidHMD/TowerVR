@@ -1528,6 +1528,7 @@ GameObject:
   - 114: {fileID: 1017791940}
   - 114: {fileID: 1017791941}
   - 114: {fileID: 1017791942}
+  - 114: {fileID: 1017791943}
   m_Layer: 0
   m_Name: SceneLogic
   m_TagString: Untagged
@@ -1635,6 +1636,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14cef48a6be3e4d92841fffdb9d8912e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1017791943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1017791934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04a07723e833cf4c802a2e97ba447e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefabName: PlayerWisp
+  debugGuiOn: 0
+  spawnStrategy: 1
 --- !u!114 &1062703636
 MonoBehaviour:
   m_ObjectHideFlags: 0
