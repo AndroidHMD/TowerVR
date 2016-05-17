@@ -46,6 +46,7 @@ namespace TowerVR
 		
 		void OnGUI()
 		{
+			GUILayout.Label("");
 			GUILayout.Label("Player count: " + PhotonNetwork.playerList.Length);
 			
 			GUILayout.Label("GameState: " + GameState.ToString(gameState));

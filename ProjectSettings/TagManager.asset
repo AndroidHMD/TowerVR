@@ -10,6 +10,7 @@ TagManager:
   - placingGrid
   - ARCamera
   - TowerPieceObject
+  - newTowerPiece
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - 
   - 
   - TowerBase
-  - 
+  - Ground
   - 
   - 
   - 

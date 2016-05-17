@@ -32,15 +32,19 @@ namespace TowerVR
         {
             int diff;
             
-            if (!Int32.TryParse(content as string, out diff))
-            { return false; }
-            
-            if (diff != 0 || diff != 1 || diff != 2)
-            {
-                trySendError = "Difficulty must be Easy/Medium/Hard.";
-                return false;
+            if (!(content is int))
+            { 
+                Debug.Log("Content could not be read!");
+                return false; 
             }
             
+            diff = (int) content;
+            
+            if (diff != 0 && diff != 1 && diff != 2)
+            {
+               Debug.Log("Difficulty must be Easy/Medium/Hard.");
+                return false;
+            }
             return true;
         }
         
@@ -52,8 +56,10 @@ namespace TowerVR
             int diff;
             chosenDifficulty = TowerPieceDifficulty.Easy;
             
-            if (!Int32.TryParse(obj as string, out diff))
+            if (!(obj is int))
             { return false; }
+            
+            diff = (int) obj;
             
             switch (diff)
             {
