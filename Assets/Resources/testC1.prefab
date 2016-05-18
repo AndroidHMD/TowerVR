@@ -16,6 +16,7 @@ GameObject:
   - 114: {fileID: 11465848}
   - 114: {fileID: 11463124}
   - 114: {fileID: 11412934}
+  - 122: {fileID: 12253058}
   m_Layer: 9
   m_Name: testC1
   m_TagString: Untagged
@@ -190,6 +191,17 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!122 &12253058
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 163888}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 318764270
+  m_Size: 8
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -218,6 +218,10 @@ namespace TowerVR
 							Debug.Log("NewPiece: " + newPieceName);							
 							// pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
 							pieceToAdd = PhotonNetwork.Instantiate(newPieceName, new Vector3(), Quaternion.identity, 0) as GameObject;
+							
+							Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
+							halo.enabled = false;
+							
 							noCube = false;
 							pieceToAdd.layer = 0;
 
@@ -299,6 +303,11 @@ namespace TowerVR
             {
 				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.identity) as GameObject;
 				temp.name = tempList[i].name;
+				
+				// Turn off halo initially (because we won't remember/know to keep it disabled in the editor)
+				Behaviour halo = (Behaviour)temp.GetComponent("Halo");
+				halo.enabled = false;
+				
 				temp.layer = 9;
 				displayedObjects.Add(temp);
             }
