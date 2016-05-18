@@ -13,13 +13,11 @@ namespace TowerVR
 {
 
 	public class PlacingBricks : TowerVR.TowerGameBehaviour  {
-
-		public GameObject placingPlane;
 		
 		// We need a basic case for these in case they have not been set in the Unity Editor
-		public List<GameObject> easyBricks = new List<GameObject>();
-        public List<GameObject> mediumBricks = new List<GameObject>();
-        public List<GameObject> hardBricks = new List<GameObject>();
+		public List<GameObject> easyBricks;
+        public List<GameObject> mediumBricks;
+        public List<GameObject> hardBricks;
 		
 		private List<GameObject> displayedObjects = new List<GameObject>();
 
@@ -38,9 +36,6 @@ namespace TowerVR
 		private Bounds objectBounds;
 		private Vector3 objectExtent;
 		
-		// temporary
-		private bool selecting = false;
-
 		void onTurnStateChanged(int turnState)
 		{
 			this.turnState = turnState;
@@ -106,7 +101,13 @@ namespace TowerVR
 					
 					if (!hasSelected)
 					{
-					
+						for (int i = 0; i < displayedObjects.Count; i++) 
+						{
+							var rb =  displayedObjects[i].GetComponent<Rigidbody>();
+							rb.detectCollisions = true;				
+					 		// Debug.Log("Rigidbody for " + rb + ": kinematic = " + rb.isKinematic + ", detectCol = " + rb.detectCollisions + ", w/ layer " + displayedObjects[i].layer);
+						}
+						
 						// Selection logic
 						RaycastHit hit;
 						int piecesToSelectMask = 1 << 9; //Sets Layer 9 to true
@@ -185,9 +186,19 @@ namespace TowerVR
 				}
 
 				//Proceed when turnState is PlacingTowerPiece
-				if (turnState == TurnState.PlacingTowerPiece && hasSelected)
+				if (turnState == TurnState.PlacingTowerPiece && !hasPlaced)
 				{
-					// Debug.Log("Placing state");
+					// This produces erratic behaviour as this code is ran multiple times after piece placement (one player)
+					// If time ran out and turn proceeded without player choosing piece
+					// if (!hasSelected && !hasPlaced)
+					// {
+					// 	Debug.Log("Placing state");
+					// 	newPieceName = easyBricks[ Random.Range(0, (easyBricks.Count)) ].name;	// Get random easy piece
+					// 	manager.selectTowerPiece(TowerPieceDifficulty.Easy);
+					// 	hasSelected = true;
+					// 	// hasPlaced = false;
+					// 	ClearSelectionPieces();
+					// }
 
 					//Project the new piece directly where you look
 					RaycastHit hitInfo;
@@ -257,7 +268,6 @@ namespace TowerVR
 			hasSelected = false;
 			manager.placeTowerPiece(pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);		
 			
-			// ClearSelectionPieces();
 			selectionPiecesAreSpawned = false;
 
 		}
@@ -275,38 +285,37 @@ namespace TowerVR
             // Debug.Log("set arrays");
 			List<GameObject> tempList = new List<GameObject>();
             
-            // int randomIdx = Random.Range(0, (easyBricks.Count - 1)); 	// debug
-            // Debug.Log("choosing easyBricks[" + randomIdx + "]");
-            tempList.Insert(easyIdx, easyBricks[ Random.Range(0, (easyBricks.Count - 1)) ]);
-            tempList.Insert(mediumIdx, mediumBricks[ Random.Range(0, (mediumBricks.Count - 1)) ]);
-            tempList.Insert(hardIdx, hardBricks[ Random.Range(0, (hardBricks.Count - 1)) ]);
-            
-            // Debug.Log("Array length: " + tempList.Count);            
-            
+            tempList.Insert(easyIdx, easyBricks[ Random.Range(0, (easyBricks.Count)) ]);
+            tempList.Insert(mediumIdx, mediumBricks[ Random.Range(0, (mediumBricks.Count)) ]);
+            tempList.Insert(hardIdx, hardBricks[ Random.Range(0, (hardBricks.Count)) ]);
+			
             /// Set origin positions of objects to display equal to camera positions
             for (int i = 0; i < tempList.Count; i++)
             {
 				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.identity) as GameObject;
 				temp.name = tempList[i].name;
-				var rb = temp.GetComponent<Rigidbody>();
-				if (rb != null)
-				{
-					rb.detectCollisions = true;
-				}
-				
+				temp.layer = 9;
 				displayedObjects.Add(temp);
-				
             }
 
 			for (int i = 0; i < displayedObjects.Count; i++) {
-				displayedObjects[i].transform.position = new Vector3(myCamera.transform.position.x/1.2f, 3.0f, myCamera.transform.position.z/1.2f);
+				displayedObjects[i].transform.position = new Vector3(myCamera.transform.position.x/1.2f, 6.0f, myCamera.transform.position.z/1.2f);
 				displayedObjects[i].transform.LookAt(myCamera.transform);
+				var rb = displayedObjects[i].GetComponent<Rigidbody>();
+				if (rb != null)
+				{
+					// Debug.Log("coming in????");
+					rb.detectCollisions = true;
+					rb.isKinematic = false;
+				}
+				displayedObjects[i].layer = 9;
 			}
 			
 			Vector3 easyObjectWidth = displayedObjects[easyIdx].GetComponent<MeshRenderer>().bounds.size;
 			Vector3 mediumObjectWidth = displayedObjects[mediumIdx].GetComponent<MeshRenderer>().bounds.size;			
 			Vector3 hardObjectWidth = displayedObjects[hardIdx].GetComponent<MeshRenderer>().bounds.size;
 			
+			// Todo: check validity of signs
 			float transDistLeft = mediumObjectWidth.x/2.0f + 1.0f + easyObjectWidth.x/2.0f; 
 			float transDistRight = - (mediumObjectWidth.x/2.0f + 1.0f + hardObjectWidth.x/2.0f);
 			
