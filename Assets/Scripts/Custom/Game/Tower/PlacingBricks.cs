@@ -28,6 +28,7 @@ namespace TowerVR
 		private int currentPlayerID;
 
 		public GameObject newPiece;
+		private string newPieceName;
 		public GameObject pieceToAdd;
 		private Camera myCamera;
 		private bool noCube;
@@ -65,6 +66,7 @@ namespace TowerVR
 			noCube = true;
 			hasPlaced = false;
 			hasSelected = false;
+			newPieceName = "";
 			selectionPiecesAreSpawned = false;
 		}
 
@@ -98,7 +100,7 @@ namespace TowerVR
 					if (!selectionPiecesAreSpawned)
 					{
 						Debug.Log("Spawning pieces for selection");
-						GetAndDisplay();
+						GetAndDisplaySelectionPieces();
 						selectionPiecesAreSpawned = true;
 					}
 					
@@ -119,12 +121,15 @@ namespace TowerVR
 							// float zScale = hit.transform.localScale.z;
 							
 							// hit.transform.localScale = new Vector3(xScale * 2.0f, yScale * 2.0f, zScale * 2.0f);
-							hit.transform.RotateAround(hit.transform.position, hit.transform.up, 2.0f);
+							hit.transform.RotateAround(hit.transform.position, hit.transform.forward, 2.0f);
 							
 							if (Cardboard.SDK.Triggered)
 							{
 								Debug.Log("Selected piece " + hit.transform.gameObject);
-								newPiece = hit.transform.gameObject;
+								// newPiece = hit.transform.gameObject;
+								// newPiece = (GameObject) Instantiate(hit.transform.gameObject, new Vector3(), Quaternion.identity);
+								// newPiece.name = hit.transform.gameObject.name;
+								newPieceName = hit.transform.gameObject.name;
 								
 								for (int i = 0; i < displayedObjects.Count; i++) 
 								{
@@ -153,10 +158,13 @@ namespace TowerVR
 								}
 								
 								hasSelected = true;
-								hasPlaced = false;	// already set
+								hasPlaced = false;
 								
 								// Reset piece selected state for the future
-								selectionPiecesAreSpawned = false;
+								// selectionPiecesAreSpawned = false;
+								
+								// Clear Selection pieces
+								 ClearSelectionPieces();
 							}
 						}
 					
@@ -170,16 +178,16 @@ namespace TowerVR
 								// float zScale = displayedObjects[i].transform.localScale.z;
 								
 								// displayedObjects[i].transform.localScale = new Vector3(xScale * 0.5f, yScale * 0.5f, zScale * 0.5f);
-								displayedObjects[i].transform.RotateAround(hit.transform.position, hit.transform.up, 0.5f);
+								displayedObjects[i].transform.RotateAround(displayedObjects[i].transform.position, displayedObjects[i].transform.up, 0.5f);
 							}
 						}
 					}
 				}
 
 				//Proceed when turnState is PlacingTowerPiece
-				if (turnState == TurnState.PlacingTowerPiece && !hasPlaced && hasSelected)
+				if (turnState == TurnState.PlacingTowerPiece && hasSelected)
 				{
-					Debug.Log("Placing state");
+					// Debug.Log("Placing state");
 
 					//Project the new piece directly where you look
 					RaycastHit hitInfo;
@@ -190,8 +198,10 @@ namespace TowerVR
 						//Instantiate a new towerpiece if there is none to be placed
 						if(noCube)
 						{
-							Debug.Log("NewPiece: " + newPiece.transform.name);
-							pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
+							// Debug.Log("NewPiece: " + newPiece.transform.name);
+							Debug.Log("NewPiece: " + newPieceName);							
+							// pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
+							pieceToAdd = PhotonNetwork.Instantiate(newPieceName, new Vector3(), Quaternion.identity, 0) as GameObject;
 							noCube = false;
 							pieceToAdd.layer = 0;
 
@@ -245,19 +255,17 @@ namespace TowerVR
 			noCube = true;
 			hasPlaced = true;
 			hasSelected = false;
-			manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);		
+			manager.placeTowerPiece(pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);		
 			
-			//var photonView = pieceToAdd.GetComponent<PhotonView>();
-			//if (photonView)
-			//{
-			//	photonView.TransferOwnership(PhotonNetwork.masterClient.ID);
-			//}
+			// ClearSelectionPieces();
+			selectionPiecesAreSpawned = false;
+
 		}
 		
 		/**
 		 *	Randomly select bricks to be displayed for player to choose 
 		 **/
-		public void GetAndDisplay () 
+		void GetAndDisplaySelectionPieces () 
         {
 			// Variables to keep track
             int easyIdx = 0;
@@ -310,6 +318,18 @@ namespace TowerVR
 			
             // Debug.Log("done with generate");
         }
+		
+		void ClearSelectionPieces()
+		{
+			Debug.Log("Clearing selection pieces");
+			
+			for (int i = 0; i < displayedObjects.Count; i++)
+			{
+				Destroy(displayedObjects[i]);
+			}
+			
+			displayedObjects.Clear();
+		}
 
 		// Destroy listeners
 		void OnDestroy()
