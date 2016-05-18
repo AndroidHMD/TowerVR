@@ -164,12 +164,10 @@ namespace TowerVR
             
             if (allPlayersReady())
             {
-                initPlayerTurnQueue();
-                proceedPlayerTurn();
-                turnState = TurnState.SelectingTowerPiece;
+                gameState = GameState.Countdown;
                 
-                gameState = GameState.Running;
-                turnTimer.start();
+                //Wait for countdown
+                StartCoroutine("countdown");                
             }
         }
         
@@ -280,9 +278,6 @@ namespace TowerVR
                         if(FallingTowerDetection.hitDetected)
                         {
                             Debug.Log("Tower falling!");
-                            //towerState = TowerState.Falling;
-                            //var col = FallingTowerDetection.detectedCollider;
-                            //Destroy(col.gameObject);
                             FallingTowerDetection.hitDetected = false;
                             
                             towerState = TowerState.Stationary; //Temp solution for testing
@@ -312,6 +307,26 @@ namespace TowerVR
                 
                 yield return new WaitForSeconds(ONE_SECOND);
             }
+        }
+        
+        IEnumerator countdown()
+        {
+            for(;;)
+            {
+                if(HandleStartGame.countdownFinished)
+                {
+                    Debug.Log("Countdown finished");
+                    //Proceed to next player and start the game
+                    initPlayerTurnQueue();
+                    proceedPlayerTurn();
+                    turnState = TurnState.SelectingTowerPiece;
+                    
+                    gameState = GameState.Running;
+                    turnTimer.start();
+                    StopCoroutine("countdown");
+                }
+                yield return null;
+            } 
         }
         
         
