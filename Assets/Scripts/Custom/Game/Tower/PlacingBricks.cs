@@ -56,7 +56,7 @@ namespace TowerVR
 			manager.turnStateChangedHandlers.Add(onTurnStateChanged);
 			manager.towerStateChangedHandlers.Add (onTowerStateChanged);
 			manager.nextPlayerTurnHandlers.Add(onNextPlayerTurn);
-
+			
 			myCamera = Camera.main;
 			noCube = true;
 			hasPlaced = false;
@@ -122,7 +122,8 @@ namespace TowerVR
 							// float zScale = hit.transform.localScale.z;
 							
 							// hit.transform.localScale = new Vector3(xScale * 2.0f, yScale * 2.0f, zScale * 2.0f);
-							hit.transform.RotateAround(hit.transform.position, hit.transform.forward, 2.0f);
+							// hit.transform.RotateAround(hit.transform.position, hit.transform.forward, 2.0f);
+							hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
 							
 							if (Cardboard.SDK.Triggered)
 							{
@@ -164,6 +165,9 @@ namespace TowerVR
 								// Reset piece selected state for the future
 								// selectionPiecesAreSpawned = false;
 								
+								// Call on exit-logic for piece 
+								// hoverLogic.OnPointerExit();
+								
 								// Clear Selection pieces
 								 ClearSelectionPieces();
 							}
@@ -179,7 +183,8 @@ namespace TowerVR
 								// float zScale = displayedObjects[i].transform.localScale.z;
 								
 								// displayedObjects[i].transform.localScale = new Vector3(xScale * 0.5f, yScale * 0.5f, zScale * 0.5f);
-								displayedObjects[i].transform.RotateAround(displayedObjects[i].transform.position, displayedObjects[i].transform.up, 0.5f);
+								// displayedObjects[i].transform.RotateAround(displayedObjects[i].transform.position, displayedObjects[i].transform.up, 0.5f);
+								displayedObjects[i].GetComponent<SelectionPieceHovering>().ConstantBehaviour();
 							}
 						}
 					}
