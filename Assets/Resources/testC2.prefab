@@ -15,6 +15,7 @@ GameObject:
   - 114: {fileID: 11485006}
   - 114: {fileID: 11434986}
   - 114: {fileID: 11482378}
+  - 114: {fileID: 11452396}
   m_Layer: 9
   m_Name: testC2
   m_TagString: Untagged
@@ -158,6 +159,17 @@ MonoBehaviour:
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   delegates: []
+--- !u!114 &11452396
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 182966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57a8049f4c9f44ad994d0401560cb160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11482378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -173,12 +185,13 @@ MonoBehaviour:
   group: 0
   prefixBackup: -1
   observed: {fileID: 0}
-  synchronization: 0
+  synchronization: 3
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
-  ownershipTransfer: 0
+  ownershipTransfer: 1
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 11452396}
+  - {fileID: 442154}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
