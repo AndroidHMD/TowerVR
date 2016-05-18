@@ -19,7 +19,6 @@ namespace TowerVR
 				rb.detectCollisions = false;
 				rb.useGravity = false;
 			}
-			gameObject.layer = 8;
 			gameObject.tag = "newTowerPiece";
 			gameObject.GetComponent<Collider>().isTrigger = false;
 		}
