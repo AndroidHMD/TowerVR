@@ -4,7 +4,7 @@ using System.Collections;
 public class SetMaxPlayers : MonoBehaviour {
 
 	// Currently chosen max players
-	public static int maxPlayers = 0;
+	public static int maxPlayers = 1;
 	// Number of players for this cube
 	public int players;
 	// color of the object
@@ -23,11 +23,11 @@ public class SetMaxPlayers : MonoBehaviour {
 
 		if (maxPlayers == players)
 		{
-			//gameObject.GetComponent<Renderer> ().material.color = Color.green;
+			gameObject.GetComponent<Renderer> ().material.color = Color.green;
 		}
 		else
 		{
-			//gameObject.GetComponent<Renderer> ().material.color = color;
+			gameObject.GetComponent<Renderer> ().material.color = color;
 		}
 			
 	}

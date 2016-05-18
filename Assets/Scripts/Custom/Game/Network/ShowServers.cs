@@ -4,8 +4,11 @@ using System.Collections;
 public class ShowServers : MonoBehaviour   {
 
 	public GameObject cubePrefab;
-	private static int positionY = 30;
+	public GameObject noServers;
+	private static int positionY = 0;
 	GameObject lobbyCube;
+	GameObject serverText;
+	bool show = true;
 
 	// Connects to PhotonNetwork
 	void Start () {
@@ -20,13 +23,43 @@ public class ShowServers : MonoBehaviour   {
 	// Spawns a cube for each room in Photon and displays them in a list with their name 
 	public void SpawnCube(){
 
-		foreach (RoomInfo room in PhotonNetwork.GetRoomList()) {
+		if (show) {
 
-			lobbyCube = Instantiate (cubePrefab, new Vector3 (10, positionY, 0), transform.rotation) as GameObject;
-			lobbyCube.GetComponentInChildren<TextMesh> ().text = room.name;
+			int count = 0;
 
-			positionY += 10;
+			foreach (RoomInfo room in PhotonNetwork.GetRoomList()) {
+
+				lobbyCube = Instantiate (cubePrefab, new Vector3 (-10, positionY, 0), Quaternion.Euler(-90, 90, 0)) as GameObject;
+				lobbyCube.GetComponentInChildren<TextMesh> ().text = room.name;
+				lobbyCube.tag = "lobbyCube";
+
+				positionY -= 10;
+				count++;
+			}
+
+			if (count == 0) {
+			
+				serverText = Instantiate (noServers, new Vector3 (0, -5, 0), Quaternion.identity) as GameObject;
+
+			}
+				
+			positionY = 0;
+			count = 0;
+			show = false;
+
+		} else 
+		{
+
+			Destroy (serverText);
+
+			GameObject[] cubes = GameObject.FindGameObjectsWithTag ("lobbyCube");
+
+			foreach (GameObject cube in cubes)
+				Destroy (cube);
+
+			show = true;
 		}
+
 	}
 
 	// Displays number of rooms
