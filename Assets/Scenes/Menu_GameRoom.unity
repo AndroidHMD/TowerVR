@@ -147,7 +147,7 @@ Transform:
   - {fileID: 1182263375}
   - {fileID: 1901516614}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
 --- !u!1001 &199150290
 Prefab:
   m_ObjectHideFlags: 0
@@ -1516,6 +1516,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefabName: PlayerWisp
   debugGuiOn: 0
+  spawnStrategy: 0
 --- !u!114 &1062703636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2502,6 +2503,22 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0569c482df47e064da9092a068f01d8e, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1397041554 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 107298, guid: 0569c482df47e064da9092a068f01d8e, type: 2}
+  m_PrefabInternal: {fileID: 1397041553}
+--- !u!114 &1397041555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1397041554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca43e9ca0ff3b4b0db4d0211b55eccfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 0
 --- !u!4 &1399889631 stripped
 Transform:
   m_PrefabParentObject: {fileID: 498944, guid: ad80ff0783223754ea5e6ceb3b34c23b, type: 2}

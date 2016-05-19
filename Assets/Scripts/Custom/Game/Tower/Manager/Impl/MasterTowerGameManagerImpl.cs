@@ -12,8 +12,29 @@ namespace TowerVR
      **/ 
     public sealed class MasterTowerGameManagerImpl : TowerGameManagerImpl
     {      
-        
-        private List<GameObject> stackedTowerPieces;
+        void OnGUI()
+        {
+            if (gameState == GameState.Running)
+            {
+                GUILayout.Label("");
+                GUILayout.Label("");
+                GUILayout.Label("");
+                GUILayout.Label("");
+                GUILayout.Label("");
+                GUILayout.Label("");
+                GUILayout.Label("");
+                GUILayout.Label("");
+                GUILayout.Label("");
+                GUILayout.Label("");
+                
+                foreach (var playerScorePair in playerScores)
+                {
+                    var player = playerScorePair.Key;
+                    var score = playerScorePair.Value;
+                    GUILayout.Label("PlayerID: " + player.ID + ", score: " + score.score);
+                }
+            }
+        }
         
         #region PUBLIC_MEMBER_FUNCTIONS
 		
@@ -38,7 +59,7 @@ namespace TowerVR
          **/
         public sealed override void selectTowerPiece(TowerPieceDifficulty difficulty)
 		{
-			handleSelectTowerPieceEvent(difficulty);
+			handleSelectTowerPieceEvent(PhotonNetwork.player.ID, difficulty);
 		}
 		
         /**
@@ -68,12 +89,18 @@ namespace TowerVR
 			
 			players = new HashSet<PhotonPlayer>();
 			playersReadyMap = new Dictionary<PhotonPlayer, bool>();
+            playerScores = new Dictionary<PhotonPlayer, Score>();
 			
 			foreach (var photonPlayer in PhotonNetwork.playerList)
 			{
 				players.Add(photonPlayer);
-				playersReadyMap.Add(photonPlayer, false);
+				
+                playersReadyMap.Add(photonPlayer, false);
+                playerScores.Add(photonPlayer, new Score(0));
 			}
+            
+            stackedTowerPieces = new List<GameObject>();
+            stackedTowerPiecesTransformData = new Dictionary<GameObject, TransformData>();
         }
         
         protected sealed override void onEvent(byte eventCode, object content, int senderID)
@@ -99,7 +126,7 @@ namespace TowerVR
                     TowerPieceDifficulty difficulty;
                     if (SelectTowerPieceEvent.TryParse(content, out difficulty))
                     {
-                        handleSelectTowerPieceEvent(difficulty);
+                        handleSelectTowerPieceEvent(senderID, difficulty);
                     }
 					else
                     {
@@ -166,41 +193,45 @@ namespace TowerVR
             {
                 initPlayerTurnQueue();
                 proceedPlayerTurn();
-                turnState = TurnState.SelectingTowerPiece;
                 
                 gameState = GameState.Running;
-                turnTimer.start();
+                turnState = TurnState.SelectingTowerPiece;
             }
         }
         
-        protected void handleSelectTowerPieceEvent(TowerPieceDifficulty difficulty)
-        {   
+        protected void handleSelectTowerPieceEvent(int playerID, TowerPieceDifficulty difficulty)
+        {
+            Debug.Log("Selected!");
+            currentDifficulty = difficulty;
             turnState = TurnState.PlacingTowerPiece;
             Log("handleSelectTowerPieceEvent. Difficulty: " + difficulty);
         }
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
         {
-            stackedTowerPieces = new List<GameObject>(); //Cleans old list
+            FallingTowerDetection.nDetectedColliders = 0;
             
-			//Player will first try and place TowerPiece in PlacingBrick.cs    
+            //Player will first try and place TowerPiece in PlacingBrick.cs    
             GameObject[] newPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
             
-            int numberOfObjects = 0;
             foreach (GameObject towerPiece in newPieces)
             {
-                numberOfObjects++;
-                stackedTowerPieces.Add(towerPiece);
+                if (stackedTowerPieces.Contains(towerPiece))
+                {
+                    // piece already in the tower piece list
+                    continue;
+                }
                                 
                 // Take over ownership
                 var photonView = towerPiece.GetComponent<PhotonView>();
                 if (photonView != null && !photonView.isMine)
                 {
                     photonView.RequestOwnership();
+                    LogToScreen("Requesting ownership of new piece.");
                 }
+                
+                mostRecentTowerPiece = towerPiece;
             }
-            
-            Log("Stacked: " + numberOfObjects + " objects");
 
             Log("handlePlaceTowerPieceEvent [playerID=" + playerID + " posX=" + posX + " posZ=" + posZ + "rotDegreesY=" + rotDegreesY + "]");
             
@@ -209,8 +240,6 @@ namespace TowerVR
             
             //Update TowerState
             towerState = TowerState.Moving;
-            
-            
         }
         
         
@@ -234,6 +263,7 @@ namespace TowerVR
         {
             for (;;)
             {
+                //Log("updateTurnState");
                 if (gameState == GameState.Running)
                 {
                     switch (turnState)
@@ -252,7 +282,6 @@ namespace TowerVR
                             }
                             break;
                         case TurnState.TowerReacting:
-                            
                             if (towerState == TowerState.Stationary)
                             {
                                 proceedPlayerTurn();
@@ -270,41 +299,60 @@ namespace TowerVR
         {
             for (;;)
             {
+                //Log("updateTowerState");
                 if(turnState == TurnState.TowerReacting)
                 {
-                    
                     yield return new WaitForSeconds(TurnTimeLimits.TowerReacting);
                                 
                     while(towerState == TowerState.Moving)
                     {
-                        if(FallingTowerDetection.hitDetected)
+                        if(FallingTowerDetection.nDetectedColliders > 0)
                         {
                             Debug.Log("Tower falling!");
-                            //towerState = TowerState.Falling;
-                            //var col = FallingTowerDetection.detectedCollider;
-                            //Destroy(col.gameObject);
-                            FallingTowerDetection.hitDetected = false;
                             
-                            towerState = TowerState.Stationary; //Temp solution for testing
+                            handlePlayerLost();
+                            
+                            var photonView = mostRecentTowerPiece.GetComponent<PhotonView>();
+                            if (photonView)
+                            {
+                                if (!photonView.isMine)
+                                {
+                                    LogToScreen("Trying to Destroy obj which is NOT mine.");
+                                } else {
+                                    LogToScreen("Trying to Destroy obj which is mine.");
+                                }
+                            }
+                            
+                            PhotonNetwork.Destroy(mostRecentTowerPiece);
+                            mostRecentTowerPiece = null;
+                            
+                            StartCoroutine("restoreTowerTransforms");
+                            
+                            towerState = TowerState.Stationary;
                             yield return null;
                         }
                         
                         bool allPiecesStationary = true;
+                        
+                        allPiecesStationary &= checkIsTowerPieceStationary(mostRecentTowerPiece);
                         foreach (var towerPiece in stackedTowerPieces)
                         {
-                            var rb = towerPiece.GetComponent<Rigidbody>();
-                            if(rb.velocity.magnitude > TowerConstants.MaxTowerVelocity || rb.angularVelocity.magnitude > TowerConstants.MaxTowerAngVelocity)
-                            {        
-                                allPiecesStationary = false;
+                            allPiecesStationary &= checkIsTowerPieceStationary(towerPiece);
+                            if (allPiecesStationary)
+                            {
                                 break;
                             }
-                            
                         }
+                        
                         if(allPiecesStationary)
                         {
                             IncreaseHeight.checkIncreaseHeight = true;
                             towerState = TowerState.Stationary;
                             
+                            stackedTowerPieces.Add(mostRecentTowerPiece);
+                            mostRecentTowerPiece = null;
+                            
+                            storeTowerTransforms();
                         }
                         yield return null;
                     }
@@ -312,6 +360,14 @@ namespace TowerVR
                 
                 yield return new WaitForSeconds(ONE_SECOND);
             }
+        }
+        
+        bool checkIsTowerPieceStationary(GameObject towerPiece)
+        {
+            Rigidbody rb = null;
+            return (towerPiece != null) &&
+                   ((rb = towerPiece.GetComponent<Rigidbody>()) != null) &&
+                   (rb.velocity.magnitude < TowerConstants.MaxTowerVelocity || rb.angularVelocity.magnitude < TowerConstants.MaxTowerAngVelocity);
         }
         
         
@@ -347,12 +403,23 @@ namespace TowerVR
          **/
         private void proceedPlayerTurn()
         {
+            Debug.Log("proceed");
             PhotonPlayer lastPhotonPlayer = currentPlayer;
             currentPlayer = null;
             
             if (lastPhotonPlayer != null)
             {
                 playerQueue.Enqueue(lastPhotonPlayer);
+                
+                // update score of last player
+                var oldScore = playerScores[lastPhotonPlayer];
+                var newScore = Score.Add(oldScore, Score.GetScore(currentDifficulty));
+                playerScores[lastPhotonPlayer] = newScore;
+            }
+            
+            if (playerQueue.Count == 0)
+            {
+                endGame();
             }
             
             var nextPlayer = playerQueue.Dequeue();
@@ -366,7 +433,86 @@ namespace TowerVR
             }
             
             currentPlayer = nextPlayer;
+        }
+        
+        private void endGame()
+        {
+            Log("Game ended!");
+            Tuple<PhotonPlayer, Score> winningPlayer = getWinningPlayer();
             
+            gameState = GameState.Ended;
+            
+            var ev = new PlayerWonEvent(winningPlayer.Item1.ID);
+            if (!ev.trySend())
+            {
+                Error(ev.trySendError);
+                gameState = GameState.Stopped;
+            }
+        }
+        
+        private void handlePlayerLost()
+        {
+            var losingPlayer = currentPlayer;
+            currentPlayer = null;
+            
+            var ev = new PlayerLostEvent(losingPlayer.ID);
+            if (!ev.trySend())
+            {
+                Error(ev.trySendError);
+                gameState = GameState.Stopped;
+            }
+        }
+        
+        private IEnumerator restoreTowerTransforms()
+        {
+            foreach (var towerPiece in stackedTowerPieces)
+            {
+                TransformData transformData;
+                if (!stackedTowerPiecesTransformData.TryGetValue(towerPiece, out transformData))
+                {
+                    continue;
+                }
+                
+                // Start moving back the pieces
+                iTween.MoveTo(towerPiece, transformData.position, TowerConstants.RestoreTowerTime);
+                iTween.RotateTo(towerPiece, transformData.rotation.eulerAngles, TowerConstants.RestoreTowerTime);
+                
+                // Disable all collisions
+                var rb = towerPiece.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    
+                    rb.detectCollisions = false;
+                    rb.isKinematic = true;
+                }
+            }
+            
+            yield return new WaitForSeconds(TowerConstants.RestoreTowerTime + 0.1f);
+            
+            foreach (var towerPiece in stackedTowerPieces)
+            {
+                // Re-enable all collisions
+                var rb = towerPiece.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.detectCollisions = true;
+                    rb.isKinematic = false;
+                }
+            }
+            
+            yield return null;
+        }
+        
+        private void storeTowerTransforms()
+        {
+            foreach (var towerPiece in stackedTowerPieces)
+            {
+                var transform = towerPiece.transform;
+                
+                stackedTowerPiecesTransformData[towerPiece] = new TransformData(transform);
+            }
         }
         
         /**
@@ -386,6 +532,23 @@ namespace TowerVR
 			
 			return true;
 		}
+        
+        private Tuple<PhotonPlayer, Score> getWinningPlayer()
+        {
+            PhotonPlayer winner = null;
+            Score score = new Score(-1);
+            
+            foreach (var playerScorePair in playerScores)
+            {
+                if (score.score < playerScorePair.Value.score)
+                {
+                    winner = playerScorePair.Key;
+                    score = playerScorePair.Value;
+                }
+            }
+            
+            return new Tuple<PhotonPlayer, Score>(winner, score);
+        }
         
         #endregion PRIVATE_MEMBER_FUNCTIONS
         
@@ -437,11 +600,29 @@ namespace TowerVR
         
         private int towerState;
         
+        private struct TransformData
+        {
+            public readonly Vector3 position;
+            public readonly Quaternion rotation;
+            
+            public TransformData(Transform transform)
+            {
+                position = transform.position;
+                rotation = transform.rotation;
+            }
+        }
+        
+        private GameObject mostRecentTowerPiece;
+        private List<GameObject> stackedTowerPieces;
+        private IDictionary<GameObject, TransformData> stackedTowerPiecesTransformData;
+        
         // The players that we're in the room when the manager was instantiated.
         private HashSet<PhotonPlayer> players;
         
         // Flags to see if each player is online and ready.
         private IDictionary<PhotonPlayer, bool> playersReadyMap;
+        
+        private IDictionary<PhotonPlayer, Score> playerScores;
         
         /**
 		 * A queue containing the next players.
@@ -456,6 +637,8 @@ namespace TowerVR
         
         // Reference to the current player.
         private PhotonPlayer currentPlayer;
+        
+        private TowerPieceDifficulty currentDifficulty;
         
         private Timer turnTimer;
         
@@ -477,6 +660,11 @@ namespace TowerVR
             
             photonPlayer = null;
             return false;
+        }
+        
+        private static void LogToScreen(object obj)
+        {
+            ScreenLog.Log(obj);
         }
         
         private static void Log(object obj)

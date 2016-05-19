@@ -9,30 +9,32 @@ public class RestrictToHost : Photon.MonoBehaviour{
     
     public bool debug = false;
     private MeshRenderer meshRenderer;
-    private PhotonView thisPhotonView;
+    private Collider col;
     
     void Start() 
     {
-        thisPhotonView = this.GetComponent<PhotonView>();
 		meshRenderer = this.GetComponent<MeshRenderer>();
+        col = this.GetComponent<Collider>();
     }
     
     void Update()
     {
-        if (thisPhotonView.isMine)
+        if (PhotonNetwork.isMasterClient)
         {
-            if (debug)
-                Debug.Log("defined, mine");
+            // if (debug)
+            //     Debug.Log("defined, mine");
             
             meshRenderer.enabled = true;
+            col.enabled = true;
         } 
         
         else 
         {
-            if (debug)
-                Debug.Log("not mine");
+            // if (debug)
+            //     Debug.Log("not mine");
             
             meshRenderer.enabled = false;
+            col.enabled = false;
         }
     }
 }

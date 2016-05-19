@@ -71,23 +71,6 @@ namespace TowerVR
 
 			//Check if it is my turn, otherwise just observe
 			if (currentPlayerID == PhotonNetwork.player.ID)
-			{
-				// test
-				// if (!selecting)
-				// {
-				// 	Debug.Log("Calling");
-				// 	selecting = true;
-				// 	GetAndDisplay();
-				// }
-				
-				// if (selecting)
-				// {
-				// 	// Continuous update not needed?
-					
-				// 	// ... selecting = false
-				// }
-				
-				
 			
 				//If it is my turn, spawn new piece to be placed.
 				if(turnState == TurnState.SelectingTowerPiece && !hasSelected)
@@ -110,7 +93,8 @@ namespace TowerVR
 						for (int i = 0; i < displayedObjects.Count; i++) 
 						{
 							var rb =  displayedObjects[i].GetComponent<Rigidbody>();
-							rb.detectCollisions = true;				
+							rb.detectCollisions = true;	
+							rb.isKinematic = true;	
 					 		// Debug.Log("Rigidbody for " + rb + ": kinematic = " + rb.isKinematic + ", detectCol = " + rb.detectCollisions + ", w/ layer " + displayedObjects[i].layer);
 						}
 						
@@ -120,7 +104,10 @@ namespace TowerVR
 						if (Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, 700, piecesToSelectMask))
 						{
 							// Debug.Log("Hit object " + hit.collider + " wtih RB " + hit.rigidbody + " with object " + hit.transform.gameObject + " at " + hit.distance);
-							hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
+							// hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
+							hit.transform.RotateAround(hit.transform.position, hit.transform.up, 2.0f);
+							// // // Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
+							// halo.enabled = true;
 							
 							if (Cardboard.SDK.Triggered)
 							{
@@ -153,6 +140,7 @@ namespace TowerVR
 									}
 								}
 								
+								Debug.Log("Time for select: " + Time.time);
 								hasSelected = true;
 								
 								// Clear Selection pieces
@@ -164,7 +152,10 @@ namespace TowerVR
 						{
 							for (int i = 0; i < displayedObjects.Count; i++) 
 							{
-								displayedObjects[i].GetComponent<SelectionPieceHovering>().ConstantBehaviour();
+								// displayedObjects[i].GetComponent<SelectionPieceHovering>().ConstantBehaviour();
+								displayedObjects[i].transform.RotateAround(displayedObjects[i].transform.position, displayedObjects[i].transform.up, 0.3f);
+								// // Behaviour halo = (Behaviour)displayedObjects[i].GetComponent("Halo");  
+								// halo.enabled = false;
 							}
 						}
 					}
@@ -194,12 +185,12 @@ namespace TowerVR
 						if(noCube)
 						{
 							// Debug.Log("NewPiece: " + newPiece.transform.name);
-							Debug.Log("NewPiece: " + newPieceName);							
+							Debug.Log("NewPiece: " + newPieceName + "   Time to place: " + Time.time);							
 							// pieceToAdd = PhotonNetwork.Instantiate(newPiece.transform.name, newPiece.transform.position, newPiece.transform.rotation, 0) as GameObject;
 							pieceToAdd = PhotonNetwork.Instantiate(newPieceName, new Vector3(), Quaternion.identity, 0) as GameObject;
 							
-							Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
-							halo.enabled = false;
+							// Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
+							// halo.enabled = false;
 							
 							noCube = false;
 							pieceToAdd.layer = 0;
@@ -226,7 +217,10 @@ namespace TowerVR
 					else
 					{
 						//If there's no intersection with Tower at all, don't render the new piece
-						pieceToAdd.GetComponent<MeshRenderer>().enabled = false;
+						if (pieceToAdd != null)
+						{
+							pieceToAdd.GetComponent<MeshRenderer>().enabled = false;
+						}
 					}
 				}
 				//Did the time run out? Place it!
@@ -251,6 +245,7 @@ namespace TowerVR
 			rb.useGravity = true;
 
 			pieceToAdd.layer = 8;
+			pieceToAdd.tag = "newTowerPiece";
 			noCube = true;
 			hasPlaced = true;
 			hasSelected = false;
@@ -283,34 +278,35 @@ namespace TowerVR
 				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.identity) as GameObject;
 				temp.name = tempList[i].name;
 				
-				// Turn off halo initially (because we won't remember/know to keep it disabled in the editor)
-				Behaviour halo = (Behaviour)temp.GetComponent("Halo");
-				halo.enabled = false;
+				// // Turn off halo initially (because we won't remember/know to keep it disabled in the editor)
+				// // Behaviour halo = (Behaviour)temp.GetComponent("Halo");
+				// halo.enabled = false;
 				
 				temp.layer = 9;
 				displayedObjects.Add(temp);
             }
 
-			for (int i = 0; i < displayedObjects.Count; i++) {
-				displayedObjects[i].transform.position = new Vector3(myCamera.transform.position.x/1.1f, 6.0f, myCamera.transform.position.z/1.1f);
+			for (int i = 0; i < displayedObjects.Count; i++)
+			{
+				displayedObjects[i].transform.position = new Vector3(myCamera.transform.position.x/2.0f, 6.0f, myCamera.transform.position.z/2.0f);
 				displayedObjects[i].transform.LookAt(myCamera.transform);
 				var rb = displayedObjects[i].GetComponent<Rigidbody>();
 				if (rb != null)
 				{
 					// Debug.Log("coming in????");
 					rb.detectCollisions = true;
-					rb.isKinematic = false;
+					rb.isKinematic = true;
 				}
 				displayedObjects[i].layer = 9;
 			}
 			
-			Vector3 easyObjectWidth = displayedObjects[easyIdx].GetComponent<MeshRenderer>().bounds.size;
-			Vector3 mediumObjectWidth = displayedObjects[mediumIdx].GetComponent<MeshRenderer>().bounds.size;			
-			Vector3 hardObjectWidth = displayedObjects[hardIdx].GetComponent<MeshRenderer>().bounds.size;
+			Vector3 easyObjectWidth = Vector3.Scale(displayedObjects[easyIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[easyIdx].transform.localScale);
+			Vector3 mediumObjectWidth = Vector3.Scale(displayedObjects[mediumIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[mediumIdx].transform.localScale);			
+			Vector3 hardObjectWidth = Vector3.Scale(displayedObjects[hardIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[hardIdx].transform.localScale);
 			
 			// Todo: check validity of signs
-			float transDistLeft = mediumObjectWidth.x/2.0f + 1.0f + easyObjectWidth.x/2.0f; 
-			float transDistRight = - (mediumObjectWidth.x/2.0f + 1.0f + hardObjectWidth.x/2.0f);
+			float transDistLeft = mediumObjectWidth.x/4.0f + 1.0f + easyObjectWidth.x/4.0f; 
+			float transDistRight = - (mediumObjectWidth.x/4.0f + 1.0f + hardObjectWidth.x/4.0f);
 			
 			// Debug.Log("distances are " + transDistLeft + ", " + transDistRight);
 			
@@ -327,10 +323,11 @@ namespace TowerVR
 			
 			for (int i = 0; i < displayedObjects.Count; i++)
 			{
-				Destroy(displayedObjects[i]);
+				Destroy(displayedObjects[i]);	
 			}
 			
-			displayedObjects.Clear();
+			displayedObjects = new List<GameObject>();
+			
 		}
 
 		// Destroy listeners

@@ -12,8 +12,9 @@ namespace TowerVR
     
     public class TowerConstants
     {
-        public const float MaxTowerVelocity = 0.2f;
-        public const float MaxTowerAngVelocity = 0.1f;
+        public const float MaxTowerVelocity = 0.025f;
+        public const float MaxTowerAngVelocity = 0.025f;
         public const float IncreaseHeightTime = 4.0f;
+        public const float RestoreTowerTime = 4.0f;
     }
 }
