@@ -92,6 +92,9 @@ namespace TowerVR
 				//If it is my turn, spawn new piece to be placed.
 				if(turnState == TurnState.SelectingTowerPiece && !hasSelected)
 				{
+					if (hasPlaced) 
+						hasPlaced = false;
+					
 					if (!selectionPiecesAreSpawned)
 					{
 						Debug.Log("Spawning pieces for selection");
@@ -101,6 +104,9 @@ namespace TowerVR
 					
 					if (!hasSelected)
 					{
+						
+						// Make sure the displayed objects have collision detection on
+						// This is a very ineffective place to do it but it doesn't seem to work in GetAndDisplaySelectionPieces
 						for (int i = 0; i < displayedObjects.Count; i++) 
 						{
 							var rb =  displayedObjects[i].GetComponent<Rigidbody>();
@@ -114,23 +120,11 @@ namespace TowerVR
 						if (Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, 700, piecesToSelectMask))
 						{
 							// Debug.Log("Hit object " + hit.collider + " wtih RB " + hit.rigidbody + " with object " + hit.transform.gameObject + " at " + hit.distance);
-							
-							// hit.transform.localScale = new Vector3 (3.0f, 3.0f, 3.0f);
-							// hit.transform.localScale = hit.transform.localScale * 2.0f;
-							// float xScale = hit.transform.localScale.x;
-							// float yScale = hit.transform.localScale.y;
-							// float zScale = hit.transform.localScale.z;
-							
-							// hit.transform.localScale = new Vector3(xScale * 2.0f, yScale * 2.0f, zScale * 2.0f);
-							// hit.transform.RotateAround(hit.transform.position, hit.transform.forward, 2.0f);
 							hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
 							
 							if (Cardboard.SDK.Triggered)
 							{
-								Debug.Log("Selected piece " + hit.transform.gameObject);
-								// newPiece = hit.transform.gameObject;
-								// newPiece = (GameObject) Instantiate(hit.transform.gameObject, new Vector3(), Quaternion.identity);
-								// newPiece.name = hit.transform.gameObject.name;
+								// Debug.Log("Selected piece " + hit.transform.gameObject);
 								newPieceName = hit.transform.gameObject.name;
 								
 								for (int i = 0; i < displayedObjects.Count; i++) 
@@ -160,13 +154,6 @@ namespace TowerVR
 								}
 								
 								hasSelected = true;
-								hasPlaced = false;
-								
-								// Reset piece selected state for the future
-								// selectionPiecesAreSpawned = false;
-								
-								// Call on exit-logic for piece 
-								// hoverLogic.OnPointerExit();
 								
 								// Clear Selection pieces
 								 ClearSelectionPieces();
@@ -177,13 +164,6 @@ namespace TowerVR
 						{
 							for (int i = 0; i < displayedObjects.Count; i++) 
 							{
-								// displayedObjects[i].transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-								// float xScale = displayedObjects[i].transform.localScale.x;
-								// float yScale = displayedObjects[i].transform.localScale.y;
-								// float zScale = displayedObjects[i].transform.localScale.z;
-								
-								// displayedObjects[i].transform.localScale = new Vector3(xScale * 0.5f, yScale * 0.5f, zScale * 0.5f);
-								// displayedObjects[i].transform.RotateAround(displayedObjects[i].transform.position, displayedObjects[i].transform.up, 0.5f);
 								displayedObjects[i].GetComponent<SelectionPieceHovering>().ConstantBehaviour();
 							}
 						}
@@ -193,17 +173,16 @@ namespace TowerVR
 				//Proceed when turnState is PlacingTowerPiece
 				if (turnState == TurnState.PlacingTowerPiece && !hasPlaced)
 				{
-					// This produces erratic behaviour as this code is ran multiple times after piece placement (one player)
+					
 					// If time ran out and turn proceeded without player choosing piece
-					// if (!hasSelected && !hasPlaced)
-					// {
-					// 	Debug.Log("Placing state");
-					// 	newPieceName = easyBricks[ Random.Range(0, (easyBricks.Count)) ].name;	// Get random easy piece
-					// 	manager.selectTowerPiece(TowerPieceDifficulty.Easy);
-					// 	hasSelected = true;
-					// 	// hasPlaced = false;
-					// 	ClearSelectionPieces();
-					// }
+					if (!hasSelected)
+					{
+						Debug.Log("PLACING STATE WITHOUT SELECTION");
+						newPieceName = displayedObjects[0].name;	// get the easy piece
+						manager.selectTowerPiece(TowerPieceDifficulty.Easy);
+						hasSelected = true;
+						ClearSelectionPieces();
+					}
 
 					//Project the new piece directly where you look
 					RaycastHit hitInfo;
@@ -313,7 +292,7 @@ namespace TowerVR
             }
 
 			for (int i = 0; i < displayedObjects.Count; i++) {
-				displayedObjects[i].transform.position = new Vector3(myCamera.transform.position.x/1.2f, 6.0f, myCamera.transform.position.z/1.2f);
+				displayedObjects[i].transform.position = new Vector3(myCamera.transform.position.x/1.1f, 6.0f, myCamera.transform.position.z/1.1f);
 				displayedObjects[i].transform.LookAt(myCamera.transform);
 				var rb = displayedObjects[i].GetComponent<Rigidbody>();
 				if (rb != null)
