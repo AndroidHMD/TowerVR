@@ -1296,6 +1296,7 @@ GameObject:
   - 114: {fileID: 1017791940}
   - 114: {fileID: 1017791941}
   - 114: {fileID: 1017791942}
+  - 114: {fileID: 1017791943}
   m_Layer: 0
   m_Name: SceneLogic
   m_TagString: Untagged
@@ -1444,40 +1445,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4743c19ba6704df09039ca8ba3820dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maskMaterial: {fileID: 2100000, guid: 36b1f386c1720c94889ac11ac9c8c6d1, type: 2}
---- !u!33 &1031275287
-MeshFilter:
+--- !u!114 &1017791943
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1031275284}
-  m_Mesh: {fileID: 801984692}
---- !u!23 &1031275288
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1031275284}
+  m_GameObject: {fileID: 1017791934}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_Materials:
-  - {fileID: 1586598368}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
-  m_ProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04a07723e833cf4c802a2e97ba447e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefabName: PlayerWisp
+  debugGuiOn: 0
+  spawnStrategy: 1
 --- !u!114 &1062703636
 MonoBehaviour:
   m_ObjectHideFlags: 0

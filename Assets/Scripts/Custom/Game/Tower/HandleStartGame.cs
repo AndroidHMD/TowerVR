@@ -12,6 +12,8 @@ namespace TowerVR
 		private int gameState;
 		private int currentPlayerID;
 		
+		private string winString = "";
+		
 		private bool noButton = true;
 		private bool started = false;
 		private bool notStartedCountdown = true;
@@ -36,12 +38,26 @@ namespace TowerVR
 			this.currentPlayerID = nextPlayerID;
 		}
 		
+		void onPlayerWon(int playerID)
+		{
+			if (playerID == PhotonNetwork.player.ID)
+			{
+				winString = "You won! Gratz m8!";
+			}
+			
+			else
+			{
+				winString = "You suck, you lost!";
+			}
+		}
 		
 		void Start () 
 		{
 			manager.turnStateChangedHandlers.Add(onTurnStateChanged);
 			manager.gameStateChangedHandlers.Add(onGameStateChanged);
 			manager.nextPlayerTurnHandlers.Add(onNextPlayerTurn);
+			manager.playerWonHandlers.Add(onPlayerWon);
+			
 			countdownFinished = false;
 			displayPos = new Vector3(0, 25, 0);
 			myCamera = Camera.main;
@@ -55,6 +71,7 @@ namespace TowerVR
 			manager.turnStateChangedHandlers.Remove(onTurnStateChanged);
 			manager.gameStateChangedHandlers.Remove(onGameStateChanged);
 			manager.nextPlayerTurnHandlers.Remove(onNextPlayerTurn);
+			manager.playerWonHandlers.Remove(onPlayerWon);
 		}
 		
 		
@@ -140,6 +157,7 @@ namespace TowerVR
 					GUILayout.Label("It is your turn!");
 				}	
 			}
+			GUILayout.Label(winString);
 		}
 		
 		private IEnumerator countdown() {

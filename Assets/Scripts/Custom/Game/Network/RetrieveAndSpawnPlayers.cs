@@ -6,15 +6,25 @@ using System.Collections;
 */
 public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour 
 {
+	public enum SpawnStrategy 
+	{
+		OnJoinedRoom, OnSceneLoaded
+	}
+	
 	public string playerPrefabName;
 	public bool debugGuiOn = false;
 	private string players = "";
 	private GameObject thisPlayer;
 	
+	public SpawnStrategy spawnStrategy;
+	
 	// wip
 	void Start()
 	{
-		
+		if (spawnStrategy.Equals(SpawnStrategy.OnSceneLoaded))
+		{
+			SpawnPlayer();
+		}
 	}
 	
 	/**
@@ -22,7 +32,10 @@ public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour
 	*/
 	void OnJoinedRoom() 
 	{
-		SpawnPlayer();
+		if (spawnStrategy.Equals(SpawnStrategy.OnJoinedRoom))
+		{
+			SpawnPlayer();
+		}
 		UpdatePlayerDebugList();
 	}
 	

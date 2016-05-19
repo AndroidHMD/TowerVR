@@ -10,6 +10,8 @@ namespace TowerVR
 		private int currentPlayerID;
 		private bool hasReadied;
 		
+		private string winString = "";
+		
 		void onGameStateChanged(int gameState)
 		{
 			this.gameState = gameState;
@@ -25,6 +27,19 @@ namespace TowerVR
 			this.currentPlayerID = nextPlayerID;
 		}
 		
+		void onPlayerWon(int playerID)
+		{
+			if (playerID == PhotonNetwork.player.ID)
+			{
+				winString = "You won! Gratz m8!";
+			}
+			
+			else
+			{
+				winString = "You suck, you lost!";
+			}
+		}
+		
 		void Start () 
 		{
 			hasReadied = false;
@@ -35,6 +50,8 @@ namespace TowerVR
 			manager.turnStateChangedHandlers.Add(onTurnStateChanged);
 			manager.gameStateChangedHandlers.Add(onGameStateChanged);
 			manager.nextPlayerTurnHandlers.Add(onNextPlayerTurn);
+			
+			manager.playerWonHandlers.Add(onPlayerWon);
 		}
 		
 		void OnDestroy()
@@ -42,6 +59,8 @@ namespace TowerVR
 			manager.turnStateChangedHandlers.Remove(onTurnStateChanged);
 			manager.gameStateChangedHandlers.Remove(onGameStateChanged);
 			manager.nextPlayerTurnHandlers.Remove(onNextPlayerTurn);
+			
+			manager.playerWonHandlers.Remove(onPlayerWon);
 		}
 		
 		void OnGUI()
@@ -79,6 +98,8 @@ namespace TowerVR
 					GUILayout.Label("It is your turn!");
 				}	
 			}
+			
+			GUILayout.Label(winString);
 		}
 	}
 }

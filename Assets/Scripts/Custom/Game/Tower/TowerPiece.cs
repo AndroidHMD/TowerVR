@@ -24,15 +24,15 @@ namespace TowerVR
 			gameObject.GetComponent<Collider>().isTrigger = false;
 		}
 		
-		public override void OnOwnershipRequest(object[] viewAndPlayer)
-		{
-			PhotonView view = viewAndPlayer[0] as PhotonView;
-			PhotonPlayer player = viewAndPlayer[1] as PhotonPlayer;
-			
-			Debug.Log("OnOwnershipRequest from " + player.ID);
-			
-			view.TransferOwnership(player.ID);
- 		} 
+//		public void OnOwnershipRequest(object[] viewAndPlayer)
+//		{
+//			PhotonView view = viewAndPlayer[0] as PhotonView;
+//			PhotonPlayer player = viewAndPlayer[1] as PhotonPlayer;
+//			
+//			ScreenLog.Log("OnOwnershipRequest from " + player.ID);
+//			
+//			view.TransferOwnership(player.ID);
+// 		} 
 		 
 		void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 		{
