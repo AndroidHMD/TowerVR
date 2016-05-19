@@ -17,6 +17,7 @@ namespace TowerVR
 		private bool notStartedCountdown = true;
 		private GameObject countdownNumber;
 		private GameObject tempButton;
+		private Color tempColor;
 		private Vector3 displayPos;
 		private Camera myCamera;
 		
@@ -68,27 +69,28 @@ namespace TowerVR
 					{
 						tempButton = Instantiate(startButton, displayPos, Quaternion.identity) as GameObject;
 						tempButton.layer = 9;
+						tempColor = tempButton.GetComponent<Renderer>().material.color;
 						noButton = false;
 					}
 					RaycastHit hit;
 					int newLayerMask = 1 << 9; 
 					if(Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, 100, newLayerMask , QueryTriggerInteraction.UseGlobal))
 					{
-						//TODO: Change color? Animation
-						tempButton.GetComponent<Renderer>().material.color = Color.yellow;
+						tempButton.GetComponent<Renderer>().material.color = Color.red;
 						if(Cardboard.SDK.Triggered)
 						{
 							Debug.Log("Let's start this game!");
 							manager.tryStartGame(); //Starts countdown
-							//TODO: animate
+							//TODO: animate?
 							Destroy(tempButton);
 							started = true;
 						}
 					}
 					else
 					{
-						tempButton.GetComponent<Renderer>().material.color = Color.red;
+						tempButton.GetComponent<Renderer>().material.color = tempColor;
 					}
+					tempButton.transform.RotateAround(tempButton.transform.position, Vector3.up, 20 * Time.deltaTime);
 
 				}
             }
@@ -142,7 +144,7 @@ namespace TowerVR
 		
 		private IEnumerator countdown() {
 			
-			//TODO: Animate number (scale up and rotate)
+			//TODO: Animate number?
 			int nrCountdowns = 3;
 			int countdownTime = 1;
 			
@@ -152,6 +154,8 @@ namespace TowerVR
 				Debug.Log("Number: " + (nrCountdowns-i));
 				nrName = nrName + (nrCountdowns-i);
 				countdownNumber = PhotonNetwork.Instantiate(nrName, displayPos, Quaternion.identity, 0) as GameObject;
+				//countdownNumber.transform.RotateAround(countdownNumber.transform.position, Vector3.up, 20 * Time.deltaTime);
+				iTween.RotateBy(countdownNumber, Vector3.up, 1);
 				
 				Debug.Log("Time1: " + Time.time);
 				yield return new WaitForSeconds(countdownTime);
