@@ -12,7 +12,6 @@ namespace TowerVR
     {
         public NextPlayerEvent(int nextPlayerID)
         {
-            Debug.Log("NextPlayerEvent!");
             eventCode = NetworkEventCodes.NextPlayer;
             setReceivers(ReceiverGroup.All);
             

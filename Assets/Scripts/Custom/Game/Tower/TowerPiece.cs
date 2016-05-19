@@ -39,6 +39,7 @@ namespace TowerVR
 			var rb = gameObject.GetComponent<Rigidbody>();
 			if (stream.isWriting)
 			{
+				//Debug.Log("Rigidbody states changed" +);
 				//We own this player: send the others our data
 				stream.SendNext((bool) rb.isKinematic );
 				stream.SendNext((bool) rb.detectCollisions );

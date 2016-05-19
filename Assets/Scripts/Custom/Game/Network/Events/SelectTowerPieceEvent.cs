@@ -31,7 +31,6 @@ namespace TowerVR
         protected sealed override bool contentIsValid()
         {
             int diff;
-            Debug.Log("Checking content");
             
             if (!(content is int))
             { 
@@ -46,7 +45,6 @@ namespace TowerVR
                Debug.Log("Difficulty must be Easy/Medium/Hard.");
                 return false;
             }
-            Debug.Log("Content is valid");
             return true;
         }
         
