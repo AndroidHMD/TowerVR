@@ -32,6 +32,7 @@ GameObject:
   - 65: {fileID: 6577118}
   - 114: {fileID: 11482634}
   - 114: {fileID: 11486502}
+  - 114: {fileID: 11404958}
   m_Layer: 0
   m_Name: lobbyCube
   m_TagString: Untagged
@@ -157,6 +158,17 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
+--- !u!114 &11404958
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 192070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea12cc2ae7af124bbfb8174f0719d1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11407592
 MonoBehaviour:
   m_ObjectHideFlags: 1

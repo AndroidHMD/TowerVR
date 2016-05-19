@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 428886}
   - 23: {fileID: 2334538}
   - 102: {fileID: 10239948}
+  - 114: {fileID: 11413054}
   m_Layer: 0
   m_Name: NoServers
   m_TagString: Untagged
@@ -76,6 +77,19 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
+--- !u!114 &11413054
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ea12cc2ae7af124bbfb8174f0719d1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  rotationAngle: 180
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
