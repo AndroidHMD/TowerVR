@@ -164,7 +164,7 @@ Transform:
   - {fileID: 1912560735}
   - {fileID: 532800142}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
 --- !u!21 &61825379
 Material:
   serializedVersion: 6
@@ -367,9 +367,9 @@ GameObject:
   - 4: {fileID: 218539733}
   - 33: {fileID: 218539735}
   - 136: {fileID: 218539734}
-  - 114: {fileID: 218539737}
   - 114: {fileID: 218539736}
   - 114: {fileID: 218539738}
+  - 114: {fileID: 218539737}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -461,7 +461,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 218539737}
-          m_MethodName: LoadScene
+          m_MethodName: SwitchScene
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -472,7 +472,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
         - m_Target: {fileID: 218539737}
-          m_MethodName: SwitchScene
+          m_MethodName: LoadScene
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -512,7 +512,7 @@ MonoBehaviour:
   levelName: 
   levelSkybox: 
   isGazedOn: 0
-  skyboxIdentifier: R
+  skyboxIdentifier: Mountain
   blendedSkybox: {fileID: 2100000, guid: 725157c2a4d47c74d9f79575bb37a97c, type: 2}
 --- !u!114 &218539738
 MonoBehaviour:
@@ -1850,8 +1850,8 @@ GameObject:
   - 33: {fileID: 925936509}
   - 65: {fileID: 925936508}
   - 114: {fileID: 925936507}
-  - 114: {fileID: 925936506}
   - 114: {fileID: 925936510}
+  - 114: {fileID: 925936506}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -1890,7 +1890,7 @@ MonoBehaviour:
   levelName: 
   levelSkybox: 
   isGazedOn: 0
-  skyboxIdentifier: R
+  skyboxIdentifier: Sunset
   blendedSkybox: {fileID: 2100000, guid: 725157c2a4d47c74d9f79575bb37a97c, type: 2}
 --- !u!114 &925936507
 MonoBehaviour:
@@ -1943,7 +1943,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 925936506}
-          m_MethodName: LoadScene
+          m_MethodName: SwitchScene
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1954,7 +1954,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
         - m_Target: {fileID: 925936506}
-          m_MethodName: SwitchScene
+          m_MethodName: LoadScene
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2084,28 +2084,6 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!1 &945254999 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 169658, guid: 87bd0d60c52d012469bc1563f7fb8032, type: 2}
-  m_PrefabInternal: {fileID: 1107431923}
---- !u!114 &945255000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 945254999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5fef6e9638233945929bffc178d5feb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadSceneForAllPlayers: 0
-  levelIndex: 3
-  levelName: 
-  levelSkybox: 
-  isGazedOn: 0
-  skyboxIdentifier: 
-  blendedSkybox: {fileID: 2100000, guid: 725157c2a4d47c74d9f79575bb37a97c, type: 2}
 --- !u!1001 &1002297332
 Prefab:
   m_ObjectHideFlags: 0
@@ -2502,7 +2480,7 @@ MonoBehaviour:
   levelName: 
   levelSkybox: 
   isGazedOn: 0
-  skyboxIdentifier: R
+  skyboxIdentifier: Forest
   blendedSkybox: {fileID: 2100000, guid: 725157c2a4d47c74d9f79575bb37a97c, type: 2}
 --- !u!114 &1148569621
 MonoBehaviour:
@@ -2929,6 +2907,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11414680, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
   m_IsPrefabParent: 0
@@ -3174,28 +3156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adbf022c9ad01f94e8dea0a88afe70da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1381315741 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 150982, guid: 6f9bb98e699f97d428b2e7e39d765845, type: 2}
-  m_PrefabInternal: {fileID: 1002297332}
---- !u!114 &1381315742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1381315741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5fef6e9638233945929bffc178d5feb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadSceneForAllPlayers: 0
-  levelIndex: 3
-  levelName: 
-  levelSkybox: 
-  isGazedOn: 0
-  skyboxIdentifier: 
-  blendedSkybox: {fileID: 2100000, guid: 725157c2a4d47c74d9f79575bb37a97c, type: 2}
 --- !u!1001 &1389863329
 Prefab:
   m_ObjectHideFlags: 0

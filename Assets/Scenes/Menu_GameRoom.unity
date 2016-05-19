@@ -2629,6 +2629,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: a4e85bdac882c6640b58aea618ec23fa, type: 2}
+    - target: {fileID: 11435834, guid: ad80ff0783223754ea5e6ceb3b34c23b, type: 2}
+      propertyPath: m_Delegates.Array.data[2].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPointerExit
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ad80ff0783223754ea5e6ceb3b34c23b, type: 2}
   m_IsPrefabParent: 0
