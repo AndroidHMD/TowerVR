@@ -6,10 +6,11 @@ namespace TowerVR
 {
 	public struct Score
 	{
+		private int _backingScore;
 		/**
 		 * The actual score, can only be get not set
 		 * */
-		public int score { get { return score; } private set { score = value; } }
+		public int score { get { return _backingScore; } private set { _backingScore = value; } }
 
 		/**
 		 * Constructs a score object

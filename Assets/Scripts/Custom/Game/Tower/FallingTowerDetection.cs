@@ -9,33 +9,24 @@ using System.Collections;
 namespace TowerVR
 {
 	public class FallingTowerDetection : TowerVR.TowerGameBehaviour  {
-
-		public static bool hitDetected;
-		public static Collider detectedCollider;
+		public static int nDetectedColliders = 0;
+		private bool firstHasEntered = false;
 		
-		private int hits;
-
 		void Start () 
 		{
 			//Don't render the plane
 			gameObject.GetComponent<MeshRenderer>().enabled = false;
-			hits = 0;
-			hitDetected = false;
 		}
 		
-					
-		void OnTriggerEnter(Collider col) 
+		void OnTriggerEnter(Collider collider)
 		{
-			hits++;
-			Debug.Log("Detection: " + hits);
-			
-			if(hits > 1)
+			if (!firstHasEntered)
 			{
-				detectedCollider = col;
-				hitDetected = true;				
+				firstHasEntered = true;
+				return;
 			}
 			
+			++nDetectedColliders;
 		}
-			
 	}
 }
