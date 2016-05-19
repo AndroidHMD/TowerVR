@@ -48,7 +48,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 153666}
   m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5000001, w: 0.49999994}
-  m_LocalPosition: {x: 0, y: -0.074, z: 0.009}
+  m_LocalPosition: {x: 0, y: -0.111, z: 0.009}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_Children: []
   m_Father: {fileID: 477330}
@@ -184,7 +184,6 @@ MonoBehaviour:
   loadSceneForAllPlayers: 0
   levelIndex: 0
   LevelName: 
-  LevelMaterial1: 
   LevelSkybox: 
 --- !u!114 &11442336
 MonoBehaviour:
@@ -224,7 +223,6 @@ MonoBehaviour:
   loadSceneForAllPlayers: 0
   levelIndex: 0
   LevelName: 
-  LevelMaterial1: 
   LevelSkybox: 
 --- !u!114 &11486502
 MonoBehaviour:
