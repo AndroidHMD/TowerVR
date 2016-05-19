@@ -215,16 +215,18 @@ namespace TowerVR
             GameObject[] newPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
             
             foreach (GameObject towerPiece in newPieces)
-            {
+            {                
+                towerPiece.GetComponent<MeshRenderer>().enabled = true;
+                
                 if (stackedTowerPieces.Contains(towerPiece))
                 {
                     // piece already in the tower piece list
                     continue;
                 }
-                var rb = towerPiece.GetComponent<Rigidbody>();
-                rb.isKinematic = false;
-                rb.detectCollisions = true;
-                rb.useGravity = true;
+                //var rb = towerPiece.GetComponent<Rigidbody>();
+                //rb.isKinematic = false;
+                //rb.detectCollisions = true;
+                //rb.useGravity = true;
                            
                 // Take over ownership
                 var photonView = towerPiece.GetComponent<PhotonView>();
@@ -235,7 +237,6 @@ namespace TowerVR
                 }
                 
                 towerPiece.layer = 8;
-                towerPiece.GetComponent<MeshRenderer>().enabled = true;
                 
                 mostRecentTowerPiece = towerPiece;
             }
@@ -354,8 +355,10 @@ namespace TowerVR
                         if(allPiecesStationary)
                         {
                             IncreaseHeight.checkIncreaseHeight = true;
-                            towerState = TowerState.Stationary;
+                            yield return new WaitForSeconds(ONE_SECOND*2);
+                            IncreaseHeight.checkIncreaseHeight = false; //Must be done before new pieces are spawned
                             
+                            towerState = TowerState.Stationary;
                             stackedTowerPieces.Add(mostRecentTowerPiece);
                             mostRecentTowerPiece = null;
                             

@@ -190,6 +190,13 @@ namespace TowerVR
 							
 							// Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
 							// halo.enabled = false;
+							var rb = pieceToAdd.GetComponent<Rigidbody>();
+							rb.isKinematic = true;
+							rb.detectCollisions = false;
+							rb.useGravity = false;
+							
+							Debug.Log("PieceToAdd isKinematic: " + pieceToAdd.GetComponent<Rigidbody>().isKinematic + " detectCollisions: " + pieceToAdd.GetComponent<Rigidbody>().detectCollisions);
+						
 							
 							noCube = false;
 							pieceToAdd.layer = 0;
@@ -238,10 +245,10 @@ namespace TowerVR
 		
 		void placeBrick()
 		{
-			//var rb = pieceToAdd.GetComponent<Rigidbody>();
-			//rb.isKinematic = false;
-			//rb.detectCollisions = true;
-			//rb.useGravity = true;
+			var rb = pieceToAdd.GetComponent<Rigidbody>();
+			rb.isKinematic = false;
+			rb.detectCollisions = true;
+			rb.useGravity = true;
 
 			//pieceToAdd.layer = 8;
 			pieceToAdd.tag = "newTowerPiece";
@@ -303,13 +310,13 @@ namespace TowerVR
 			Vector3 hardObjectWidth = Vector3.Scale(displayedObjects[hardIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[hardIdx].transform.localScale);
 			
 			// Todo: check validity of signs
-			Vector3 transDistLeft = new Vector3(mediumObjectWidth.x/4.0f + 1.0f + easyObjectWidth.x/4.0f, 0, 0); 
-			Vector3 transDistRight = new Vector3(-(mediumObjectWidth.x/4.0f + 1.0f + hardObjectWidth.x/4.0f), 0, 0);
+			Vector3 transDistLeft = myCamera.transform.right * (mediumObjectWidth.x/4.0f + 1.0f + easyObjectWidth.x/4.0f); 
+			Vector3 transDistRight = myCamera.transform.right * -(mediumObjectWidth.x/4.0f + 1.0f + hardObjectWidth.x/4.0f);
 			
-			// Debug.Log("distances are " + transDistLeft + ", " + transDistRight);
 			
 			// Tranform relative to camera's local coordinates
 			displayedObjects[easyIdx].transform.Translate(transDistLeft + myCamera.transform.forward*20, myCamera.transform);
+			displayedObjects[mediumIdx].transform.Translate(myCamera.transform.forward*20, myCamera.transform);
 			displayedObjects[hardIdx].transform.Translate(transDistRight + myCamera.transform.forward*20, myCamera.transform);
 			
         }
