@@ -201,6 +201,7 @@ namespace TowerVR
         
         protected void handleSelectTowerPieceEvent(int playerID, TowerPieceDifficulty difficulty)
         {
+            Debug.Log("Selected!");
             currentDifficulty = difficulty;
             turnState = TurnState.PlacingTowerPiece;
             Log("handleSelectTowerPieceEvent. Difficulty: " + difficulty);
@@ -262,7 +263,7 @@ namespace TowerVR
         {
             for (;;)
             {
-                Log("updateTurnState");
+                //Log("updateTurnState");
                 if (gameState == GameState.Running)
                 {
                     switch (turnState)
@@ -298,7 +299,7 @@ namespace TowerVR
         {
             for (;;)
             {
-                Log("updateTowerState");
+                //Log("updateTowerState");
                 if(turnState == TurnState.TowerReacting)
                 {
                     yield return new WaitForSeconds(TurnTimeLimits.TowerReacting);
@@ -402,6 +403,7 @@ namespace TowerVR
          **/
         private void proceedPlayerTurn()
         {
+            Debug.Log("proceed");
             PhotonPlayer lastPhotonPlayer = currentPlayer;
             currentPlayer = null;
             

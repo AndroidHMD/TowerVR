@@ -1619,10 +1619,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 226ead4ebc4c14ec885975e7cf823e83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placingPlane: {fileID: 0}
-  easyBricks: []
-  mediumBricks: []
-  hardBricks: []
+  easyBricks:
+  - {fileID: 189834, guid: dc9af35fb8fc849ca97ed03d96ca7db9, type: 2}
+  - {fileID: 189834, guid: dc9af35fb8fc849ca97ed03d96ca7db9, type: 2}
+  mediumBricks:
+  - {fileID: 189834, guid: dc9af35fb8fc849ca97ed03d96ca7db9, type: 2}
+  - {fileID: 189834, guid: dc9af35fb8fc849ca97ed03d96ca7db9, type: 2}
+  hardBricks:
+  - {fileID: 189834, guid: dc9af35fb8fc849ca97ed03d96ca7db9, type: 2}
+  - {fileID: 189834, guid: dc9af35fb8fc849ca97ed03d96ca7db9, type: 2}
   newPiece: {fileID: 189834, guid: dc9af35fb8fc849ca97ed03d96ca7db9, type: 2}
   pieceToAdd: {fileID: 0}
 --- !u!114 &1017791942
@@ -3586,3 +3591,17 @@ Skybox:
   m_GameObject: {fileID: 2121468916}
   m_Enabled: 1
   m_CustomSkybox: {fileID: 2100000, guid: ff330f6226d1d44838ee63a8824f8def, type: 2}
+--- !u!114 &2121468925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2121468916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -768656878, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 512

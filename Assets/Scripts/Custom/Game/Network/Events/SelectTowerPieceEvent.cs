@@ -12,7 +12,7 @@ namespace TowerVR
     {
         public SelectTowerPieceEvent(TowerPieceDifficulty difficulty)
         {
-            eventCode = NetworkEventCodes.NextPlayer;
+            eventCode = NetworkEventCodes.SelectTowerPiece;
             setReceivers(ReceiverGroup.MasterClient);
             
             switch (difficulty)
@@ -31,6 +31,7 @@ namespace TowerVR
         protected sealed override bool contentIsValid()
         {
             int diff;
+            Debug.Log("Checking content");
             
             if (!(content is int))
             { 
@@ -40,11 +41,12 @@ namespace TowerVR
             
             diff = (int) content;
             
-            if (diff != 0 && diff != 1 && diff != 2)
+            if (diff != 0 && diff != 1 && diff != 2)
             {
                Debug.Log("Difficulty must be Easy/Medium/Hard.");
                 return false;
             }
+            Debug.Log("Content is valid");
             return true;
         }
         
