@@ -19,7 +19,6 @@ public class GazeOver : MonoBehaviour {
 
     //Variables for loading the level
     public string LevelName;
-    public string LevelMaterial1;
     public string LevelSkybox;
 
 
@@ -69,7 +68,6 @@ public class GazeOver : MonoBehaviour {
     public void LoadScene()
     {
         SpawnSelectedLevel.LoadedLevel = LevelName;
-        SpawnSelectedLevel.LoadedMaterial1 = LevelMaterial1;
         SpawnSelectedLevel.LoadedSkybox = LevelSkybox;
     }
 
