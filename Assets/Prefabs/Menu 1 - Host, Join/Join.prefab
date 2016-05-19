@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 192070, guid: b54b279ea52b3814abc9b4e506908b72, type: 2}
-  noServers: {fileID: 0}
+  noServers: {fileID: 185810, guid: 324a60340ddddc847815132b5de030e4, type: 2}
 --- !u!114 &11486520
 MonoBehaviour:
   m_ObjectHideFlags: 1

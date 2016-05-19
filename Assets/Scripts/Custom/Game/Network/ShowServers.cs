@@ -33,7 +33,7 @@ public class ShowServers : MonoBehaviour   {
 				lobbyCube.GetComponentInChildren<TextMesh> ().text = room.name;
 				lobbyCube.tag = "lobbyCube";
 
-				positionY -= 10;
+				positionY -= 7;
 				count++;
 			}
 
