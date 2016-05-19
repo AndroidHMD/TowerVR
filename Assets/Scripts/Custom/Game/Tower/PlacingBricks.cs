@@ -167,7 +167,12 @@ namespace TowerVR
 			hasPlaced = true;
 			hasSelected = false;
 			manager.placeTowerPiece (pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);		
-
+			
+			//var photonView = pieceToAdd.GetComponent<PhotonView>();
+			//if (photonView)
+			//{
+			//	photonView.TransferOwnership(PhotonNetwork.masterClient.ID);
+			//}
 		}
 		
 		/**
