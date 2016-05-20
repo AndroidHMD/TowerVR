@@ -201,14 +201,7 @@ namespace TowerVR
         
         protected void handleSelectTowerPieceEvent(int playerID, TowerPieceDifficulty difficulty)
         { 
-            //Find objects in tower and guarantee that they still are rendered
-            GameObject[] allPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
-            foreach (GameObject towerPiece in allPieces)
-            {                
-                towerPiece.GetComponent<MeshRenderer>().enabled = true;
-            }
-            
-            Debug.Log("Selected!");
+                        
             currentDifficulty = difficulty;
             turnState = TurnState.PlacingTowerPiece;
             Log("handleSelectTowerPieceEvent. Difficulty: " + difficulty);
@@ -223,8 +216,7 @@ namespace TowerVR
             
             foreach (GameObject towerPiece in newPieces)
             {                
-                towerPiece.GetComponent<MeshRenderer>().enabled = true;
-                
+                                
                 if (stackedTowerPieces.Contains(towerPiece))
                 {
                     // piece already in the tower piece list
@@ -243,8 +235,7 @@ namespace TowerVR
                     LogToScreen("Requesting ownership of new piece.");
                 }
                 
-                towerPiece.layer = 8;
-                
+                towerPiece.layer = 8; //Must be set here for newly requested pieces
                 mostRecentTowerPiece = towerPiece;
             }
 

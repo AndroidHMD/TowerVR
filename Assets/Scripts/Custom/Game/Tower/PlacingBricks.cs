@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /**
- * This script controls how the bricks are placed.
+ * Handles how the towerpieces are selected and placed.
  * Add to SceneLogic object.
  *
  * A TowerPiece-script needs to be added to new bricks. Also a photonview that syncs transform and the TowerPiece-script
@@ -19,15 +19,16 @@ namespace TowerVR
         public List<GameObject> mediumBricks;
         public List<GameObject> hardBricks;
 		
+		public GameObject pieceToAdd;
+		
 		private List<GameObject> displayedObjects = new List<GameObject>();
 
 		private int turnState;
 		private int towerState;
 		private int currentPlayerID;
 
-		public GameObject newPiece;
+		private Transform boxTrans;
 		private string newPieceName;
-		public GameObject pieceToAdd;
 		private Camera myCamera;
 		private bool noCube;
 		private bool hasPlaced;
@@ -63,12 +64,12 @@ namespace TowerVR
 			hasSelected = false;
 			newPieceName = "";
 			selectionPiecesAreSpawned = false;
+			boxTrans = this.transform;
 		}
 
 		void Update () {
 			
 			
-
 			//Check if it is my turn, otherwise just observe
 			if (currentPlayerID == PhotonNetwork.player.ID)
 			{
@@ -76,7 +77,7 @@ namespace TowerVR
 				//If it is my turn, spawn new piece to be placed.
 				if(turnState == TurnState.SelectingTowerPiece && !hasSelected)
 				{
-					if (hasPlaced) 
+					if (hasPlaced) //Needs to be reset if time has run out
 					{
 						hasPlaced = false;
 					}
@@ -107,11 +108,10 @@ namespace TowerVR
 					int piecesToSelectMask = 1 << 9; //Sets Layer 9 to true
 					if (Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, 700, piecesToSelectMask))
 					{
-						// Debug.Log("Hit object " + hit.collider + " wtih RB " + hit.rigidbody + " with object " + hit.transform.gameObject + " at " + hit.distance);
 						// hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
 						hit.transform.RotateAround(hit.transform.position, hit.transform.up, 2.0f);
 						
-						// // // Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
+						// Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
 						// halo.enabled = true;
 						
 						if (Cardboard.SDK.Triggered)
@@ -145,7 +145,7 @@ namespace TowerVR
 								}
 							}
 							
-							Debug.Log("Time for select: " + Time.time);
+							//Debug.Log("Time for select: " + Time.time);
 							hasSelected = true;
 							
 							// Clear Selection pieces
@@ -158,7 +158,8 @@ namespace TowerVR
 						{
 							// displayedObjects[i].GetComponent<SelectionPieceHovering>().ConstantBehaviour();
 							displayedObjects[i].transform.RotateAround(displayedObjects[i].transform.position, displayedObjects[i].transform.up, 0.3f);
-							// // Behaviour halo = (Behaviour)displayedObjects[i].GetComponent("Halo");  
+							
+							// Behaviour halo = (Behaviour)displayedObjects[i].GetComponent("Halo");  
 							// halo.enabled = false;
 						}
 					}
@@ -172,7 +173,7 @@ namespace TowerVR
 					// If time ran out and turn proceeded without player choosing piece
 					if (!hasSelected)
 					{
-						Debug.Log("PLACING STATE WITHOUT SELECTION");
+						Debug.Log("Time's up! Selecting default piece.");
 						newPieceName = displayedObjects[0].name;	// get the easy piece
 						manager.selectTowerPiece(TowerPieceDifficulty.Easy);
 						hasSelected = true;
@@ -183,28 +184,24 @@ namespace TowerVR
 					RaycastHit hitInfo;
 					int towerLayerMask = 1 << 8; //Sets Layer 8 to true
 					//Cast a box from cameras pow
-					if(Physics.BoxCast(myCamera.transform.position, objectExtent, myCamera.transform.forward, out hitInfo, newPiece.transform.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
+					if(Physics.BoxCast(myCamera.transform.position, objectExtent, myCamera.transform.forward, out hitInfo, boxTrans.rotation, 500, towerLayerMask, QueryTriggerInteraction.UseGlobal))
 					{
 						//Instantiate a new towerpiece if there is none to be placed
 						if(noCube)
 						{
-							// Debug.Log("NewPiece: " + newPiece.transform.name);
-							Debug.Log("NewPiece: " + newPieceName + "   Time to place: " + Time.time);							
-							pieceToAdd = PhotonNetwork.Instantiate(newPieceName, new Vector3(), Quaternion.identity, 0) as GameObject;
-							
-							//ClearSelectionPieces();
-							
+							//Debug.Log("NewPiece: " + newPieceName + "   Time to place: " + Time.time);							
+							pieceToAdd = PhotonNetwork.Instantiate(newPieceName, new Vector3(), boxTrans.rotation, 0) as GameObject;
+														
 							// Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
 							// halo.enabled = false;
 							
+							//Needed for clearing pieceToAdd's memory
 							var rb = pieceToAdd.GetComponent<Rigidbody>();
 							rb.isKinematic = true;
 							rb.detectCollisions = false;
 							rb.useGravity = false;
-							
-							Debug.Log("PieceToAdd isKinematic: " + pieceToAdd.GetComponent<Rigidbody>().isKinematic + " detectCollisions: " + pieceToAdd.GetComponent<Rigidbody>().detectCollisions);
+							//Debug.Log("PieceToAdd isKinematic: " + pieceToAdd.GetComponent<Rigidbody>().isKinematic + " detectCollisions: " + pieceToAdd.GetComponent<Rigidbody>().detectCollisions);
 						
-							
 							noCube = false;
 							pieceToAdd.layer = 0;
 
@@ -216,9 +213,9 @@ namespace TowerVR
 						}
 						pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 						pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up;
-
-						newPiece.transform.rotation = pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
-
+						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
+						boxTrans = pieceToAdd.transform;
+							
 						//Satisfied? Then place the piece with the button
 						if (Cardboard.SDK.Triggered)
 						{
@@ -230,7 +227,8 @@ namespace TowerVR
 					else
 					{
 						//If there's no intersection with Tower at all, don't render the new piece
-						if (pieceToAdd != null)
+						//Must check noCube or else we are gonna delete the old cube in some cases
+						if (pieceToAdd != null && noCube == false)
 						{
 							pieceToAdd.GetComponent<MeshRenderer>().enabled = false;
 						}
@@ -250,6 +248,9 @@ namespace TowerVR
 			}
 		}
 		
+		/**
+		*	Places towerpiece at current position
+		**/
 		void placeBrick()
 		{
 			var rb = pieceToAdd.GetComponent<Rigidbody>();
@@ -268,7 +269,6 @@ namespace TowerVR
 			manager.placeTowerPiece(pieceToAdd.transform.position.x, pieceToAdd.transform.position.z, pieceToAdd.transform.rotation.y);		
 			
 			selectionPiecesAreSpawned = false;
-
 		}
 		
 		/**
@@ -281,7 +281,6 @@ namespace TowerVR
             int mediumIdx = 1;
             int hardIdx = 2;
             
-            // Debug.Log("set arrays");
 			List<GameObject> tempList = new List<GameObject>();
             
             tempList.Insert(easyIdx, easyBricks[ Random.Range(0, (easyBricks.Count)) ]);
@@ -294,8 +293,8 @@ namespace TowerVR
 				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.identity) as GameObject;
 				temp.name = tempList[i].name;
 				
-				// // Turn off halo initially (because we won't remember/know to keep it disabled in the editor)
-				// // Behaviour halo = (Behaviour)temp.GetComponent("Halo");
+				// Turn off halo initially (because we won't remember/know to keep it disabled in the editor)
+				// Behaviour halo = (Behaviour)temp.GetComponent("Halo");
 				// halo.enabled = false;
 				
 				temp.layer = 9;
@@ -306,12 +305,7 @@ namespace TowerVR
 			{
 				displayedObjects[i].transform.position = myCamera.transform.position/2.0f;
 				displayedObjects[i].transform.LookAt(myCamera.transform);
-				/*var rb = displayedObjects[i].GetComponent<Rigidbody>();
-				if (rb != null)
-				{
-					rb.detectCollisions = true;
-					rb.isKinematic = true;
-				}*/
+
 				displayedObjects[i].layer = 9;
 			}
 			
@@ -319,7 +313,7 @@ namespace TowerVR
 			Vector3 mediumObjectWidth = Vector3.Scale(displayedObjects[mediumIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[mediumIdx].transform.localScale);			
 			Vector3 hardObjectWidth = Vector3.Scale(displayedObjects[hardIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[hardIdx].transform.localScale);
 			
-			// Todo: check validity of signs
+			// TODO: check validity of signs
 			Vector3 transDistLeft = myCamera.transform.right * (mediumObjectWidth.x/4.0f + 1.0f + easyObjectWidth.x/4.0f); 
 			Vector3 transDistRight = myCamera.transform.right * -(mediumObjectWidth.x/4.0f + 1.0f + hardObjectWidth.x/4.0f);
 			

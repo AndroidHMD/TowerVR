@@ -30,7 +30,7 @@ namespace TowerVR
 					return;
 				}
 			
-			++nDetectedColliders;
+				++nDetectedColliders;
 			}
 			
 		}
