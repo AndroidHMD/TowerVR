@@ -37,6 +37,7 @@ namespace TowerVR
 		{
 			
 			var rb = gameObject.GetComponent<Rigidbody>();
+			var col = gameObject.GetComponent<Collider>();
 			if (stream.isWriting)
 			{
 				//Debug.Log("Rigidbody states changed" +);
@@ -44,8 +45,10 @@ namespace TowerVR
 				stream.SendNext((bool) rb.isKinematic );
 				stream.SendNext((bool) rb.detectCollisions );
 				stream.SendNext((bool) rb.useGravity );
-				stream.SendNext(transform.position);
-				stream.SendNext(transform.rotation);
+				stream.SendNext((bool) col.isTrigger);
+				stream.SendNext((int) gameObject.layer);
+				//stream.SendNext(transform.position);
+				//stream.SendNext(transform.rotation);
 			}
 			else
 			{
@@ -53,9 +56,16 @@ namespace TowerVR
 				rb.isKinematic = (bool)stream.ReceiveNext();
 				rb.detectCollisions = (bool)stream.ReceiveNext();
 				rb.useGravity = (bool)stream.ReceiveNext();
-				transform.position = (Vector3)stream.ReceiveNext();
-				transform.rotation = (Quaternion)stream.ReceiveNext();
+				col.isTrigger = (bool)stream.ReceiveNext();
+				gameObject.layer = (int)stream.ReceiveNext();
+				//transform.position = (Vector3)stream.ReceiveNext();
+				//transform.rotation = (Quaternion)stream.ReceiveNext();
 			}
 		}
+		//Testa att kommentera bort hela funktionen!
+		//Felen nu är att:
+		//1 - Ett block kan slutas renderas när man väljer ett annat (endast lokalt, den kommer tillbaka när man placerar biten)
+		//2 - Klienten känner inte sina egna bitar (eller masterns... Synka layer!?!?!?!? KAn vara det som gör att den inte känner av med boxcast!)
+		//Isf är det bara det jävla renderaren som behöver fixas
 	}
 }

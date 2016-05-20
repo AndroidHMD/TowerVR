@@ -6,7 +6,7 @@ using System.Collections.Generic;
  * This script controls how the bricks are placed.
  * Add to SceneLogic object.
  *
- * A TowerPiece-script needs to be added to new bricks
+ * A TowerPiece-script needs to be added to new bricks. Also a photonview that syncs transform and the TowerPiece-script
  **/
 
 namespace TowerVR
@@ -92,11 +92,14 @@ namespace TowerVR
 					// Make sure the displayed objects have collision detection on
 					// This is a very ineffective place to do it but it doesn't seem to work in GetAndDisplaySelectionPieces
 					for (int i = 0; i < displayedObjects.Count; i++) 
-					{
+					{				
 						var rb =  displayedObjects[i].GetComponent<Rigidbody>();
 						rb.detectCollisions = true;	
 						rb.isKinematic = true;	
 						// Debug.Log("Rigidbody for " + rb + ": kinematic = " + rb.isKinematic + ", detectCol = " + rb.detectCollisions + ", w/ layer " + displayedObjects[i].layer);
+						
+						var col = displayedObjects[i].GetComponent<Collider>();
+						col.isTrigger = true;
 					}
 					
 					// Selection logic
@@ -107,6 +110,7 @@ namespace TowerVR
 						// Debug.Log("Hit object " + hit.collider + " wtih RB " + hit.rigidbody + " with object " + hit.transform.gameObject + " at " + hit.distance);
 						// hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
 						hit.transform.RotateAround(hit.transform.position, hit.transform.up, 2.0f);
+						
 						// // // Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
 						// halo.enabled = true;
 						
@@ -188,8 +192,11 @@ namespace TowerVR
 							Debug.Log("NewPiece: " + newPieceName + "   Time to place: " + Time.time);							
 							pieceToAdd = PhotonNetwork.Instantiate(newPieceName, new Vector3(), Quaternion.identity, 0) as GameObject;
 							
+							//ClearSelectionPieces();
+							
 							// Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
 							// halo.enabled = false;
+							
 							var rb = pieceToAdd.GetComponent<Rigidbody>();
 							rb.isKinematic = true;
 							rb.detectCollisions = false;
@@ -249,8 +256,11 @@ namespace TowerVR
 			rb.isKinematic = false;
 			rb.detectCollisions = true;
 			rb.useGravity = true;
+			
+			var col = pieceToAdd.GetComponent<Collider>();
+			col.isTrigger = false;
 
-			//pieceToAdd.layer = 8;
+			pieceToAdd.layer = 8;
 			pieceToAdd.tag = "newTowerPiece";
 			noCube = true;
 			hasPlaced = true;
@@ -294,14 +304,14 @@ namespace TowerVR
 
 			for (int i = 0; i < displayedObjects.Count; i++)
 			{
-				displayedObjects[i].transform.position = myCamera.transform.position;//new Vector3(myCamera.transform.position.x/2.0f, 6.0f, myCamera.transform.position.z/2.0f);
+				displayedObjects[i].transform.position = myCamera.transform.position/2.0f;
 				displayedObjects[i].transform.LookAt(myCamera.transform);
-				var rb = displayedObjects[i].GetComponent<Rigidbody>();
+				/*var rb = displayedObjects[i].GetComponent<Rigidbody>();
 				if (rb != null)
 				{
 					rb.detectCollisions = true;
 					rb.isKinematic = true;
-				}
+				}*/
 				displayedObjects[i].layer = 9;
 			}
 			
@@ -315,9 +325,9 @@ namespace TowerVR
 			
 			
 			// Tranform relative to camera's local coordinates
-			displayedObjects[easyIdx].transform.Translate(transDistLeft + myCamera.transform.forward*20, myCamera.transform);
-			displayedObjects[mediumIdx].transform.Translate(myCamera.transform.forward*20, myCamera.transform);
-			displayedObjects[hardIdx].transform.Translate(transDistRight + myCamera.transform.forward*20, myCamera.transform);
+			displayedObjects[easyIdx].transform.Translate(transDistLeft, myCamera.transform);
+			displayedObjects[mediumIdx].transform.Translate(0, 0, 0, myCamera.transform);
+			displayedObjects[hardIdx].transform.Translate(transDistRight, myCamera.transform);
 			
         }
 		
@@ -330,7 +340,7 @@ namespace TowerVR
 				Destroy(displayedObjects[i]);	
 			}
 			
-			displayedObjects = new List<GameObject>();
+			displayedObjects.Clear();
 			
 		}
 

@@ -200,7 +200,14 @@ namespace TowerVR
         }
         
         protected void handleSelectTowerPieceEvent(int playerID, TowerPieceDifficulty difficulty)
-        {
+        { 
+            //Find objects in tower and guarantee that they still are rendered
+            GameObject[] allPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
+            foreach (GameObject towerPiece in allPieces)
+            {                
+                towerPiece.GetComponent<MeshRenderer>().enabled = true;
+            }
+            
             Debug.Log("Selected!");
             currentDifficulty = difficulty;
             turnState = TurnState.PlacingTowerPiece;
@@ -356,7 +363,8 @@ namespace TowerVR
                         {
                             IncreaseHeight.checkIncreaseHeight = true;
                             yield return new WaitForSeconds(ONE_SECOND*2);
-                            IncreaseHeight.checkIncreaseHeight = false; //Must be done before new pieces are spawned
+                            //Must be done before new pieces are spawned, otherwise plattform may increase height every turn
+                            IncreaseHeight.checkIncreaseHeight = false; 
                             
                             towerState = TowerState.Stationary;
                             stackedTowerPieces.Add(mostRecentTowerPiece);
