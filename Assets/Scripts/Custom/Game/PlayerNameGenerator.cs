@@ -4,25 +4,25 @@ using System.Collections;
 public class PlayerNameGenerator {
 	public static string[] prefixes = new string[]{
 		"Mr.", "Mrs.", "Dr.", "Professor", 
-		"Little", "Gigantic", "Fierce", "Tiny", "Enormous",
+		"Little", "Gigantic", "Fierce", "Tiny", "Enormous", "Fat",
 		"Angry", "Calm", "Crazy", "Idiotic", "Drunken",
 		"Swaggy", "Derpy", "Explosive", "Destructive", "Masochistic",
 		"King", "Queen", "Prince", "Princess"
 	};
 	
 	public static string[] mainNames = new string[]{
-		"Boom", "Potato", "Carrot",
-		"Rabbit", "Bunny", "Elk", "Moose", "Bird", "Dog", "Cat",
+		"Boom", "Potato", "Carrot", "Banana", "Ananas", "Apple", "Sausage",
+		"Rabbit", "Bunny", "Elk", "Moose", "Bird", "Dog", "Cat", "Skeleton",
 		"Master", "Noob", "Pro", "Newbie",
-		"Robot", "Machine", 
+		"Robot", "Machine", "Fart",
 		"Carl Gustaf", "Obama"
 	};
 	
 	public static string[] suffixes = new string[]{
-		"the Great", "the First", "the Second", "the Third",
-		"I", "II", "III", "IV", "V", "VI", "XII", "XIV", "XVI",
-		"Jr.", "Sr.",
-		"PhD", "MSc", "BSc"
+		" the Great", " the First", " the Second", " the Third",
+		" I", " II", " III", " IV", " V", " VI", " XII", " XIV", " XVI",
+		" Jr.", " Sr.",
+		", PhD", ", MSc", ", BSc"
 	};
 	
 	public static string GenerateName()
@@ -34,7 +34,7 @@ public class PlayerNameGenerator {
 		string suffix = "";
 		if (Random.Range(0, 2) == 1)
 		{
-			suffix = " " + GetRandomInArray(suffixes);
+			suffix = GetRandomInArray(suffixes);
 		}
 		
 		return prefix + main + suffix;
