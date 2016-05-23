@@ -1388,13 +1388,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   easyBricks:
-  - {fileID: 153416, guid: c99ffe3ed9f774e4bba43fb199958c28, type: 2}
-  - {fileID: 117310, guid: 6e06ee6b4566fd740826ec543d6746de, type: 2}
+  - {fileID: 147362, guid: ff0f62f53a7d44245b2e04a424e13dbe, type: 2}
+  - {fileID: 184616, guid: a5d0422fb1cad0c49bcefc37ab0b5268, type: 2}
+  - {fileID: 139830, guid: 9ec7b52dcce31f44aa521f372d7fdc52, type: 2}
+  - {fileID: 176734, guid: a597b9de1aade704a8a0c1c74d471b16, type: 2}
+  - {fileID: 170700, guid: 6c5fec59d79043043b889564e4f6b6fe, type: 2}
+  - {fileID: 116398, guid: c2c6ab1340230eb4b9432790f99594d6, type: 2}
+  - {fileID: 136510, guid: e89cd20d88e57824ba3bc8408f54e0b6, type: 2}
+  - {fileID: 143936, guid: ba76a850ebd04964fb509022f737494f, type: 2}
+  - {fileID: 167990, guid: f4b64b5da1f31e64fa201dd0ea682cf6, type: 2}
   mediumBricks:
-  - {fileID: 146002, guid: 69bbdf725662f3c449d2e7943a1e650d, type: 2}
+  - {fileID: 182368, guid: e75e4191bf7fd6b4d980de88d5c5970c, type: 2}
+  - {fileID: 197458, guid: 24fe3b071c55566418830cedc9a7e356, type: 2}
+  - {fileID: 139070, guid: b4d3119bac54d31499115df9a1282a0a, type: 2}
+  - {fileID: 132036, guid: 13fdcfdac32dc7a46b378c96b68b8033, type: 2}
   hardBricks:
-  - {fileID: 163888, guid: 039e8df68be8af24c977ba5b9188f870, type: 2}
-  - {fileID: 182966, guid: 8c78272995353784fa013784358fcfb6, type: 2}
+  - {fileID: 139654, guid: a9a98fb80720a994aa0cce2b1c514454, type: 2}
+  - {fileID: 143782, guid: 883712d25869bcf4f8345f25d5578916, type: 2}
+  - {fileID: 117222, guid: 2b76396bcd1d57a4e8a7cd5ca9a8f74b, type: 2}
+  - {fileID: 102434, guid: 0513dc9bc0ad08c4baa69fa5d70e8877, type: 2}
+  - {fileID: 164876, guid: a457e003038a45d44a1afb40b0fcefce, type: 2}
+  - {fileID: 123178, guid: 2054937c264c4704ab48d662c248d71f, type: 2}
+  - {fileID: 189386, guid: 9b5441419296e48428a41f4e83943668, type: 2}
+  - {fileID: 195924, guid: a2b77930cdf9c6f40b0536ae6af66864, type: 2}
+  - {fileID: 172482, guid: a150185bb2c27ac48996679cfebf453b, type: 2}
   pieceToAdd: {fileID: 0}
 --- !u!114 &1017791942
 MonoBehaviour:
@@ -2257,7 +2274,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2000004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_ClearFlags
