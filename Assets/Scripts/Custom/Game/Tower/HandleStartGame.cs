@@ -128,13 +128,13 @@ namespace TowerVR
 			if(gameState == GameState.Ended)
 			{
 				//TODO: Display that game ended
-				Debug.Log("Game has ended!");
+				//Debug.Log("Game has ended!");
 			}
 			
 			if(gameState == GameState.Stopped)
 			{
 				//TODO: Display some shiet
-				Debug.Log("Game has stopped!");
+				//Debug.Log("Game has stopped!");
 			}
 		}
 		

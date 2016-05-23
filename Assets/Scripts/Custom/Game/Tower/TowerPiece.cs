@@ -15,19 +15,17 @@ namespace TowerVR
 		void Start()
 		{
 			var rb = gameObject.GetComponent<Rigidbody>();
+			
+			if(!PhotonNetwork.isMasterClient)
+			{
+				Destroy(rb);
+			}
 			if (rb != null)
 			{
 				rb.isKinematic = true;
 				rb.detectCollisions = false;
 				rb.useGravity = false;
 			}
-			
-			/*
-			//KOMMER DET HÄR FUNKA MED NEDANSTÅENDE??
-			if(!PhotonNetwork.isMasterClient)
-			{
-				Destroy(rb);
-			}*/
 			
 			gameObject.tag = "newTowerPiece";
 			gameObject.GetComponent<Collider>().isTrigger = false;
@@ -41,18 +39,18 @@ namespace TowerVR
 			if (stream.isWriting)
 			{
 				//We own this player: send the others our data
-				stream.SendNext((bool) rb.isKinematic );
-				stream.SendNext((bool) rb.detectCollisions );
-				stream.SendNext((bool) rb.useGravity );
+				//stream.SendNext((bool) rb.isKinematic );
+				//stream.SendNext((bool) rb.detectCollisions );
+				//stream.SendNext((bool) rb.useGravity );
 				stream.SendNext((bool) col.isTrigger);
 				stream.SendNext((int) gameObject.layer);
 			}
 			else
 			{
 				//Network player, receive data
-				rb.isKinematic = (bool)stream.ReceiveNext();
-				rb.detectCollisions = (bool)stream.ReceiveNext();
-				rb.useGravity = (bool)stream.ReceiveNext();
+				//rb.isKinematic = (bool)stream.ReceiveNext();
+				//rb.detectCollisions = (bool)stream.ReceiveNext();
+				//rb.useGravity = (bool)stream.ReceiveNext();
 				col.isTrigger = (bool)stream.ReceiveNext();
 				gameObject.layer = (int)stream.ReceiveNext();
 			}

@@ -7,14 +7,16 @@ using UnityEngine;
 using System.Collections;
 
 public class RandomizeServerName : MonoBehaviour {
-
-	// String arrays containing different strings 
-	string[] firstName = new string[]{"Big", "Hairy", "Small", "Ugly", "Old", };
-	string[] middleName = new string[]{"Yellow", "Red", "Blue", "Angry", "Bald"};
-	string[] lastName = new string[]{"Man", "Bear", "Pig", "Bunny", "Penis"};
+	public static string[] prefixes = new string[]{
+		"Futuristic", "Ancient", "Modern", "Medieval", "Roman", "Egyptian", "Swedish"
+	};
+	
+	public static string[] mainNames = new string[]{
+		"Arena", "Playground", "City", "Battlefield", "Forest", "Sandbox", "Mountaintop", "Castle", "Planet", "Solar System"
+	};
 
 	// The name of the server
-	static public string serverName = "";
+	public static string serverName = "";
 
 	// Sets 'serverName' to a random name and checks if it matches 
 	// any of the currently used names. If so it randomizes another name
@@ -22,14 +24,16 @@ public class RandomizeServerName : MonoBehaviour {
 	void RandomServerName(){
 
 		// gets a random string from each string array
-		serverName = firstName[Random.Range(0,4)] + middleName[Random.Range(0,4)] + lastName[Random.Range(0,4)];
+		serverName = prefixes[Random.Range(0,prefixes.Length)] + " " + mainNames[Random.Range(0, mainNames.Length)];
 	
 		foreach (RoomInfo room in PhotonNetwork.GetRoomList()) {
 		
-			if (serverName == room.name)
+			if (serverName.Equals(room.name))
+			{
 				RandomServerName();
+				return;
+			}
 		}
-
 	}
 
 	// gets a random string and sets the components text to it
