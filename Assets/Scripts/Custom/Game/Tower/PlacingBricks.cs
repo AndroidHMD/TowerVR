@@ -14,7 +14,6 @@ namespace TowerVR
 
 	public class PlacingBricks : TowerVR.TowerGameBehaviour  {
 
-		public GameObject placingPlane;
 		
 		// We need a basic case for these in case they have not been set in the Unity Editor
 		public List<GameObject> easyBricks = new List<GameObject>();
@@ -78,7 +77,7 @@ namespace TowerVR
 					{
 						Debug.Log("Calling");
 						selecting = true;
-						GetAndDisplay();
+						//GetAndDisplay();
 					}
 					
 					if (selecting)

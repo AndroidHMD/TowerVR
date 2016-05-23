@@ -191,11 +191,11 @@ namespace TowerVR
             
             if (allPlayersReady())
             {
-                initPlayerTurnQueue();
-                proceedPlayerTurn();
+                gameState = GameState.Countdown;
                 
-                gameState = GameState.Running;
-                turnState = TurnState.SelectingTowerPiece;
+                //Wait for countdown
+                StartCoroutine("countdown");                
+
             }
         }
         
@@ -361,12 +361,33 @@ namespace TowerVR
             }
         }
         
+        IEnumerator countdown()
+        {
+            for(;;)
+            {
+                if(HandleStartGame.countdownFinished)
+                {
+                    Debug.Log("Countdown finished");
+                    //Proceed to next player and start the game
+                    initPlayerTurnQueue();
+                    proceedPlayerTurn();
+                    turnState = TurnState.SelectingTowerPiece;
+                    
+                    gameState = GameState.Running;
+                    turnTimer.start();
+                    StopCoroutine("countdown");
+                }
+                yield return null;
+            } 
+        }
+
         bool checkIsTowerPieceStationary(GameObject towerPiece)
         {
             Rigidbody rb = null;
             return (towerPiece != null) &&
                    ((rb = towerPiece.GetComponent<Rigidbody>()) != null) &&
                    (rb.velocity.magnitude < TowerConstants.MaxTowerVelocity || rb.angularVelocity.magnitude < TowerConstants.MaxTowerAngVelocity);
+
         }
         
         
