@@ -46,6 +46,7 @@ namespace TowerVR
 		{
 			
 			var ev = new SelectTowerPieceEvent(difficulty);
+			Debug.Log("SelectEvent:" + ev);
 			
 			if (!ev.trySend())
 			{

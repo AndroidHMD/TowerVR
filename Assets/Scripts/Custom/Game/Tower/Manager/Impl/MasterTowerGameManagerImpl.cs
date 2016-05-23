@@ -200,7 +200,8 @@ namespace TowerVR
         }
         
         protected void handleSelectTowerPieceEvent(int playerID, TowerPieceDifficulty difficulty)
-        {
+        { 
+                        
             currentDifficulty = difficulty;
             turnState = TurnState.PlacingTowerPiece;
             Log("handleSelectTowerPieceEvent. Difficulty: " + difficulty);
@@ -214,13 +215,18 @@ namespace TowerVR
             GameObject[] newPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
             
             foreach (GameObject towerPiece in newPieces)
-            {
+            {                
+                                
                 if (stackedTowerPieces.Contains(towerPiece))
                 {
                     // piece already in the tower piece list
                     continue;
                 }
-                                
+                //var rb = towerPiece.GetComponent<Rigidbody>();
+                //rb.isKinematic = false;
+                //rb.detectCollisions = true;
+                //rb.useGravity = true;
+                           
                 // Take over ownership
                 var photonView = towerPiece.GetComponent<PhotonView>();
                 if (photonView != null && !photonView.isMine)
@@ -229,6 +235,7 @@ namespace TowerVR
                     LogToScreen("Requesting ownership of new piece.");
                 }
                 
+                towerPiece.layer = 8; //Must be set here for newly requested pieces
                 mostRecentTowerPiece = towerPiece;
             }
 
@@ -262,7 +269,7 @@ namespace TowerVR
         {
             for (;;)
             {
-                Log("updateTurnState");
+                //Log("updateTurnState");
                 if (gameState == GameState.Running)
                 {
                     switch (turnState)
@@ -298,7 +305,7 @@ namespace TowerVR
         {
             for (;;)
             {
-                Log("updateTowerState");
+                //Log("updateTowerState");
                 if(turnState == TurnState.TowerReacting)
                 {
                     yield return new WaitForSeconds(TurnTimeLimits.TowerReacting);
@@ -346,8 +353,11 @@ namespace TowerVR
                         if(allPiecesStationary)
                         {
                             IncreaseHeight.checkIncreaseHeight = true;
-                            towerState = TowerState.Stationary;
+                            yield return new WaitForSeconds(ONE_SECOND*2);
+                            //Must be done before new pieces are spawned, otherwise plattform may increase height every turn
+                            IncreaseHeight.checkIncreaseHeight = false; 
                             
+                            towerState = TowerState.Stationary;
                             stackedTowerPieces.Add(mostRecentTowerPiece);
                             mostRecentTowerPiece = null;
                             
