@@ -442,9 +442,7 @@ namespace TowerVR
                 playerQueue.Enqueue(lastPhotonPlayer);
                 
                 // update score of last player
-                var oldScore = playerScores[lastPhotonPlayer];
-                var newScore = Score.Add(oldScore, Score.GetScore(currentDifficulty));
-                playerScores[lastPhotonPlayer] = newScore;
+                updateScore(lastPhotonPlayer, currentDifficulty);
             }
             
             if (playerQueue.Count == 0)
@@ -463,6 +461,21 @@ namespace TowerVR
             }
             
             currentPlayer = nextPlayer;
+        }
+        
+        private void updateScore(PhotonPlayer player, TowerPieceDifficulty diff)
+        {
+            var oldScore = playerScores[player];
+            var newScore = Score.Add(oldScore, Score.GetScore(diff));
+            
+            playerScores[player] = newScore;
+            
+            var ev = new ScoreChangedEvent(player.ID, newScore);
+            if (!ev.trySend())
+            {
+                Error(ev.trySendError);
+                gameState = GameState.Stopped;
+            }
         }
         
         private void endGame()
