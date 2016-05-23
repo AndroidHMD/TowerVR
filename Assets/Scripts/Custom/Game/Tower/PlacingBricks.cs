@@ -198,16 +198,6 @@ namespace TowerVR
 							// Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
 							// halo.enabled = false;
 							
-							//Needed for clearing pieceToAdd's memory
-							var rb = pieceToAdd.GetComponent<Rigidbody>();
-							if(rb != null)
-							{
-								rb.isKinematic = true;
-								rb.detectCollisions = false;
-								rb.useGravity = false;
-								//Debug.Log("PieceToAdd isKinematic: " + pieceToAdd.GetComponent<Rigidbody>().isKinematic + " detectCollisions: " + pieceToAdd.GetComponent<Rigidbody>().detectCollisions);
-							}
-							
 							noCube = false;
 							pieceToAdd.layer = 0;
 
@@ -258,17 +248,7 @@ namespace TowerVR
 		*	Places towerpiece at current position
 		**/
 		void placeBrick()
-		{
-			var rb = pieceToAdd.GetComponent<Rigidbody>();
-			if(rb != null) //Borde inte behövas, ska bara vara master som har iaf...
-			{
-				rb.isKinematic = false;
-				rb.detectCollisions = true;
-				rb.useGravity = true;
-			}
-			Debug.Log("Rigidbody: " + rb);
-			
-			
+		{			
 			var col = pieceToAdd.GetComponent<Collider>();
 			col.isTrigger = false;
 
