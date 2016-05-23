@@ -37,6 +37,9 @@ public class RetrieveAndSpawnPlayers : Photon.MonoBehaviour
 			SpawnPlayer();
 		}
 		UpdatePlayerDebugList();
+
+		if (PhotonNetwork.room.maxPlayers == PhotonNetwork.room.playerCount)
+			PhotonNetwork.room.visible = false;
 	}
 	
 	void OnPhotonPlayerConnected()
