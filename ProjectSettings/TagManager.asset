@@ -11,6 +11,7 @@ TagManager:
   - ARCamera
   - TowerPieceObject
   - newTowerPiece
+  - lobbyCube
   layers:
   - Default
   - TransparentFX
