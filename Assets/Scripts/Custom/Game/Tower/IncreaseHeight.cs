@@ -5,6 +5,7 @@ using System.Collections.Generic;
 /**
  * Checks if it's time to increase height of player plattform and performs a change.
  * Runs only on master client.
+ * A PhotonView that observes position must be added to GameObject as well
  **/
 
 namespace TowerVR
@@ -33,7 +34,7 @@ namespace TowerVR
 		void OnTriggerStay(Collider col) 
 		{
 			
-			//Only check when new objects has been added and not when placing new objects
+			//Only check when new objects has been added and not when selecting or placing new objects, is set in masterManager
 			if(checkIncreaseHeight) 
 			{
 				Debug.Log("Time to increase height!");
