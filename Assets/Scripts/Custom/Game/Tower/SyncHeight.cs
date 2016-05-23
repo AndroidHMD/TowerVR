@@ -16,11 +16,13 @@ public class SyncHeight : Photon.PunBehaviour {
 		{
 			//We own this player: send the others our data
 			stream.SendNext(transform.position);
+			Debug.Log("Sending data");
 		}
 		else
 		{
 			//Network player, receive data
 			transform.position = (Vector3)stream.ReceiveNext();
+			Debug.Log("Syncing transform");
 		}
 	}
 }

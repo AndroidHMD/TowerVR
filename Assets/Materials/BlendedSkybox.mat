@@ -89,7 +89,7 @@ Material:
         first:
           name: _FrontTex2
         second:
-          m_Texture: {fileID: 2800000, guid: f089202d43674433eb3b10f7e2a0e9a3, type: 3}
+          m_Texture: {fileID: 2800000, guid: 4f18db94418e61346aaf7d5a61dbed89, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -103,7 +103,7 @@ Material:
         first:
           name: _BackTex2
         second:
-          m_Texture: {fileID: 2800000, guid: ed74be8be1ad644718bc72ffa016b665, type: 3}
+          m_Texture: {fileID: 2800000, guid: 6c3990be76c650548bd63ce217bed4ec, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -117,7 +117,7 @@ Material:
         first:
           name: _LeftTex2
         second:
-          m_Texture: {fileID: 2800000, guid: f6da010f57b394aab8e09c807471fb27, type: 3}
+          m_Texture: {fileID: 2800000, guid: cf81e6a72d562024d946ba7052500980, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -131,7 +131,7 @@ Material:
         first:
           name: _RightTex2
         second:
-          m_Texture: {fileID: 2800000, guid: 0f4ba3066d50e484e8b1701080fb761c, type: 3}
+          m_Texture: {fileID: 2800000, guid: 167f6313c83ab6d45b941e69dd69fbea, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -145,7 +145,7 @@ Material:
         first:
           name: _UpTex2
         second:
-          m_Texture: {fileID: 2800000, guid: 2e08872944cac492da2da3fe1d65a2a7, type: 3}
+          m_Texture: {fileID: 2800000, guid: 2b343965f51e97c47a821a2afbeb1943, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -159,7 +159,7 @@ Material:
         first:
           name: _DownTex2
         second:
-          m_Texture: {fileID: 2800000, guid: d4fd577d7477641088b60ec693bf2cf6, type: 3}
+          m_Texture: {fileID: 2800000, guid: 4b317206b5a7f0c43b937bf0f61f0b96, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -214,7 +214,7 @@ Material:
       data:
         first:
           name: _Blend
-        second: 0.017735932
+        second: -0.009468292
     m_Colors:
       data:
         first:

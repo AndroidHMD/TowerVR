@@ -999,7 +999,6 @@ MonoBehaviour:
   loadSceneForAllPlayers: 0
   levelIndex: 1
   LevelName: 
-  LevelMaterial1: 
   LevelSkybox: 
 --- !u!1 &565316828
 GameObject:
