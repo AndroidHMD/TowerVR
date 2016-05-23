@@ -222,11 +222,7 @@ namespace TowerVR
                     // piece already in the tower piece list
                     continue;
                 }
-                //var rb = towerPiece.GetComponent<Rigidbody>();
-                //rb.isKinematic = false;
-                //rb.detectCollisions = true;
-                //rb.useGravity = true;
-                           
+                                           
                 // Take over ownership
                 var photonView = towerPiece.GetComponent<PhotonView>();
                 if (photonView != null && !photonView.isMine)
@@ -234,6 +230,11 @@ namespace TowerVR
                     photonView.RequestOwnership();
                     LogToScreen("Requesting ownership of new piece.");
                 }
+                
+                var rb = towerPiece.GetComponent<Rigidbody>();
+                rb.isKinematic = false;
+                rb.detectCollisions = true;
+                rb.useGravity = true;
                 
                 towerPiece.layer = 8; //Must be set here for newly requested pieces
                 mostRecentTowerPiece = towerPiece;
@@ -441,9 +442,7 @@ namespace TowerVR
                 playerQueue.Enqueue(lastPhotonPlayer);
                 
                 // update score of last player
-                var oldScore = playerScores[lastPhotonPlayer];
-                var newScore = Score.Add(oldScore, Score.GetScore(currentDifficulty));
-                playerScores[lastPhotonPlayer] = newScore;
+                updateScore(lastPhotonPlayer, currentDifficulty);
             }
             
             if (playerQueue.Count == 0)
@@ -462,6 +461,21 @@ namespace TowerVR
             }
             
             currentPlayer = nextPlayer;
+        }
+        
+        private void updateScore(PhotonPlayer player, TowerPieceDifficulty diff)
+        {
+            var oldScore = playerScores[player];
+            var newScore = Score.Add(oldScore, Score.GetScore(diff));
+            
+            playerScores[player] = newScore;
+            
+            var ev = new ScoreChangedEvent(player.ID, newScore);
+            if (!ev.trySend())
+            {
+                Error(ev.trySendError);
+                gameState = GameState.Stopped;
+            }
         }
         
         private void endGame()

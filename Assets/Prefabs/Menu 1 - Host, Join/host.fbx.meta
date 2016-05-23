@@ -1,34 +1,15 @@
 fileFormatVersion: 2
-guid: 080f6531a92a8491aa0613ec807a91f7
-timeCreated: 1463385367
+guid: d62677a476f6f61438899c227bd87e96
+timeCreated: 1463573012
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Camera
-    100002: Cube.001
-    100004: Cube.002
-    100006: //RootNode
-    100008: Text
-    100010: Text.001
-    400000: Camera
-    400002: Cube.001
-    400004: Cube.002
-    400006: //RootNode
-    400008: Text
-    400010: Text.001
-    2300000: Cube.001
-    2300002: Cube.002
-    2300004: Text
-    2300006: Text.001
-    3300000: Cube.001
-    3300002: Cube.002
-    3300004: Text
-    3300006: Text.001
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: Text
-    4300002: Cube.001
-    4300004: Text.001
-    4300006: Cube.002
   materials:
     importMaterials: 1
     materialName: 0

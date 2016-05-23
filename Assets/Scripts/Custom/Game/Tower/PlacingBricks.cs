@@ -95,9 +95,12 @@ namespace TowerVR
 					for (int i = 0; i < displayedObjects.Count; i++) 
 					{				
 						var rb =  displayedObjects[i].GetComponent<Rigidbody>();
-						rb.detectCollisions = true;	
-						rb.isKinematic = true;	
-						// Debug.Log("Rigidbody for " + rb + ": kinematic = " + rb.isKinematic + ", detectCol = " + rb.detectCollisions + ", w/ layer " + displayedObjects[i].layer);
+						if(rb != null)
+						{
+							rb.detectCollisions = true;	
+							rb.isKinematic = true;	
+							// Debug.Log("Rigidbody for " + rb + ": kinematic = " + rb.isKinematic + ", detectCol = " + rb.detectCollisions + ", w/ layer " + displayedObjects[i].layer);
+						}
 						
 						var col = displayedObjects[i].GetComponent<Collider>();
 						col.isTrigger = true;
@@ -195,13 +198,6 @@ namespace TowerVR
 							// Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
 							// halo.enabled = false;
 							
-							//Needed for clearing pieceToAdd's memory
-							var rb = pieceToAdd.GetComponent<Rigidbody>();
-							rb.isKinematic = true;
-							rb.detectCollisions = false;
-							rb.useGravity = false;
-							//Debug.Log("PieceToAdd isKinematic: " + pieceToAdd.GetComponent<Rigidbody>().isKinematic + " detectCollisions: " + pieceToAdd.GetComponent<Rigidbody>().detectCollisions);
-						
 							noCube = false;
 							pieceToAdd.layer = 0;
 
@@ -252,12 +248,7 @@ namespace TowerVR
 		*	Places towerpiece at current position
 		**/
 		void placeBrick()
-		{
-			var rb = pieceToAdd.GetComponent<Rigidbody>();
-			rb.isKinematic = false;
-			rb.detectCollisions = true;
-			rb.useGravity = true;
-			
+		{			
 			var col = pieceToAdd.GetComponent<Collider>();
 			col.isTrigger = false;
 
@@ -297,7 +288,7 @@ namespace TowerVR
 				// Behaviour halo = (Behaviour)temp.GetComponent("Halo");
 				// halo.enabled = false;
 				
-				temp.layer = 9;
+				//temp.layer = 9;
 				displayedObjects.Add(temp);
             }
 
