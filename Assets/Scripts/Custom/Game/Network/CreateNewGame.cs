@@ -20,7 +20,7 @@ public class CreateNewGame : MonoBehaviour {
 		options.maxPlayers = (byte)SetMaxPlayers.maxPlayers;
 		string serverName = RandomizeServerName.serverName;
 		PhotonNetwork.CreateRoom(serverName, options, TypedLobby.Default);
-		SceneManager.LoadScene(levelIndex);
+		//SceneManager.LoadScene(levelIndex);
 
 	}
 }
