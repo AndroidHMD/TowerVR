@@ -222,11 +222,7 @@ namespace TowerVR
                     // piece already in the tower piece list
                     continue;
                 }
-                //var rb = towerPiece.GetComponent<Rigidbody>();
-                //rb.isKinematic = false;
-                //rb.detectCollisions = true;
-                //rb.useGravity = true;
-                           
+                                           
                 // Take over ownership
                 var photonView = towerPiece.GetComponent<PhotonView>();
                 if (photonView != null && !photonView.isMine)
@@ -234,6 +230,11 @@ namespace TowerVR
                     photonView.RequestOwnership();
                     LogToScreen("Requesting ownership of new piece.");
                 }
+                
+                var rb = towerPiece.GetComponent<Rigidbody>();
+                rb.isKinematic = false;
+                rb.detectCollisions = true;
+                rb.useGravity = true;
                 
                 towerPiece.layer = 8; //Must be set here for newly requested pieces
                 mostRecentTowerPiece = towerPiece;
