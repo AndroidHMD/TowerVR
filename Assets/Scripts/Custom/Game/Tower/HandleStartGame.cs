@@ -84,7 +84,9 @@ namespace TowerVR
 				{
 					if(noButton)
 					{
-						tempButton = Instantiate(startButton, displayPos, Quaternion.identity) as GameObject;
+						tempButton = Instantiate(startButton) as GameObject;
+						tempButton.transform.position = displayPos;
+						
 						tempButton.layer = 9;
 						tempColor = tempButton.GetComponent<Renderer>().material.color;
 						noButton = false;
