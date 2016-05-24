@@ -114,8 +114,8 @@ namespace TowerVR
 						// hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
 						hit.transform.RotateAround(hit.transform.position, hit.transform.up, 2.0f);
 						
-						// Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
-						// halo.enabled = true;
+						Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
+						halo.enabled = true;
 						
 						if (Cardboard.SDK.Triggered)
 						{
@@ -162,8 +162,8 @@ namespace TowerVR
 							// displayedObjects[i].GetComponent<SelectionPieceHovering>().ConstantBehaviour();
 							displayedObjects[i].transform.RotateAround(displayedObjects[i].transform.position, displayedObjects[i].transform.up, 0.3f);
 							
-							// Behaviour halo = (Behaviour)displayedObjects[i].GetComponent("Halo");  
-							// halo.enabled = false;
+							Behaviour halo = (Behaviour)displayedObjects[i].GetComponent("Halo");  
+							halo.enabled = false;
 						}
 					}
 					
@@ -294,9 +294,17 @@ namespace TowerVR
 
 			for (int i = 0; i < displayedObjects.Count; i++)
 			{
-				displayedObjects[i].transform.position = myCamera.transform.position/2.0f;
+				displayedObjects[i].transform.position = myCamera.transform.position/1.4f;
 				displayedObjects[i].transform.LookAt(myCamera.transform);
-
+				
+				// Scale object to half size
+				// Vector3 currentSize = displayedObjects[i].GetComponent<MeshFilter>().mesh.bounds.size;
+				Vector3 scale = displayedObjects[i].transform.localScale;
+				scale.x = 0.3f * scale.x;
+				scale.y = 0.3f * scale.y;
+				scale.z = 0.3f * scale.z;
+				displayedObjects[i].transform.localScale = scale;
+ 
 				displayedObjects[i].layer = 9;
 			}
 			
