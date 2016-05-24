@@ -14,6 +14,7 @@ GameObject:
   - 114: {fileID: 11477120}
   - 114: {fileID: 11476214}
   - 114: {fileID: 11466982}
+  - 122: {fileID: 12205518}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Player
@@ -164,6 +165,17 @@ MonoBehaviour:
   viewIdField: 0
   instantiationId: -1
   isRuntimeInstantiated: 0
+--- !u!122 &12205518
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 165380}
+  m_Enabled: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4286611584
+  m_Size: 5
 --- !u!135 &13598320
 SphereCollider:
   m_ObjectHideFlags: 1

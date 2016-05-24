@@ -204,12 +204,12 @@ namespace TowerVR
 							Mesh mesh = pieceToAdd.GetComponent<MeshFilter>().mesh;
 							objectBounds = mesh.bounds;
 							objectExtent = Vector3.Scale(objectBounds.extents, pieceToAdd.transform.localScale); //Get correct bounding box
-							//Debug.Log("ObjectExtent: "+ objectExtent);
+							// Debug.Log("ObjectExtent: "+ objectExtent);
 							
 						}
 						pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 						pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up;
-						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
+						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(90, myCamera.transform.rotation.eulerAngles.y, 0));	// All the current pieces are rotated 90 degrees	
 						boxTrans = pieceToAdd.transform;
 							
 						//Satisfied? Then place the piece with the button
@@ -300,20 +300,22 @@ namespace TowerVR
 				displayedObjects[i].layer = 9;
 			}
 			
-			Vector3 easyObjectWidth = Vector3.Scale(displayedObjects[easyIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[easyIdx].transform.localScale);
-			Vector3 mediumObjectWidth = Vector3.Scale(displayedObjects[mediumIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[mediumIdx].transform.localScale);			
-			Vector3 hardObjectWidth = Vector3.Scale(displayedObjects[hardIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[hardIdx].transform.localScale);
+			Vector3 easyObjectWidth = Vector3.Scale(displayedObjects[easyIdx].GetComponent<MeshFilter>().mesh.bounds.extents, displayedObjects[easyIdx].transform.localScale);
+			Vector3 mediumObjectWidth = Vector3.Scale(displayedObjects[mediumIdx].GetComponent<MeshFilter>().mesh.bounds.extents, displayedObjects[mediumIdx].transform.localScale);			
+			Vector3 hardObjectWidth = Vector3.Scale(displayedObjects[hardIdx].GetComponent<MeshFilter>().mesh.bounds.extents, displayedObjects[hardIdx].transform.localScale);
 			
 			// TODO: check validity of signs
-			Vector3 transDistLeft = myCamera.transform.right * (mediumObjectWidth.x/4.0f + 1.0f + easyObjectWidth.x/4.0f); 
-			Vector3 transDistRight = myCamera.transform.right * -(mediumObjectWidth.x/4.0f + 1.0f + hardObjectWidth.x/4.0f);
+			// Vector3 transDistLeft = myCamera.transform.right * (mediumObjectWidth.x/4.0f + 1.0f + easyObjectWidth.x/4.0f); 
+			// Vector3 transDistRight = myCamera.transform.right * -(mediumObjectWidth.x/4.0f + 1.0f + hardObjectWidth.x/4.0f);
+			float transDistLeft = -(mediumObjectWidth.x + 5.0f + easyObjectWidth.x); 
+			float transDistRight = mediumObjectWidth.x + 5.0f + hardObjectWidth.x;
 			
+			// Debug.Log("distances: " + transDistLeft + ", " + transDistRight);
 			
 			// Tranform relative to camera's local coordinates
-			displayedObjects[easyIdx].transform.Translate(transDistLeft, myCamera.transform);
+			displayedObjects[easyIdx].transform.Translate(transDistLeft, 0, 0, myCamera.transform);
 			displayedObjects[mediumIdx].transform.Translate(0, 0, 0, myCamera.transform);
-			displayedObjects[hardIdx].transform.Translate(transDistRight, myCamera.transform);
-			
+			displayedObjects[hardIdx].transform.Translate(transDistRight, 0, 0, myCamera.transform);
         }
 		
 		void ClearSelectionPieces()
