@@ -36,6 +36,11 @@ namespace TowerVR
 		private bool selectionPiecesAreSpawned;
 		private Bounds objectBounds;
 		private Vector3 objectExtent;
+		private Material newMat;
+		
+		private Material EasyMat;
+		private Material MediumMat;
+		private Material HardMat;
 		
 		void onTurnStateChanged(int turnState)
 		{
@@ -65,6 +70,10 @@ namespace TowerVR
 			newPieceName = "";
 			selectionPiecesAreSpawned = false;
 			boxTrans = this.transform;
+			
+			EasyMat = Resources.Load("BrickMaterials/" + SpawnSelectedLevel.LoadedLevel + "EasyMat", typeof(Material)) as Material;
+			MediumMat = Resources.Load("BrickMaterials/" + SpawnSelectedLevel.LoadedLevel + "MediumMat", typeof(Material)) as Material;
+			HardMat = Resources.Load("BrickMaterials/" + SpawnSelectedLevel.LoadedLevel + "HardMat", typeof(Material)) as Material;
 		}
 
 		void Update () {
@@ -121,6 +130,7 @@ namespace TowerVR
 						{
 							// Debug.Log("Selected piece " + hit.transform.gameObject);
 							newPieceName = hit.transform.gameObject.name;
+							newMat = hit.transform.gameObject.GetComponent<Renderer>().material;
 							
 							for (int i = 0; i < displayedObjects.Count; i++) 
 							{
@@ -194,7 +204,7 @@ namespace TowerVR
 						{
 							//Debug.Log("NewPiece: " + newPieceName + "   Time to place: " + Time.time);							
 							pieceToAdd = PhotonNetwork.Instantiate(newPieceName, new Vector3(), boxTrans.rotation, 0) as GameObject;
-														
+							pieceToAdd.GetComponent<Renderer>().material = newMat;
 							// Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
 							// halo.enabled = false;
 							
@@ -281,7 +291,7 @@ namespace TowerVR
             /// Set origin positions of objects to display equal to camera positions
             for (int i = 0; i < tempList.Count; i++)
             {
-				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.identity) as GameObject;
+				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.Euler(new Vector3(90, 0, 0))) as GameObject;
 				temp.name = tempList[i].name;
 				
 				// Turn off halo initially (because we won't remember/know to keep it disabled in the editor)
@@ -298,7 +308,13 @@ namespace TowerVR
 				displayedObjects[i].transform.LookAt(myCamera.transform);
 
 				displayedObjects[i].layer = 9;
+				
+				
 			}
+			
+			displayedObjects[easyIdx].GetComponent<Renderer>().material = EasyMat;
+			displayedObjects[mediumIdx].GetComponent<Renderer>().material = MediumMat;
+			displayedObjects[hardIdx].GetComponent<Renderer>().material = HardMat;
 			
 			Vector3 easyObjectWidth = Vector3.Scale(displayedObjects[easyIdx].GetComponent<MeshFilter>().mesh.bounds.extents, displayedObjects[easyIdx].transform.localScale);
 			Vector3 mediumObjectWidth = Vector3.Scale(displayedObjects[mediumIdx].GetComponent<MeshFilter>().mesh.bounds.extents, displayedObjects[mediumIdx].transform.localScale);			
