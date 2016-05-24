@@ -1826,7 +1826,6 @@ MonoBehaviour:
   - {fileID: 139070, guid: b4d3119bac54d31499115df9a1282a0a, type: 2}
   - {fileID: 132036, guid: 13fdcfdac32dc7a46b378c96b68b8033, type: 2}
   hardBricks:
-  - {fileID: 102434, guid: 0513dc9bc0ad08c4baa69fa5d70e8877, type: 2}
   - {fileID: 123178, guid: 2054937c264c4704ab48d662c248d71f, type: 2}
   - {fileID: 189386, guid: 9b5441419296e48428a41f4e83943668, type: 2}
   - {fileID: 195924, guid: a2b77930cdf9c6f40b0536ae6af66864, type: 2}
