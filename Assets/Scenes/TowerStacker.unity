@@ -1738,6 +1738,7 @@ GameObject:
   - 114: {fileID: 1017791942}
   - 114: {fileID: 1017791943}
   - 114: {fileID: 1017791944}
+  - 114: {fileID: 1017791945}
   m_Layer: 0
   m_Name: SceneLogic
   m_TagString: Untagged
@@ -1898,6 +1899,20 @@ MonoBehaviour:
   winnerTrophy: {fileID: 156654, guid: 560d54d778ac048eeb140c3a6c0ec59c, type: 2}
   loserTrophy: {fileID: 130316, guid: aa3c96339c36043378a98b2e809963ba, type: 2}
   trophyCameraDistance: 25
+--- !u!114 &1017791945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1017791934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5996840c6016b8d4b883e59de380df1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelObjects: {fileID: 0}
+  towerPieceMaterials: []
+  Skybox: {fileID: 0}
 --- !u!114 &1062703636
 MonoBehaviour:
   m_ObjectHideFlags: 0
