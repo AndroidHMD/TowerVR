@@ -6,11 +6,11 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Sand1
-  m_Shader: {fileID: 4800000, guid: 7b8686917890d9a4096a9b6e5cbed0b8, type: 3}
+  m_Name: Chain_of_impact_craters_on_Ganymede
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -19,7 +19,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 327f1dd76b4608247a456ec0f66c27f5, type: 3}
+          m_Texture: {fileID: 2800000, guid: f85126653d7954752ad0e5ea02465bb4, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -136,7 +136,3 @@ Material:
         first:
           name: _Color
         second: {r: 0.588, g: 0.588, b: 0.588, a: 1}
-      data:
-        first:
-          name: _BaseColor
-        second: {r: 0.9505355, g: 0.9632353, b: 0.87116134, a: 1}
