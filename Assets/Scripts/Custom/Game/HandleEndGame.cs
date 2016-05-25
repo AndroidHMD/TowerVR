@@ -22,6 +22,7 @@ namespace TowerVR
 		
 		private GameObject replayButton;
 		private GameObject mainMenuButton;
+		private GameObject trophy;
 
 		private int gameState = GameState.AwaitingPlayers;
 
@@ -62,7 +63,7 @@ namespace TowerVR
 			var cameraTransform = Camera.main.transform;
 			
 			Vector3 spawnPosition = cameraTransform.position + cameraTransform.forward * trophyCameraDistance;
-			var trophy = Instantiate(obj) as GameObject;
+			trophy = Instantiate(obj) as GameObject;
 			
 			trophy.transform.position = spawnPosition;
 		}
@@ -80,8 +81,25 @@ namespace TowerVR
 		
 		void Update()
 		{
-			replayButton.transform.RotateAround(replayButton.transform.position, Vector3.up, 20 * Time.deltaTime);
-			mainMenuButton.transform.RotateAround(mainMenuButton.transform.position, Vector3.up, 20 * Time.deltaTime);
+			if (replayButton != null)
+			{
+				rotateAroundOwnAxis(replayButton);
+			}
+			
+			if (mainMenuButton != null)
+			{
+				rotateAroundOwnAxis(mainMenuButton);
+			}
+			
+			if (trophy != null)
+			{
+				rotateAroundOwnAxis(trophy);
+			}
+		}
+		
+		void rotateAroundOwnAxis(GameObject obj)
+		{
+			obj.transform.RotateAround(obj.transform.position, Vector3.up, 20 * Time.deltaTime);
 		}
 		
 		void OnDestroy()

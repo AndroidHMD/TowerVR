@@ -1822,8 +1822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd20ecabcef84645981c799f0c333b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  replayButtonPosition: {x: 15, y: 25, z: 0}
-  mainMenuButtonPosition: {x: -15, y: 25, z: 0}
+  replayButtonPosition: {x: 20, y: 25, z: 0}
+  mainMenuButtonPosition: {x: -20, y: 25, z: 0}
   replayButtonPrefab: {fileID: 199686, guid: f0534f468ebbd4fe19a5f11831bb1f9a, type: 2}
   mainMenuButtonPrefab: {fileID: 135092, guid: 3eb5ead2d719e460abaecce25df41657, type: 2}
   heightSensor: {fileID: 26761577}
