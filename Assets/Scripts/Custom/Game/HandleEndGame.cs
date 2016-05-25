@@ -15,6 +15,11 @@ namespace TowerVR
 		
 		public bool DEBUG_SPAWN = false;
 		
+		public GameObject winnerTrophy;
+		public GameObject loserTrophy;
+		
+		public float trophyCameraDistance = 50.0f;
+		
 		private GameObject replayButton;
 		private GameObject mainMenuButton;
 
@@ -25,6 +30,19 @@ namespace TowerVR
 			if (gameState == GameState.Ended)
 			{
 				handleGameEnded();
+			}
+		}
+		
+		void onPlayerWon(int playerID)
+		{
+			if (playerID == PhotonNetwork.player.ID)
+			{
+				spawnTrophy(winnerTrophy);
+			}
+			
+			else
+			{
+				spawnTrophy(loserTrophy);
 			}
 		}
 		
@@ -39,9 +57,21 @@ namespace TowerVR
 			mainMenuButton.transform.position = mainMenuButtonPosition;
 		}
 		
+		void spawnTrophy(GameObject obj)
+		{
+			var cameraTransform = Camera.main.transform;
+			
+			Vector3 spawnPosition = cameraTransform.position + cameraTransform.forward * trophyCameraDistance;
+			var trophy = Instantiate(obj) as GameObject;
+			
+			trophy.transform.position = spawnPosition;
+		}
+		
+		
 		void Start()
 		{
 			manager.gameStateChangedHandlers.Add(onGameStateChanged);
+			manager.playerWonHandlers.Add(onPlayerWon);
 			if (DEBUG_SPAWN)
 			{
 				handleGameEnded();
@@ -57,6 +87,7 @@ namespace TowerVR
 		void OnDestroy()
 		{
 			manager.gameStateChangedHandlers.Remove(onGameStateChanged);
+			manager.playerWonHandlers.Remove(onPlayerWon);
 		}
 	}	
 }

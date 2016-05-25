@@ -1828,6 +1828,9 @@ MonoBehaviour:
   mainMenuButtonPrefab: {fileID: 135092, guid: 3eb5ead2d719e460abaecce25df41657, type: 2}
   heightSensor: {fileID: 26761577}
   DEBUG_SPAWN: 0
+  winnerTrophy: {fileID: 156654, guid: 560d54d778ac048eeb140c3a6c0ec59c, type: 2}
+  loserTrophy: {fileID: 130316, guid: aa3c96339c36043378a98b2e809963ba, type: 2}
+  trophyCameraDistance: 25
 --- !u!21 &1025153865
 Material:
   serializedVersion: 6
@@ -2604,7 +2607,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2000004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_ClearFlags
