@@ -2214,7 +2214,7 @@ MonoBehaviour:
   loadSceneForAllPlayers: 0
   levelIndex: 2
   levelName: Backdrop-mountain
-  levelSkybox: mossymountain
+  levelSkybox: mossymountains
   isGazedOn: 0
   skyboxIdentifier: Mountain
   blendedSkybox: {fileID: 2100000, guid: 725157c2a4d47c74d9f79575bb37a97c, type: 2}
