@@ -1912,6 +1912,9 @@ MonoBehaviour:
   - {fileID: 189386, guid: 9b5441419296e48428a41f4e83943668, type: 2}
   - {fileID: 195924, guid: a2b77930cdf9c6f40b0536ae6af66864, type: 2}
   - {fileID: 172482, guid: a150185bb2c27ac48996679cfebf453b, type: 2}
+  easyTextObject: {fileID: 190638, guid: 2e23fd201fc50c6469ed43ded8dbe908, type: 2}
+  mediumTextObject: {fileID: 158900, guid: f682c810e7f9fb7418c021312809ef05, type: 2}
+  hardTextObject: {fileID: 173690, guid: 9267765a62bb2eb499d67f80f0906306, type: 2}
   pieceToAdd: {fileID: 0}
 --- !u!114 &1017791942
 MonoBehaviour:
