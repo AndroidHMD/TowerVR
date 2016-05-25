@@ -1,0 +1,143 @@
+fileFormatVersion: 2
+guid: ad607af12ea5e45b6b0fe59ce66312f4
+timeCreated: 1464076240
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: C-Ext002
+    100002: Damper003
+    100004: ground1
+    100006: Hedra001
+    100008: //RootNode
+    100010: skyscape3
+    100012: skyscape4
+    100014: skyscape5
+    100016: skyscape6
+    100018: skyscape7
+    100020: skyscrape1
+    100022: skyscrape2
+    100024: skyscrape8
+    100026: Sphere002
+    100028: Torus001
+    400000: C-Ext002
+    400002: Damper003
+    400004: ground1
+    400006: Hedra001
+    400008: //RootNode
+    400010: skyscape3
+    400012: skyscape4
+    400014: skyscape5
+    400016: skyscape6
+    400018: skyscape7
+    400020: skyscrape1
+    400022: skyscrape2
+    400024: skyscrape8
+    400026: Sphere002
+    400028: Torus001
+    2300000: C-Ext002
+    2300002: Damper003
+    2300004: ground1
+    2300006: Hedra001
+    2300008: skyscape3
+    2300010: skyscape4
+    2300012: skyscape5
+    2300014: skyscape6
+    2300016: skyscape7
+    2300018: skyscrape1
+    2300020: skyscrape2
+    2300022: skyscrape8
+    2300024: Sphere002
+    2300026: Torus001
+    3300000: C-Ext002
+    3300002: Damper003
+    3300004: ground1
+    3300006: Hedra001
+    3300008: skyscape3
+    3300010: skyscape4
+    3300012: skyscape5
+    3300014: skyscape6
+    3300016: skyscape7
+    3300018: skyscrape1
+    3300020: skyscrape2
+    3300022: skyscrape8
+    3300024: Sphere002
+    3300026: Torus001
+    4300000: Torus001
+    4300002: C-Ext002
+    4300004: Hedra001
+    4300006: ground1
+    4300008: skyscrape1
+    4300010: skyscrape2
+    4300012: skyscape3
+    4300014: skyscape4
+    4300016: skyscape5
+    4300018: skyscape6
+    4300020: skyscape7
+    4300022: skyscrape8
+    4300024: Damper003
+    4300026: Sphere002
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

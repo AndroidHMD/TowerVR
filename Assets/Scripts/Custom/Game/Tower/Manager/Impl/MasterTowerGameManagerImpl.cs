@@ -201,7 +201,7 @@ namespace TowerVR
         
         protected void handleSelectTowerPieceEvent(int playerID, TowerPieceDifficulty difficulty)
         { 
-                        
+            FallingTowerDetection.nDetectedColliders = 0;
             currentDifficulty = difficulty;
             turnState = TurnState.PlacingTowerPiece;
             Log("handleSelectTowerPieceEvent. Difficulty: " + difficulty);
@@ -209,7 +209,7 @@ namespace TowerVR
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
         {
-            FallingTowerDetection.nDetectedColliders = 0;
+            
             
             //Player will first try and place TowerPiece in PlacingBrick.cs    
             GameObject[] newPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");

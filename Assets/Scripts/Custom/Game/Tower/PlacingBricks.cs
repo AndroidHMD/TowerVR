@@ -111,7 +111,8 @@ namespace TowerVR
 							// Debug.Log("Rigidbody for " + rb + ": kinematic = " + rb.isKinematic + ", detectCol = " + rb.detectCollisions + ", w/ layer " + displayedObjects[i].layer);
 						}
 						
-						var col = displayedObjects[i].GetComponent<Collider>();
+						var col = displayedObjects[i].GetComponent<MeshCollider>();
+						//col.convex = true;
 						col.isTrigger = true;
 					}
 					
@@ -121,10 +122,10 @@ namespace TowerVR
 					if (Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, 700, piecesToSelectMask))
 					{
 						// hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
-						hit.transform.RotateAround(hit.transform.position, hit.transform.up, 2.0f);
+						hit.transform.RotateAround(hit.transform.position, myCamera.transform.up, 2.0f);
 						
-						// Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
-						// halo.enabled = true;
+						Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
+						halo.enabled = true;
 						
 						if (Cardboard.SDK.Triggered)
 						{
@@ -172,8 +173,8 @@ namespace TowerVR
 							// displayedObjects[i].GetComponent<SelectionPieceHovering>().ConstantBehaviour();
 							displayedObjects[i].transform.RotateAround(displayedObjects[i].transform.position, displayedObjects[i].transform.up, 0.3f);
 							
-							// Behaviour halo = (Behaviour)displayedObjects[i].GetComponent("Halo");  
-							// halo.enabled = false;
+							Behaviour halo = (Behaviour)displayedObjects[i].GetComponent("Halo");  
+							halo.enabled = false;
 						}
 					}
 					
@@ -259,8 +260,9 @@ namespace TowerVR
 		**/
 		void placeBrick()
 		{			
-			var col = pieceToAdd.GetComponent<Collider>();
+			var col = pieceToAdd.GetComponent<MeshCollider>();
 			col.isTrigger = false;
+			//col.convex = false;
 
 			pieceToAdd.layer = 8;
 			pieceToAdd.tag = "newTowerPiece";
@@ -304,9 +306,18 @@ namespace TowerVR
 
 			for (int i = 0; i < displayedObjects.Count; i++)
 			{
-				displayedObjects[i].transform.position = myCamera.transform.position/2.0f;
+				displayedObjects[i].transform.position = myCamera.transform.position/1.4f;
 				displayedObjects[i].transform.LookAt(myCamera.transform);
-
+				displayedObjects[i].transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
+				
+				// Scale object to half size
+				// Vector3 currentSize = displayedObjects[i].GetComponent<MeshFilter>().mesh.bounds.size;
+				Vector3 scale = displayedObjects[i].transform.localScale;
+				scale.x = 0.3f * scale.x;
+				scale.y = 0.3f * scale.y;
+				scale.z = 0.3f * scale.z;
+				displayedObjects[i].transform.localScale = scale;
+ 
 				displayedObjects[i].layer = 9;
 				
 				
