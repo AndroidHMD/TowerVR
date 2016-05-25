@@ -84,7 +84,9 @@ namespace TowerVR
 				{
 					if(noButton)
 					{
-						tempButton = Instantiate(startButton, displayPos, Quaternion.identity) as GameObject;
+						tempButton = Instantiate(startButton) as GameObject;
+						tempButton.transform.position = displayPos;
+						
 						tempButton.layer = 9;
 						tempColor = tempButton.GetComponent<Renderer>().material.color;
 						noButton = false;
@@ -172,6 +174,8 @@ namespace TowerVR
 				Debug.Log("Number: " + (nrCountdowns-i));
 				nrName = nrName + (nrCountdowns-i);
 				countdownNumber = PhotonNetwork.Instantiate(nrName, displayPos, Quaternion.identity, 0) as GameObject;
+				//Change material 
+				//countdownNumber.GetComponent<Renderer>().material.color = ngt
 				//countdownNumber.transform.RotateAround(countdownNumber.transform.position, Vector3.up, 20 * Time.deltaTime);
 				iTween.RotateBy(countdownNumber, Vector3.up, 1);
 				
