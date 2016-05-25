@@ -102,7 +102,8 @@ namespace TowerVR
 							// Debug.Log("Rigidbody for " + rb + ": kinematic = " + rb.isKinematic + ", detectCol = " + rb.detectCollisions + ", w/ layer " + displayedObjects[i].layer);
 						}
 						
-						var col = displayedObjects[i].GetComponent<Collider>();
+						var col = displayedObjects[i].GetComponent<MeshCollider>();
+						//col.convex = true;
 						col.isTrigger = true;
 					}
 					
@@ -112,7 +113,7 @@ namespace TowerVR
 					if (Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, 700, piecesToSelectMask))
 					{
 						// hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
-						hit.transform.RotateAround(hit.transform.position, hit.transform.up, 2.0f);
+						hit.transform.RotateAround(hit.transform.position, myCamera.transform.up, 2.0f);
 						
 						Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
 						halo.enabled = true;
@@ -249,8 +250,9 @@ namespace TowerVR
 		**/
 		void placeBrick()
 		{			
-			var col = pieceToAdd.GetComponent<Collider>();
+			var col = pieceToAdd.GetComponent<MeshCollider>();
 			col.isTrigger = false;
+			//col.convex = false;
 
 			pieceToAdd.layer = 8;
 			pieceToAdd.tag = "newTowerPiece";
@@ -296,6 +298,7 @@ namespace TowerVR
 			{
 				displayedObjects[i].transform.position = myCamera.transform.position/1.4f;
 				displayedObjects[i].transform.LookAt(myCamera.transform);
+				displayedObjects[i].transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
 				
 				// Scale object to half size
 				// Vector3 currentSize = displayedObjects[i].GetComponent<MeshFilter>().mesh.bounds.size;

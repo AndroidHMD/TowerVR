@@ -22,7 +22,7 @@ namespace TowerVR
 		void OnTriggerEnter(Collider collider)
 		{
 			Debug.Log("Collider Layer: " + collider.gameObject.layer);
-			if(collider.gameObject.layer != 9)
+			if(collider.gameObject.layer != 9 && nDetectedColliders < 1)
 			{
 				if (!firstHasEntered)
 				{

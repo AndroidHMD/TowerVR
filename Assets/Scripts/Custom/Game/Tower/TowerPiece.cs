@@ -28,20 +28,22 @@ namespace TowerVR
 			}
 			
 			gameObject.tag = "newTowerPiece";
-			gameObject.GetComponent<Collider>().isTrigger = false;
+			gameObject.GetComponent<MeshCollider>().isTrigger = false;
+			//gameObject.GetComponent<MeshCollider>().convex = false;
 		}
 		 
 		void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 		{
 			
 			var rb = gameObject.GetComponent<Rigidbody>();
-			var col = gameObject.GetComponent<Collider>();
+			var col = gameObject.GetComponent<MeshCollider>();
 			if (stream.isWriting)
 			{
 				//We own this player: send the others our data
 				//stream.SendNext((bool) rb.isKinematic );
 				//stream.SendNext((bool) rb.detectCollisions );
 				//stream.SendNext((bool) rb.useGravity );
+				//stream.SendNext((bool) col.convex);
 				stream.SendNext((bool) col.isTrigger);
 				stream.SendNext((int) gameObject.layer);
 			}
@@ -51,6 +53,7 @@ namespace TowerVR
 				//rb.isKinematic = (bool)stream.ReceiveNext();
 				//rb.detectCollisions = (bool)stream.ReceiveNext();
 				//rb.useGravity = (bool)stream.ReceiveNext();
+				//col.convex = (bool)stream.ReceiveNext();
 				col.isTrigger = (bool)stream.ReceiveNext();
 				gameObject.layer = (int)stream.ReceiveNext();
 			}
