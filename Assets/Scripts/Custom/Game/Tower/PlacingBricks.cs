@@ -234,7 +234,7 @@ namespace TowerVR
 						}
 						pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 						pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up;
-						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(90, myCamera.transform.rotation.eulerAngles.y, 0));	// All the current pieces are rotated 90 degrees	
+						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(-90, myCamera.transform.rotation.eulerAngles.y, 0));	// All the current pieces are rotated 90 degrees	
 						boxTrans = pieceToAdd.transform;
 							
 						//Satisfied? Then place the piece with the button
@@ -307,7 +307,7 @@ namespace TowerVR
             /// Set origin positions of objects to display equal to camera positions
             for (int i = 0; i < tempList.Count; i++)
             {
-				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.Euler(new Vector3(90, 0, 0))) as GameObject;
+				GameObject temp = Instantiate(tempList[i], new Vector3(), Quaternion.identity) as GameObject;
 				temp.name = tempList[i].name;
 				
 				// Turn off halo initially (because we won't remember/know to keep it disabled in the editor)
@@ -322,7 +322,7 @@ namespace TowerVR
 			{
 				displayedObjects[i].transform.position = myCamera.transform.position/1.4f;
 				displayedObjects[i].transform.LookAt(myCamera.transform);
-				displayedObjects[i].transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
+				displayedObjects[i].transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
 				
 				// Scale object to half size
 				// Vector3 currentSize = displayedObjects[i].GetComponent<MeshFilter>().mesh.bounds.size;
