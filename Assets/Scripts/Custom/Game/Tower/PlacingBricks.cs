@@ -102,7 +102,8 @@ namespace TowerVR
 							// Debug.Log("Rigidbody for " + rb + ": kinematic = " + rb.isKinematic + ", detectCol = " + rb.detectCollisions + ", w/ layer " + displayedObjects[i].layer);
 						}
 						
-						var col = displayedObjects[i].GetComponent<Collider>();
+						var col = displayedObjects[i].GetComponent<MeshCollider>();
+						//col.convex = true;
 						col.isTrigger = true;
 					}
 					
@@ -112,10 +113,10 @@ namespace TowerVR
 					if (Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hit, 700, piecesToSelectMask))
 					{
 						// hit.transform.GetComponent<SelectionPieceHovering>().HoveringBehaviour();
-						hit.transform.RotateAround(hit.transform.position, hit.transform.up, 2.0f);
+						hit.transform.RotateAround(hit.transform.position, myCamera.transform.up, 2.0f);
 						
-						// Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
-						// halo.enabled = true;
+						Behaviour halo = (Behaviour)hit.transform.GetComponent("Halo");  
+						halo.enabled = true;
 						
 						if (Cardboard.SDK.Triggered)
 						{
@@ -162,8 +163,8 @@ namespace TowerVR
 							// displayedObjects[i].GetComponent<SelectionPieceHovering>().ConstantBehaviour();
 							displayedObjects[i].transform.RotateAround(displayedObjects[i].transform.position, displayedObjects[i].transform.up, 0.3f);
 							
-							// Behaviour halo = (Behaviour)displayedObjects[i].GetComponent("Halo");  
-							// halo.enabled = false;
+							Behaviour halo = (Behaviour)displayedObjects[i].GetComponent("Halo");  
+							halo.enabled = false;
 						}
 					}
 					
@@ -204,12 +205,12 @@ namespace TowerVR
 							Mesh mesh = pieceToAdd.GetComponent<MeshFilter>().mesh;
 							objectBounds = mesh.bounds;
 							objectExtent = Vector3.Scale(objectBounds.extents, pieceToAdd.transform.localScale); //Get correct bounding box
-							//Debug.Log("ObjectExtent: "+ objectExtent);
+							// Debug.Log("ObjectExtent: "+ objectExtent);
 							
 						}
 						pieceToAdd.GetComponent<MeshRenderer>().enabled = true;
 						pieceToAdd.transform.position = myCamera.transform.position + myCamera.transform.forward * hitInfo.distance + Vector3.up;
-						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(0, myCamera.transform.rotation.eulerAngles.y, 0));
+						pieceToAdd.transform.rotation = Quaternion.Euler(new Vector3(90, myCamera.transform.rotation.eulerAngles.y, 0));	// All the current pieces are rotated 90 degrees	
 						boxTrans = pieceToAdd.transform;
 							
 						//Satisfied? Then place the piece with the button
@@ -249,8 +250,9 @@ namespace TowerVR
 		**/
 		void placeBrick()
 		{			
-			var col = pieceToAdd.GetComponent<Collider>();
+			var col = pieceToAdd.GetComponent<MeshCollider>();
 			col.isTrigger = false;
+			//col.convex = false;
 
 			pieceToAdd.layer = 8;
 			pieceToAdd.tag = "newTowerPiece";
@@ -294,26 +296,37 @@ namespace TowerVR
 
 			for (int i = 0; i < displayedObjects.Count; i++)
 			{
-				displayedObjects[i].transform.position = myCamera.transform.position/2.0f;
+				displayedObjects[i].transform.position = myCamera.transform.position/1.4f;
 				displayedObjects[i].transform.LookAt(myCamera.transform);
-
+				displayedObjects[i].transform.rotation = Quaternion.Euler(new Vector3(90, 0, 0));
+				
+				// Scale object to half size
+				// Vector3 currentSize = displayedObjects[i].GetComponent<MeshFilter>().mesh.bounds.size;
+				Vector3 scale = displayedObjects[i].transform.localScale;
+				scale.x = 0.3f * scale.x;
+				scale.y = 0.3f * scale.y;
+				scale.z = 0.3f * scale.z;
+				displayedObjects[i].transform.localScale = scale;
+ 
 				displayedObjects[i].layer = 9;
 			}
 			
-			Vector3 easyObjectWidth = Vector3.Scale(displayedObjects[easyIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[easyIdx].transform.localScale);
-			Vector3 mediumObjectWidth = Vector3.Scale(displayedObjects[mediumIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[mediumIdx].transform.localScale);			
-			Vector3 hardObjectWidth = Vector3.Scale(displayedObjects[hardIdx].GetComponent<MeshRenderer>().bounds.extents, displayedObjects[hardIdx].transform.localScale);
+			Vector3 easyObjectWidth = Vector3.Scale(displayedObjects[easyIdx].GetComponent<MeshFilter>().mesh.bounds.extents, displayedObjects[easyIdx].transform.localScale);
+			Vector3 mediumObjectWidth = Vector3.Scale(displayedObjects[mediumIdx].GetComponent<MeshFilter>().mesh.bounds.extents, displayedObjects[mediumIdx].transform.localScale);			
+			Vector3 hardObjectWidth = Vector3.Scale(displayedObjects[hardIdx].GetComponent<MeshFilter>().mesh.bounds.extents, displayedObjects[hardIdx].transform.localScale);
 			
 			// TODO: check validity of signs
-			Vector3 transDistLeft = myCamera.transform.right * (mediumObjectWidth.x/4.0f + 1.0f + easyObjectWidth.x/4.0f); 
-			Vector3 transDistRight = myCamera.transform.right * -(mediumObjectWidth.x/4.0f + 1.0f + hardObjectWidth.x/4.0f);
+			// Vector3 transDistLeft = myCamera.transform.right * (mediumObjectWidth.x/4.0f + 1.0f + easyObjectWidth.x/4.0f); 
+			// Vector3 transDistRight = myCamera.transform.right * -(mediumObjectWidth.x/4.0f + 1.0f + hardObjectWidth.x/4.0f);
+			float transDistLeft = -(mediumObjectWidth.x + 5.0f + easyObjectWidth.x); 
+			float transDistRight = mediumObjectWidth.x + 5.0f + hardObjectWidth.x;
 			
+			// Debug.Log("distances: " + transDistLeft + ", " + transDistRight);
 			
 			// Tranform relative to camera's local coordinates
-			displayedObjects[easyIdx].transform.Translate(transDistLeft, myCamera.transform);
+			displayedObjects[easyIdx].transform.Translate(transDistLeft, 0, 0, myCamera.transform);
 			displayedObjects[mediumIdx].transform.Translate(0, 0, 0, myCamera.transform);
-			displayedObjects[hardIdx].transform.Translate(transDistRight, myCamera.transform);
-			
+			displayedObjects[hardIdx].transform.Translate(transDistRight, 0, 0, myCamera.transform);
         }
 		
 		void ClearSelectionPieces()

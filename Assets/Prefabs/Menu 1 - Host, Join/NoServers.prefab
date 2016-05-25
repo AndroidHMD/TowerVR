@@ -40,7 +40,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  - {fileID: 2100000, guid: bae6c09ea93dac742b540595a2e0551f, type: 3}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -70,13 +70,13 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 50
+  m_FontSize: 60
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Font: {fileID: 12800000, guid: bae6c09ea93dac742b540595a2e0551f, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294960151
 --- !u!114 &11413054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -88,8 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea12cc2ae7af124bbfb8174f0719d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
-  rotationAngle: 180
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

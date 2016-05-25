@@ -201,7 +201,7 @@ namespace TowerVR
         
         protected void handleSelectTowerPieceEvent(int playerID, TowerPieceDifficulty difficulty)
         { 
-                        
+            FallingTowerDetection.nDetectedColliders = 0;
             currentDifficulty = difficulty;
             turnState = TurnState.PlacingTowerPiece;
             Log("handleSelectTowerPieceEvent. Difficulty: " + difficulty);
@@ -209,7 +209,7 @@ namespace TowerVR
         
 		protected void handlePlaceTowerPieceEvent(int playerID, float posX, float posZ, float rotDegreesY)
         {
-            FallingTowerDetection.nDetectedColliders = 0;
+            
             
             //Player will first try and place TowerPiece in PlacingBrick.cs    
             GameObject[] newPieces = GameObject.FindGameObjectsWithTag("newTowerPiece");
@@ -442,9 +442,7 @@ namespace TowerVR
                 playerQueue.Enqueue(lastPhotonPlayer);
                 
                 // update score of last player
-                var oldScore = playerScores[lastPhotonPlayer];
-                var newScore = Score.Add(oldScore, Score.GetScore(currentDifficulty));
-                playerScores[lastPhotonPlayer] = newScore;
+                updateScore(lastPhotonPlayer, currentDifficulty);
             }
             
             if (playerQueue.Count == 0)
@@ -463,6 +461,21 @@ namespace TowerVR
             }
             
             currentPlayer = nextPlayer;
+        }
+        
+        private void updateScore(PhotonPlayer player, TowerPieceDifficulty diff)
+        {
+            var oldScore = playerScores[player];
+            var newScore = Score.Add(oldScore, Score.GetScore(diff));
+            
+            playerScores[player] = newScore;
+            
+            var ev = new ScoreChangedEvent(player.ID, newScore);
+            if (!ev.trySend())
+            {
+                Error(ev.trySendError);
+                gameState = GameState.Stopped;
+            }
         }
         
         private void endGame()
