@@ -35,10 +35,13 @@ public class SpawnSelectedLevel : MonoBehaviour {
     {
         //Set the tower piece materials. 
         //The materials should be named for example "MoonEasyMat" (LevelName + difficulty + "Mat") and be placed in the Resources folder
+        
+        /*
         for (int i = 0; i < difficulty.Length; i++)
         {
             towerPieceMaterials[i] = (Material)Resources.Load(LoadedLevel + difficulty[i] + "Mat", typeof(Material));
         }
+        */
 
         //Instantiate the level objects prefab.
         levelObjects = (GameObject)Instantiate(Resources.Load(LoadedLevel));
