@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 /**
  * Handles how the towerpieces are selected and placed.
@@ -14,11 +15,17 @@ namespace TowerVR
 
 	public class PlacingBricks : TowerVR.TowerGameBehaviour  {
 		
-		// We need a basic case for these in case they have not been set in the Unity Editor
+		// Arrays of tower piece resources
 		public List<GameObject> easyBricks;
         public List<GameObject> mediumBricks;
         public List<GameObject> hardBricks;
 		
+		// Text objects easy/medium/hard
+		public GameObject easyTextObject;
+		public GameObject mediumTextObject;
+		public GameObject hardTextObject;
+		private List<GameObject> textList = new List<GameObject>();
+				
 		public GameObject pieceToAdd;
 		
 		private List<GameObject> displayedObjects = new List<GameObject>();
@@ -114,6 +121,13 @@ namespace TowerVR
 						var col = displayedObjects[i].GetComponent<MeshCollider>();
 						//col.convex = true;
 						col.isTrigger = true;
+					}
+					
+					for (int i = 0; i < textList.Count; i++) 
+					{	
+						// textList[i].transform.RotateAround(textList[i].transform.position, textList[i].transform.up, 0.3f);
+						textList[i].transform.LookAt(myCamera.transform);
+						textList[i].transform.Rotate(0, 180, 0);		
 					}
 					
 					// Selection logic
@@ -343,6 +357,18 @@ namespace TowerVR
 			displayedObjects[easyIdx].transform.Translate(transDistLeft, 0, 0, myCamera.transform);
 			displayedObjects[mediumIdx].transform.Translate(0, 0, 0, myCamera.transform);
 			displayedObjects[hardIdx].transform.Translate(transDistRight, 0, 0, myCamera.transform);
+			
+			// Add text
+			GameObject easyText = Instantiate(easyTextObject, new Vector3(), Quaternion.identity) as GameObject;
+			GameObject mediumText = Instantiate(mediumTextObject, new Vector3(), Quaternion.identity) as GameObject;
+			GameObject hardText = Instantiate(hardTextObject, new Vector3(), Quaternion.identity) as GameObject;
+			textList.Add(easyText);
+			textList.Add(mediumText);
+			textList.Add(hardText);
+			
+			textList[0].transform.position = new Vector3(displayedObjects[easyIdx].transform.position.x, displayedObjects[easyIdx].transform.position.y + 8.0f, displayedObjects[easyIdx].transform.position.z);
+			textList[1].transform.position = new Vector3(displayedObjects[mediumIdx].transform.position.x, displayedObjects[mediumIdx].transform.position.y + 8.0f, displayedObjects[mediumIdx].transform.position.z);
+			textList[2].transform.position = new Vector3(displayedObjects[hardIdx].transform.position.x, displayedObjects[hardIdx].transform.position.y + 8.0f, displayedObjects[hardIdx].transform.position.z);
         }
 		
 		void ClearSelectionPieces()
@@ -354,7 +380,12 @@ namespace TowerVR
 				Destroy(displayedObjects[i]);	
 			}
 			
+			for (int i = 0; i < textList.Count; i++)
+			{
+				Destroy(textList[i]);	
+			}
 			displayedObjects.Clear();
+			textList.Clear();
 			
 		}
 
