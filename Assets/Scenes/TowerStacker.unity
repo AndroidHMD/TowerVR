@@ -1097,7 +1097,7 @@ Transform:
   m_Children:
   - {fileID: 46449006}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!1 &625889494
 GameObject:
   m_ObjectHideFlags: 0
@@ -1848,6 +1848,9 @@ MonoBehaviour:
   - {fileID: 123178, guid: 2054937c264c4704ab48d662c248d71f, type: 2}
   - {fileID: 189386, guid: 9b5441419296e48428a41f4e83943668, type: 2}
   - {fileID: 195924, guid: a2b77930cdf9c6f40b0536ae6af66864, type: 2}
+  easyTextObject: {fileID: 190638, guid: 2e23fd201fc50c6469ed43ded8dbe908, type: 2}
+  mediumTextObject: {fileID: 158900, guid: f682c810e7f9fb7418c021312809ef05, type: 2}
+  hardTextObject: {fileID: 173690, guid: 9267765a62bb2eb499d67f80f0906306, type: 2}
   pieceToAdd: {fileID: 0}
 --- !u!114 &1017791942
 MonoBehaviour:
@@ -2032,7 +2035,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: cd99d77980ee746008d14d82564c801a, type: 2}
+  - {fileID: 2100000, guid: 7c20004f2bebe7b4abe5a717b5d71512, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -3064,8 +3067,8 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: b3a52dff3c7d5b642b0b74acfa6850e5, type: 2}
-  - {fileID: 2100000, guid: b3a52dff3c7d5b642b0b74acfa6850e5, type: 2}
+  - {fileID: 2100000, guid: c16bd9f5ab2253a4a854682b2a95291c, type: 2}
+  - {fileID: 2100000, guid: c16bd9f5ab2253a4a854682b2a95291c, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
