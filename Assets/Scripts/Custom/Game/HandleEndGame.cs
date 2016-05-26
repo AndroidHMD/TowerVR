@@ -51,11 +51,14 @@ namespace TowerVR
 		{
 			Destroy(heightSensor);
 			
-			replayButton = Instantiate(replayButtonPrefab) as GameObject;
-			replayButton.transform.position = replayButtonPosition;
+            GameObject towerBase = GameObject.FindWithTag("MultiTarget");
+
+            replayButton = Instantiate(replayButtonPrefab) as GameObject;
+			replayButton.transform.position = towerBase.transform.position + replayButtonPosition;
+
 			
 			mainMenuButton = Instantiate(mainMenuButtonPrefab) as GameObject;
-			mainMenuButton.transform.position = mainMenuButtonPosition;
+			mainMenuButton.transform.position = towerBase.transform.position + mainMenuButtonPosition;
 		}
 		
 		void spawnTrophy(GameObject obj)

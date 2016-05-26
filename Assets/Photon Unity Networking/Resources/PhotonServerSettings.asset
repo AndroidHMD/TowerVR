@@ -30,4 +30,6 @@ MonoBehaviour:
   - PunPickupSimple
   - PunRespawn
   - RequestForPickupTimes
+  - LoadSkybox
+  - SetLoadedLevel
   DisableAutoOpenWizard: 1

@@ -12,6 +12,7 @@ TagManager:
   - TowerPieceObject
   - newTowerPiece
   - lobbyCube
+  - MultiTarget
   layers:
   - Default
   - TransparentFX

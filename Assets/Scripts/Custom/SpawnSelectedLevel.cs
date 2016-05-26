@@ -2,7 +2,8 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class SpawnSelectedLevel : MonoBehaviour {
+public class SpawnSelectedLevel : Photon.PunBehaviour
+{
 
     /** Assume the level selection scene is "Scene 0" and the game scene is "Scene 1".
      *
@@ -44,10 +45,30 @@ public class SpawnSelectedLevel : MonoBehaviour {
         */
 
         //Instantiate the level objects prefab.
-        levelObjects = (GameObject)Instantiate(Resources.Load(LoadedLevel));
+        if(PhotonNetwork.isMasterClient)
+        {
+            levelObjects = PhotonNetwork.Instantiate(LoadedLevel, Vector3.zero, Quaternion.identity, 1) as GameObject;
 
+            //Call Load
+            LoadSkybox(LoadedSkybox); //For master
+            photonView.RPC("LoadSkybox", PhotonTargets.All, LoadedSkybox); //For everybody else
+
+            photonView.RPC("SetLoadedLevel", PhotonTargets.All, LoadedLevel);
+        }
+
+    }
+
+    [PunRPC]
+    void LoadSkybox(string skyboxname)
+    {
         //Load the skybox and activate it
-        Skybox = (Material)Resources.Load(LoadedSkybox, typeof(Material));
+        Skybox = (Material)Resources.Load(skyboxname, typeof(Material));
         RenderSettings.skybox = Skybox;
+    }
+
+    [PunRPC]
+    void SetLoadedLevel(string masterLoadedLevel)
+    {
+        LoadedLevel = masterLoadedLevel;
     }
 }
