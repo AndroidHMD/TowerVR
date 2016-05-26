@@ -38,7 +38,8 @@ namespace TowerVR
 		private string newPieceName;
 		private Camera myCamera;
 		private bool noCube;
-		private bool hasPlaced;
+        private bool materialsSpawned;
+        private bool hasPlaced;
 		private bool hasSelected;
 		private bool selectionPiecesAreSpawned;
 		private Bounds objectBounds;
@@ -72,15 +73,13 @@ namespace TowerVR
 			
 			myCamera = Camera.main;
 			noCube = true;
-			hasPlaced = false;
+            materialsSpawned = false;
+            hasPlaced = false;
 			hasSelected = false;
 			newPieceName = "";
 			selectionPiecesAreSpawned = false;
 			boxTrans = this.transform;
-			
-			EasyMat = Resources.Load("BrickMaterials/" + SpawnSelectedLevel.LoadedLevel + "EasyMat", typeof(Material)) as Material;
-			MediumMat = Resources.Load("BrickMaterials/" + SpawnSelectedLevel.LoadedLevel + "MediumMat", typeof(Material)) as Material;
-			HardMat = Resources.Load("BrickMaterials/" + SpawnSelectedLevel.LoadedLevel + "HardMat", typeof(Material)) as Material;
+
 		}
 
 		void Update () {
@@ -89,6 +88,15 @@ namespace TowerVR
 			//Check if it is my turn, otherwise just observe
 			if (currentPlayerID == PhotonNetwork.player.ID)
 			{
+                if(!materialsSpawned)
+                {
+                    EasyMat = Resources.Load("BrickMaterials/" + SpawnSelectedLevel.LoadedLevel + "EasyMat", typeof(Material)) as Material;
+                    MediumMat = Resources.Load("BrickMaterials/" + SpawnSelectedLevel.LoadedLevel + "MediumMat", typeof(Material)) as Material;
+                    HardMat = Resources.Load("BrickMaterials/" + SpawnSelectedLevel.LoadedLevel + "HardMat", typeof(Material)) as Material;
+                    Debug.Log("Loading materials");
+                    materialsSpawned = true;
+                }
+
 			
 				//If it is my turn, spawn new piece to be placed.
 				if(turnState == TurnState.SelectingTowerPiece && !hasSelected)

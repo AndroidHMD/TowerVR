@@ -54,6 +54,7 @@ public class SpawnSelectedLevel : Photon.PunBehaviour
             photonView.RPC("LoadSkybox", PhotonTargets.All, LoadedSkybox); //For everybody else
 
             photonView.RPC("SetLoadedLevel", PhotonTargets.All, LoadedLevel);
+            Debug.Log("Sending materials");
         }
 
     }
