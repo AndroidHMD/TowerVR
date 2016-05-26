@@ -4,7 +4,7 @@ using System.Collections;
 public class SetMaxPlayers : MonoBehaviour {
 
 	// Currently chosen max players
-	public static int maxPlayers = 1;
+	public static int maxPlayers = 4;
 	// Number of players for this cube
 	public int players;
 	// color of the object

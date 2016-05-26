@@ -230,7 +230,7 @@ namespace TowerVR
                     photonView.RequestOwnership();
                     LogToScreen("Requesting ownership of new piece.");
                 }
-                
+
                 var rb = towerPiece.GetComponent<Rigidbody>();
                 rb.isKinematic = false;
                 rb.detectCollisions = true;

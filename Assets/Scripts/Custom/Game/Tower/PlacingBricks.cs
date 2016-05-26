@@ -44,7 +44,7 @@ namespace TowerVR
 		private bool selectionPiecesAreSpawned;
 		private Bounds objectBounds;
 		private Vector3 objectExtent;
-		private Material newMat;
+		public static Material newMat;
 		
 		private Material EasyMat;
 		private Material MediumMat;
@@ -227,7 +227,7 @@ namespace TowerVR
 						{
 							//Debug.Log("NewPiece: " + newPieceName + "   Time to place: " + Time.time);							
 							pieceToAdd = PhotonNetwork.Instantiate(newPieceName, new Vector3(), boxTrans.rotation, 0) as GameObject;
-							pieceToAdd.GetComponent<Renderer>().material = newMat;
+							//pieceToAdd.GetComponent<Renderer>().material = newMat;
 							// Behaviour halo = (Behaviour)pieceToAdd.GetComponent("Halo");
 							// halo.enabled = false;
 							

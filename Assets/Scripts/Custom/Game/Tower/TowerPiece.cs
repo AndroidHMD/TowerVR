@@ -37,7 +37,9 @@ namespace TowerVR
 			
 			var rb = gameObject.GetComponent<Rigidbody>();
 			var col = gameObject.GetComponent<MeshCollider>();
-			if (stream.isWriting)
+            var mat = gameObject.GetComponent<Renderer>().material;
+
+            if (stream.isWriting)
 			{
 				//We own this player: send the others our data
 				//stream.SendNext((bool) rb.isKinematic );
@@ -46,6 +48,7 @@ namespace TowerVR
 				//stream.SendNext((bool) col.convex);
 				stream.SendNext((bool) col.isTrigger);
 				stream.SendNext((int) gameObject.layer);
+                //stream.SendNext((Material) mat);
 			}
 			else
 			{
@@ -56,7 +59,14 @@ namespace TowerVR
 				//col.convex = (bool)stream.ReceiveNext();
 				col.isTrigger = (bool)stream.ReceiveNext();
 				gameObject.layer = (int)stream.ReceiveNext();
+                //mat = (Material)stream.ReceiveNext();
 			}
 		}
-	}
+
+        void OnPhotonInstantiate(PhotonMessageInfo info)
+        {
+            gameObject.GetComponent<Renderer>().material = PlacingBricks.newMat;
+        }
+        
+    }
 }
