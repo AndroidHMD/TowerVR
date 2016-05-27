@@ -47,7 +47,7 @@ public class SpawnSelectedLevel : Photon.PunBehaviour
         //Instantiate the level objects prefab.
         if(PhotonNetwork.isMasterClient)
         {
-            levelObjects = PhotonNetwork.Instantiate(LoadedLevel, Vector3.down*100, Quaternion.identity, 0) as GameObject;
+            levelObjects = PhotonNetwork.Instantiate(LoadedLevel, Vector3.down*200, Quaternion.identity, 0) as GameObject;
 
             //Call Load
             LoadSkybox(LoadedSkybox); //For master
