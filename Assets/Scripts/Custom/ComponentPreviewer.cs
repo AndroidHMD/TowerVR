@@ -50,6 +50,8 @@ public class ComponentPreviewer : MonoBehaviour {
 
     void Start()
     {
+        toggleLight(false);
+        
         objectSize = gameObject.transform.localScale;
 
         currRed = gameObject.GetComponent<Renderer>().material.color.r;
@@ -87,12 +89,26 @@ public class ComponentPreviewer : MonoBehaviour {
             }
         }
     }
+    
+    void toggleLight(bool enable)
+    {
+        var light = gameObject.GetComponent<Light>();
+        if (light)
+        {
+            light.enabled = enable;
+        }
+    }
 
 
     //Fade out a gameObject (will be added on all the children of the level object)
     void fadeOut()
     {
-        gameObject.GetComponent<Renderer>().material.color = new Vector4(currRed, currGreen, currBlue, alpha);
+        toggleLight(false);
+        
+        var renderer = gameObject.GetComponent<Renderer>();
+        if (!renderer) return;
+        
+        renderer.material.color = new Vector4(currRed, currGreen, currBlue, alpha);
         alpha -= Time.deltaTime * fadeFactor;
     }
 
@@ -100,7 +116,12 @@ public class ComponentPreviewer : MonoBehaviour {
     //Fade in a gameObject (will be added on all the children of the level object)
     void fadeIn()
     {
-        gameObject.GetComponent<Renderer>().material.color = new Vector4(currRed, currGreen, currBlue, alpha);
+        toggleLight(true);
+        
+        var renderer = gameObject.GetComponent<Renderer>();
+        if (!renderer) return;
+         
+        renderer.material.color = new Vector4(currRed, currGreen, currBlue, alpha);
         alpha += Time.deltaTime * fadeFactor;
     }
 }
