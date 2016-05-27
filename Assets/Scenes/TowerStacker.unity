@@ -1984,25 +1984,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   easyBricks:
+  - {fileID: 139830, guid: 9ec7b52dcce31f44aa521f372d7fdc52, type: 2}
   - {fileID: 147362, guid: ff0f62f53a7d44245b2e04a424e13dbe, type: 2}
   - {fileID: 184616, guid: a5d0422fb1cad0c49bcefc37ab0b5268, type: 2}
-  - {fileID: 139830, guid: 9ec7b52dcce31f44aa521f372d7fdc52, type: 2}
   - {fileID: 176734, guid: a597b9de1aade704a8a0c1c74d471b16, type: 2}
+  - {fileID: 167990, guid: f4b64b5da1f31e64fa201dd0ea682cf6, type: 2}
   - {fileID: 170700, guid: 6c5fec59d79043043b889564e4f6b6fe, type: 2}
   - {fileID: 116398, guid: c2c6ab1340230eb4b9432790f99594d6, type: 2}
   - {fileID: 136510, guid: e89cd20d88e57824ba3bc8408f54e0b6, type: 2}
   - {fileID: 143936, guid: ba76a850ebd04964fb509022f737494f, type: 2}
-  - {fileID: 167990, guid: f4b64b5da1f31e64fa201dd0ea682cf6, type: 2}
   mediumBricks:
   - {fileID: 182368, guid: e75e4191bf7fd6b4d980de88d5c5970c, type: 2}
   - {fileID: 197458, guid: 24fe3b071c55566418830cedc9a7e356, type: 2}
   - {fileID: 139070, guid: b4d3119bac54d31499115df9a1282a0a, type: 2}
   - {fileID: 132036, guid: 13fdcfdac32dc7a46b378c96b68b8033, type: 2}
+  - {fileID: 118342, guid: b3eff5932354a9e4dadf3ee6557ec670, type: 2}
+  - {fileID: 166620, guid: 4a583aa28779ee849a2d3e0290480c7a, type: 2}
+  - {fileID: 130170, guid: e4e95d6ac736fa545944b1713a4af10b, type: 2}
   hardBricks:
+  - {fileID: 195924, guid: a2b77930cdf9c6f40b0536ae6af66864, type: 2}
+  - {fileID: 139654, guid: a9a98fb80720a994aa0cce2b1c514454, type: 2}
+  - {fileID: 143782, guid: 883712d25869bcf4f8345f25d5578916, type: 2}
+  - {fileID: 117222, guid: 2b76396bcd1d57a4e8a7cd5ca9a8f74b, type: 2}
+  - {fileID: 148938, guid: 4b57b393794b33a45b9588dbae5bc4db, type: 2}
+  - {fileID: 102434, guid: 0513dc9bc0ad08c4baa69fa5d70e8877, type: 2}
   - {fileID: 172482, guid: a150185bb2c27ac48996679cfebf453b, type: 2}
+  - {fileID: 194516, guid: 970f62dc524576b45bafbadd8a675431, type: 2}
   - {fileID: 123178, guid: 2054937c264c4704ab48d662c248d71f, type: 2}
   - {fileID: 189386, guid: 9b5441419296e48428a41f4e83943668, type: 2}
-  - {fileID: 195924, guid: a2b77930cdf9c6f40b0536ae6af66864, type: 2}
+  - {fileID: 197564, guid: bd45d5efcafcfb84f8750af859c8ce81, type: 2}
   easyTextObject: {fileID: 190638, guid: 2e23fd201fc50c6469ed43ded8dbe908, type: 2}
   mediumTextObject: {fileID: 158900, guid: f682c810e7f9fb7418c021312809ef05, type: 2}
   hardTextObject: {fileID: 173690, guid: 9267765a62bb2eb499d67f80f0906306, type: 2}
@@ -2653,7 +2663,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2000004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_ClearFlags
