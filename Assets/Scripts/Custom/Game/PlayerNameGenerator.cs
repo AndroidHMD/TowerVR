@@ -3,26 +3,31 @@ using System.Collections;
 
 public class PlayerNameGenerator {
 	public static string[] prefixes = new string[]{
-		"Mr.", "Mrs.", "Dr.", "Professor", 
+		"Mr.", "Mrs.", "Dr.", "Professor",
 		"Little", "Gigantic", "Fierce", "Tiny", "Enormous", "Fat",
 		"Angry", "Calm", "Crazy", "Idiotic", "Drunken",
 		"Swaggy", "Derpy", "Explosive", "Destructive", "Masochistic",
-		"King", "Queen", "Prince", "Princess"
+		"King", "Queen", "Prince", "Princess",
+		"Boaty",
+		"struct", "class"
 	};
 	
 	public static string[] mainNames = new string[]{
-		"Boom", "Potato", "Carrot", "Banana", "Ananas", "Apple", "Sausage",
+		"Boom", "Potato", "Carrot", "Banana", "Ananas", "Apple", "Sausage", "Muffin", 
 		"Rabbit", "Bunny", "Elk", "Moose", "Bird", "Dog", "Cat", "Skeleton",
 		"Master", "Noob", "Pro", "Newbie",
 		"Robot", "Machine", "Fart",
-		"Carl Gustaf", "Obama"
+		"Hitman", "Addict", "Ninja", 
+		"Carl Gustaf", "Obama", "McBoatface", 
+		"/dev/null", "Commithunter"
 	};
 	
 	public static string[] suffixes = new string[]{
 		" the Great", " the First", " the Second", " the Third",
 		" I", " II", " III", " IV", " V", " VI", " XII", " XIV", " XVI",
 		" Jr.", " Sr.",
-		", PhD", ", MSc", ", BSc"
+		", PhD", ", MSc", ", BSc",
+		" (null)", ", nullptr"
 	};
 	
 	public static string GenerateName()
