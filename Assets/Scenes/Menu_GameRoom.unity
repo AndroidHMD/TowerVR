@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 3
-  m_SkyboxMaterial: {fileID: 2100000, guid: b3ede4ff78995064f8d4ecb16c9f0134, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 1b8a7c62bf742f449b0a54153fe6c312, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
